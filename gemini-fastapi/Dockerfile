@@ -1,4 +1,4 @@
-FROM ghcr.io/nativu5/gemini-fastapi:latest
+FROM ghcr.io/luuquangvu/gemini-fastapi:latest
 
 WORKDIR /app
 
