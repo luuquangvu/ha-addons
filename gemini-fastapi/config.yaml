@@ -1,12 +1,13 @@
 name: Gemini FastAPI
 slug: gemini_fastapi
-version: "0.1.1"
+version: "0.2.0"
 description: OpenAI-compatible router that proxies Google Gemini for Home Assistant.
 url: https://github.com/luuquangvu/ha-addons/tree/main/gemini-fastapi
 arch:
   - amd64
   - aarch64
 
+homeassistant: "2025.7.0"
 startup: services
 boot: auto
 init: false
@@ -17,13 +18,13 @@ ports_description:
   8000/tcp: OpenAI-compatible API
 
 map:
-  - config:rw
-  - data:rw
+  - "config:rw"
+  - "data:rw"
 
 environment:
-  CONFIG_SERVER__HOST: 0.0.0.0
-  CONFIG_SERVER__PORT: 8000
+  CONFIG_SERVER__HOST: "0.0.0.0"
+  CONFIG_SERVER__PORT: "8000"
   GEMINI_COOKIE_PATH: /app/cache
 
-watchdog: "http://[HOST]:[PORT:8000]/health"
-webui: "http://[HOST]:[PORT:8000]/docs"
+watchdog: http://[HOST]:[PORT:8000]/health
+webui: http://[HOST]:[PORT:8000]/docs
