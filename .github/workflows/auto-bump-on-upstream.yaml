@@ -1,4 +1,4 @@
-name: Auto bump gemini-fastapi add-on on upstream :latest
+name: Auto bump Home Assistant add-ons on upstream :latest
 
 on:
   schedule:
@@ -8,13 +8,12 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: auto-bump-gemini-fastapi
-  cancel-in-progress: false
-
 jobs:
   check-bump-push:
     name: Bump ${{ matrix.addon.name }}
+    concurrency:
+      group: auto-bump-${{ matrix.addon.name }}
+      cancel-in-progress: false
     strategy:
       matrix:
         addon:
