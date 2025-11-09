@@ -1,0 +1,134 @@
+name: Auto bump gemini-fastapi add-on on upstream :latest
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-bump-gemini-fastapi
+  cancel-in-progress: false
+
+jobs:
+  check-bump-push:
+    name: Bump ${{ matrix.addon.name }}
+    strategy:
+      matrix:
+        addon:
+          - name: gemini-fastapi
+            dir: gemini-fastapi
+            dockerfile: gemini-fastapi/Dockerfile
+            digest_file: .github/upstream-gemini-fastapi.digest
+    runs-on: ubuntu-latest
+    env:
+      ADDON_DIR: ${{ matrix.addon.dir }}
+      DOCKERFILE: ${{ matrix.addon.dockerfile }}
+      DIGEST_FILE: ${{ matrix.addon.digest_file }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y skopeo jq
+          python -m pip install --upgrade pip PyYAML
+
+      - name: Extract upstream ref from Dockerfile
+        id: ref
+        run: |
+          REF=$(awk '/^FROM[[:space:]]+/ {print $2; exit}' "${DOCKERFILE}")
+          if [ -z "$REF" ]; then
+            echo "Cannot find FROM line in ${DOCKERFILE}" >&2
+            exit 1
+          fi
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "Upstream ref: $REF"
+
+      - name: Resolve current digest of :latest
+        id: latest
+        run: |
+          REF='${{ steps.ref.outputs.ref }}'
+          INFO=$(skopeo inspect "docker://$REF")
+          DIGEST=$(echo "$INFO" | jq -r '.Digest')
+          if [ -z "$DIGEST" ] || [ "$DIGEST" = "null" ]; then
+            echo "Failed to resolve digest for $REF" >&2
+            exit 1
+          fi
+          echo "latest_digest=$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "Latest digest: $DIGEST"
+          # Lưu manifest list để dùng ở bước tiếp theo
+          echo "$INFO" > /tmp/manifest.json
+
+      - name: Load previous seen digest (if any)
+        id: prev
+        run: |
+          if [ -f "${DIGEST_FILE}" ]; then
+            PREV=$(cat "${DIGEST_FILE}")
+          else
+            PREV=""
+          fi
+          echo "prev_digest=$PREV" >> "$GITHUB_OUTPUT"
+          echo "Previous digest: ${PREV:-<none>}"
+
+      - name: Stop if digest unchanged
+        if: steps.prev.outputs.prev_digest == steps.latest.outputs.latest_digest
+        run: |
+          echo "Digest unchanged; nothing to do."
+          exit 0
+
+      - name: Verify upstream has both amd64 and arm64
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+        run: |
+          jq -e '
+            .manifests
+            | map(.platform.os + "/" + .platform.architecture)
+            | (index("linux/amd64") != null and index("linux/arm64") != null)
+          ' /tmp/manifest.json >/dev/null || {
+            echo "Upstream missing linux/amd64 or linux/arm64; aborting bump." >&2
+            exit 1
+          }
+
+      - name: Bump version in config.yaml (patch +1) and update digest file
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+        run: |
+          set -e
+          python - <<'PY'
+          import os, re, pathlib, yaml
+          addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
+          p = addon_dir / "config.yaml"
+          data = yaml.safe_load(p.read_text(encoding="utf-8"))
+          ver = str(data.get("version", "0.0.0"))
+          m = re.match(r"^(\d+)\.(\d+)\.(\d+)$", ver)
+          if not m:
+            raise SystemExit(f"Unsupported version format in config.yaml: {ver}")
+          a, b, c = map(int, m.groups())
+          c += 1
+          data["version"] = f"{a}.{b}.{c}"
+          p.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+          print("New version:", data["version"])
+          PY
+
+          mkdir -p "$(dirname "${DIGEST_FILE}")"
+          echo '${{ steps.latest.outputs.latest_digest }}' > "${DIGEST_FILE}"
+
+      - name: Lint Home Assistant add-on
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+        uses: frenck/action-addon-linter@v2
+        with:
+          path: ${{ env.ADDON_DIR }}
+
+      - name: Commit and push to main
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "${{ env.ADDON_DIR }}/config.yaml" "${{ env.DIGEST_FILE }}"
+          git commit -m "chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.ref.outputs.ref }} -> ${{ steps.latest.outputs.latest_digest }})" || exit 0
+          git push origin HEAD:main
