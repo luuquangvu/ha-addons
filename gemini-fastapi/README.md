@@ -6,8 +6,8 @@ This add-on bundles the upstream [Gemini-FastAPI](https://github.com/Nativu5/Gem
 
 After installing the add-on:
 
-1. Start it once so the default configuration files are created in `/config/gemini-fastapi/`.
-2. Open `/config/gemini-fastapi/config.yaml` with the Home Assistant file editor (or any editor you prefer).
+1. Start it once so the default configuration files are created in `/homeassistant/gemini-fastapi/config/`.
+2. Open `/homeassistant/gemini-fastapi/config/config.yaml` with the Home Assistant file editor (or any editor you prefer).
 3. Fill in at least one credential entry with your Gemini cookies:
 
    ```yaml
@@ -20,7 +20,7 @@ After installing the add-on:
 
 4. Save the file and restart the add-on from the Add-on panel.
 
-The add-on persists configuration under `/config/gemini-fastapi` and stores conversation data/cache under `/data/gemini-fastapi`, keeping credentials and history across restarts. On updates, a refreshed template is written to `/config/gemini-fastapi/config.yaml.default` so you can compare it with your existing configuration.
+The add-on persists configuration under `/homeassistant/gemini-fastapi/config` and stores conversation data under `/homeassistant/gemini-fastapi/data`, keeping credentials and history across restarts. On updates, a refreshed template is written to `/homeassistant/gemini-fastapi/config/config.yaml.default` so you can compare it with your existing configuration.
 
 ### How to obtain Gemini cookies
 
