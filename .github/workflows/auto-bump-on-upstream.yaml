@@ -80,6 +80,7 @@ jobs:
           exit 0
 
       - name: Read required architectures from add-on config
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         id: req
         run: |
           REQ=$(python - <<'PY'
@@ -100,6 +101,7 @@ jobs:
           echo "Required platforms: $REQ"
 
       - name: Verify upstream provides all required architectures
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
           REQ='${{ steps.req.outputs.list }}'
@@ -125,6 +127,7 @@ jobs:
           [ "$MISSING" -eq 0 ] || { echo "Upstream lacks required platforms; aborting bump."; exit 1; }
 
       - name: Bump version in config.yaml (patch +1) and update digest file
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
           python - <<'PY'
@@ -147,11 +150,13 @@ jobs:
           echo '${{ steps.latest.outputs.latest_digest }}' > "${DIGEST_FILE}"
 
       - name: Lint Home Assistant add-on
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         uses: frenck/action-addon-linter@v2
         with:
           path: ${{ env.ADDON_DIR }}
 
       - name: Commit and push to main
+        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
           git config user.name  "github-actions[bot]"
