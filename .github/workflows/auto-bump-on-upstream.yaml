@@ -2,7 +2,7 @@ name: Auto bump Home Assistant add-ons on upstream :latest
 
 on:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -61,8 +61,6 @@ jobs:
           fi
           echo "latest_digest=$DIGEST" >> "$GITHUB_OUTPUT"
           echo "Latest digest: $DIGEST"
-          # Lưu manifest list để dùng ở bước tiếp theo
-          echo "$INFO" > /tmp/manifest.json
 
       - name: Load previous seen digest (if any)
         id: prev
@@ -81,20 +79,55 @@ jobs:
           echo "Digest unchanged; nothing to do."
           exit 0
 
-      - name: Verify upstream has both amd64 and arm64
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+      - name: Read required architectures from add-on config
+        id: req
         run: |
-          jq -e '
-            .manifests
-            | map(.platform.os + "/" + .platform.architecture)
-            | (index("linux/amd64") != null and index("linux/arm64") != null)
-          ' /tmp/manifest.json >/dev/null || {
-            echo "Upstream missing linux/amd64 or linux/arm64; aborting bump." >&2
-            exit 1
+          REQ=$(python - <<'PY'
+          import yaml, pathlib
+          addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
+          p = addon_dir / "config.yaml"
+          data = yaml.safe_load(p.read_text(encoding="utf-8"))
+          archs = data.get("arch") or []
+          m = {
+              "amd64":  "linux/amd64",
+              "aarch64":"linux/arm64",
+              "armv7":  "linux/arm/v7",
+              "armhf":  "linux/arm/v6",
+              "i386":   "linux/386",
           }
+          req = [m[a] for a in archs if a in m]
+          print(" ".join(req))
+          PY
+          )
+          echo "list=$REQ" >> "$GITHUB_OUTPUT"
+          echo "Required platforms: $REQ"
+
+      - name: Verify upstream provides all required architectures
+        run: |
+          set -e
+          REQ='${{ steps.req.outputs.list }}'
+          REF='${{ steps.ref.outputs.ref }}'
+
+          RAW=$(skopeo inspect --raw "docker://$REF")
+
+          AVAIL=$(echo "$RAW" | jq -r '
+            if has("manifests") then
+              [ .manifests[].platform | "\(.os)/\(.architecture)" ] | unique | .[]
+            else
+              [ ( (.os // .Os // "linux") + "/" + (.architecture // .Architecture) ) ] | .[]
+            end
+          ')
+
+          echo "Available platforms:"
+          echo "$AVAIL" | sed 's/^/  - /'
+
+          MISSING=0
+          for r in $REQ; do
+            echo "$AVAIL" | grep -qx "$r" || { echo "Missing required platform: $r"; MISSING=1; }
+          done
+          [ "$MISSING" -eq 0 ] || { echo "Upstream lacks required platforms; aborting bump."; exit 1; }
 
       - name: Bump version in config.yaml (patch +1) and update digest file
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
           python - <<'PY'
@@ -117,13 +150,11 @@ jobs:
           echo '${{ steps.latest.outputs.latest_digest }}' > "${DIGEST_FILE}"
 
       - name: Lint Home Assistant add-on
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         uses: frenck/action-addon-linter@v2
         with:
           path: ${{ env.ADDON_DIR }}
 
       - name: Commit and push to main
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
           git config user.name  "github-actions[bot]"
