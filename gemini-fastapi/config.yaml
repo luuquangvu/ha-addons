@@ -9,7 +9,6 @@ arch:
 
 homeassistant: "2025.7.0"
 startup: services
-boot: auto
 init: false
 
 ports:
@@ -18,13 +17,12 @@ ports_description:
   8000/tcp: OpenAI-compatible API
 
 map:
-  - "config:rw"
-  - "data:rw"
+  - type: homeassistant_config
+    read_only: False
 
 environment:
   CONFIG_SERVER__HOST: "0.0.0.0"
   CONFIG_SERVER__PORT: "8000"
   GEMINI_COOKIE_PATH: /app/cache
 
-watchdog: http://[HOST]:[PORT:8000]/health
 webui: http://[HOST]:[PORT:8000]/docs

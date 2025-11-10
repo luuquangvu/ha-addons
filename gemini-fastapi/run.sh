@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONFIG_DIR="/config/gemini-fastapi"
-STATE_BASE="/data/gemini-fastapi"
-DATA_DIR="${STATE_BASE}/data"
-CACHE_DIR="${STATE_BASE}/cache"
+BASE_DIR="/homeassistant/gemini-fastapi"
+CONFIG_DIR="${BASE_DIR}/config"
+DATA_DIR="${BASE_DIR}/data"
+CACHE_DIR="/data/cache"
 
 mkdir -p "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
 
