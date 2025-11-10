@@ -83,7 +83,7 @@ jobs:
         id: req
         run: |
           REQ=$(python - <<'PY'
-          import yaml, pathlib
+          import os, pathlib, yaml
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
           p = addon_dir / "config.yaml"
           data = yaml.safe_load(p.read_text(encoding="utf-8"))
@@ -131,7 +131,7 @@ jobs:
         run: |
           set -e
           python - <<'PY'
-          import os, re, pathlib, yaml
+          import os, pathlib, re, yaml
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
           p = addon_dir / "config.yaml"
           data = yaml.safe_load(p.read_text(encoding="utf-8"))
