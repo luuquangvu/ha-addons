@@ -20,7 +20,7 @@ link_dir() {
         elif [ -n "${backup}" ]; then
             mkdir -p "$(dirname "${backup}")"
             rm -rf "${backup}"
-            if [[ "${backup}" == *.yaml ]] && [ -f "${target}/config.yaml" ]; then
+            if [[ "${backup}" == */config.yaml.default ]] && [ -f "${target}/config.yaml" ]; then
                 cp -a "${target}/config.yaml" "${backup}"
             else
                 mkdir -p "${backup}"
