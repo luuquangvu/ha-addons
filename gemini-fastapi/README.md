@@ -43,6 +43,10 @@ server:
 - Treat the `secure_1psid` and `secure_1psidts` cookie values like passwords; keep them out of version control and private repositories.
 - The add-on exposes port 8000 on the Home Assistant host by default, so set an API key if anyone else shares your network and use HTTPS or a reverse proxy for remote access.
 
+### Home Assistant integration
+
+You can use any OpenAI-compatible integration to connect to this add-on, or try [this integration](https://github.com/luuquangvu/hass_local_openai_llm), which has been specifically modified for it.
+
 ## Upstream documentation
 
 Refer to the official project README for advanced settings and authentication details: [https://github.com/Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
