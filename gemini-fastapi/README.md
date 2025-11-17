@@ -47,6 +47,76 @@ server:
 
 You can use any OpenAI-compatible integration to connect to this add-on, or try [this integration](https://github.com/luuquangvu/hass_local_openai_llm), which has been specifically modified for it.
 
+## Docker Deployment
+
+### Run with Docker CLI
+
+```bash
+docker run -p 8000:8000 \
+  -v $(pwd)/gemini-fastapi/data:/app/data \
+  -v $(pwd)/gemini-fastapi/cache:/app/cache \
+  -e CONFIG_SERVER__API_KEY="your-api-key-here" \
+  -e CONFIG_GEMINI__CLIENTS__0__ID="client-a" \
+  -e CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID="your-secure-1psid" \
+  -e CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS="your-secure-1psidts" \
+  -e CONFIG_GEMINI__CLIENTS__0__PROXY="socks5://127.0.0.1:1080" \
+  -e GEMINI_COOKIE_PATH="/app/cache" \
+  ghcr.io/luuquangvu/gemini-fastapi
+```
+
+> [!TIP]
+> Add `CONFIG_GEMINI__CLIENTS__N__PROXY` only if you need a proxy; omit the variable to keep direct connections.
+>
+> `GEMINI_COOKIE_PATH` points to the directory inside the container where refreshed cookies are stored. Bind-mounting it (e.g. `-v $(pwd)/gemini-fastapi/cache:/app/cache`) preserves those cookies across container rebuilds/recreations so you rarely need to re-authenticate.
+
+### Run with Docker Compose
+
+Create a `compose.yaml` file:
+
+```yaml
+services:
+  gemini-fastapi:
+    container_name: gemini-fastapi
+    image: ghcr.io/luuquangvu/gemini-fastapi:latest
+    volumes:
+      # - ./gemini-fastapi/config:/app/config # Uncomment to use a custom config file
+      # - ./gemini-fastapi/certs:/app/certs # Uncomment to enable HTTPS with your certs
+      - ./gemini-fastapi/data:/app/data
+      - ./gemini-fastapi/cache:/app/cache
+    restart: on-failure:3 # Avoid retrying too many times
+    pull_policy: always
+    ports:
+      - 8000:8000
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh" # Set your timezone
+      - "CONFIG_SERVER__HOST=0.0.0.0"
+      - "CONFIG_SERVER__PORT=8000"
+      - "CONFIG_SERVER__API_KEY=your-api-key-here"
+      - "CONFIG_GEMINI__CLIENTS__0__ID=client-a"
+      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-secure-1psid"
+      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts"
+      - "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # optional per-client proxy
+      - "GEMINI_COOKIE_PATH=/app/cache" # must match the cache volume mount above
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import sys, urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/health').getcode() == 200 else sys.exit(1)",
+        ]
+```
+
+Then run:
+
+```bash
+docker compose up -d
+```
+
+> [!IMPORTANT]
+> Make sure to mount the `/app/data` volume to persist conversation data between container restarts.
+> Also mount `/app/cache` so refreshed cookies (including rotated 1PSIDTS values) survive container rebuilds/recreates without re-auth.
+
 ## Upstream documentation
 
 Refer to the official project README for advanced settings and authentication details: [https://github.com/Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
