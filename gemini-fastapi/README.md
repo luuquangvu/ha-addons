@@ -24,6 +24,9 @@ The add-on persists configuration under `/homeassistant/gemini-fastapi/config` a
 
 ### How to obtain Gemini cookies
 
+> [!WARNING]
+> Use it with caution and at your own risk, as it's likely against the Google Terms of Service. Consider creating a separate account for this purpose.
+
 1. Open an incognito/private window and visit [https://gemini.google.com](https://gemini.google.com), then sign in.
 2. Open your browser's developer tools (usually `F12`) and switch to the **Application** tab.
 3. Locate the **Storage** > **Cookies** section for `https://gemini.google.com`.
