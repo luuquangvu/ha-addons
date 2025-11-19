@@ -1,23 +1,33 @@
-# Home Assistant add-ons
+# Home Assistant Add-ons Repository
 
-Collection of custom Home Assistant add-ons.
+[![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
-## Available add-ons
+A collection of custom Home Assistant add-ons.
+
+## Installation
+
+1. Navigate to **Settings** > **Add-ons** > **Add-on Store** in your Home Assistant instance.
+2. Click the three-dots menu in the top right and select **Repositories**.
+3. Add the following URL: `https://github.com/luuquangvu/ha-addons`
+4. Close the dialog. The new add-ons will now appear in the store.
+
+## Available Add-ons
 
 ### Gemini FastAPI
 
-- Wraps the Gemini-FastAPI service into an add-on, exposing an OpenAI-compatible router backed by Google Gemini via browser cookies.
-- Persists configuration and conversation data in Home Assistant storage so Gemini sessions survive container restarts and work with OpenAI-compatible clients.
-- Setup guide: see [`gemini-fastapi/README.md`](gemini-fastapi/README.md).
+Exposes an OpenAI-compatible API for Google Gemini.
 
-## How to use
+- **Authentication**: Uses only browser cookies (`__Secure-1PSID` and `__Secure-1PSIDTS`), no Google API key required.
+- **Persistence**: Automatically saves conversation history and survives restarts.
+- **Upstream Project**: Based on the excellent [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
 
-1. In Home Assistant, open _Settings_ > _Add-ons_ > _Add-on Store_.
-2. Click the three dots menu > _Repositories_ and add: `https://github.com/luuquangvu/ha-addons`.
-3. Install the desired add-on and start it from the Add-on Panel.
+> [!NOTE]
+> For complete setup and configuration instructions, please see the [**Gemini FastAPI Add-on Guide**](gemini-fastapi/README.md).
 
-## Contributing & feedback
+## Contributing
 
-- Open an issue or pull request for bugs, feature requests, or questions.
-- The catalog will expand with additional add-ons over time, stay tuned.
-- Gemini FastAPI upstream project: [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
+Contributions are welcome! If you have any bugs, feature requests, or questions, please [open an issue](https://github.com/luuquangvu/ha-addons/issues) or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
