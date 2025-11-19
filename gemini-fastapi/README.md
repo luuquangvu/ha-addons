@@ -18,7 +18,7 @@ After installing the add-on:
          secure_1psidts: "YOUR_SECURE_1PSIDTS"
    ```
 
-4. Save the file and restart the add-on from the Add-on panel.
+4. Save the file, then restart the add-on from the Add-on panel.
 
 The add-on persists configuration under `/homeassistant/gemini-fastapi/config` and stores conversation data under `/homeassistant/gemini-fastapi/data`, keeping credentials and history across restarts. On updates, a refreshed template is written to `/homeassistant/gemini-fastapi/config/config.yaml.default` so you can compare it with your existing configuration.
 
@@ -27,10 +27,11 @@ The add-on persists configuration under `/homeassistant/gemini-fastapi/config` a
 > [!WARNING]
 > Use it with caution and at your own risk, as it's likely against the Google Terms of Service. Consider creating a separate account for this purpose.
 
-1. Open an incognito/private window and visit [https://gemini.google.com](https://gemini.google.com), then sign in.
+1. Open an incognito or private browser window and visit [https://gemini.google.com](https://gemini.google.com), then sign in.
 2. Open your browser's developer tools (usually `F12`) and switch to the **Application** tab.
 3. Locate the **Storage** > **Cookies** section for `https://gemini.google.com`.
 4. Copy the values of `__Secure-1PSID` and `__Secure-1PSIDTS` and paste them into your configuration.
+5. Close the incognito or private browser window, then restart the add-on.
 
 ### Optional API key
 
