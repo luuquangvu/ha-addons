@@ -28,7 +28,7 @@ jobs:
       DIGEST_FILE: ${{ matrix.addon.digest_file }}
     steps:
       - name: Checkout main
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
