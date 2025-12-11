@@ -2,7 +2,7 @@
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-This add-on integrates the [Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI) service with Home Assistant. It exposes an OpenAI-compatible API that allows Home Assistant, and other clients, to interact with Google's Gemini models without needing an official API key.
+This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that allows Home Assistant, and other clients, to interact with Google's Gemini models without needing an official API key.
 
 > This add-on uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
 
@@ -25,20 +25,7 @@ This add-on integrates the [Gemini-FastAPI](https://github.com/Nativu5/Gemini-Fa
 
 ## Add-on Installation & Configuration
 
-### Step 1: Get Your Google Gemini Cookies
-
-Before installing, obtain the necessary cookies for authentication.
-
-1. Open a **Private or Incognito** browser window.
-2. Go to [https://gemini.google.com](https://gemini.google.com) and sign in with your chosen Google account (a secondary account is recommended).
-3. Open the browser's Developer Tools (usually by pressing `F12`).
-4. Go to the **Application** > **Storage** tab.
-5. Under the **Cookies** section for `https://gemini.google.com`, find and copy the values for:
-   - `__Secure-1PSID`
-   - `__Secure-1PSIDTS`
-6. Keep these values ready.
-
-### Step 2: Install and Configure the Add-on
+### Step 1: Install the Add-on
 
 1. In Home Assistant, navigate to **Settings > Add-ons > Add-on Store**.
 2. Click the 3-dots menu, select **Repositories**, and add this URL:
@@ -49,9 +36,23 @@ Before installing, obtain the necessary cookies for authentication.
 
 3. Install the **Gemini FastAPI** add-on.
 4. **Start the add-on once.** This will generate the necessary configuration files and then stop.
-5. Using a file editor (like the Studio Code Server add-on or via Samba), navigate to the `/homeassistant/gemini-fastapi/config/` directory.
-6. Open the `config.yaml` file.
-7. Fill in your cookie values that you obtained in Step 1:
+
+### Step 2: Get Your Google Gemini Cookies
+
+1. Open a **Private or Incognito** browser window.
+2. Go to [https://gemini.google.com](https://gemini.google.com) and sign in with your chosen Google account (a secondary account is recommended).
+3. Open the browser's Developer Tools (usually by pressing `F12`).
+4. Go to the **Application** > **Storage** tab.
+5. Under the **Cookies** section for `https://gemini.google.com`, find and copy the values for:
+   - `__Secure-1PSID`
+   - `__Secure-1PSIDTS`
+6. Keep these values ready.
+
+### Step 3: Configure the Add-on
+
+1. Using a file editor (like the Studio Code Server add-on or via Samba), navigate to the `/homeassistant/gemini-fastapi/config/` directory created in Step 1.
+2. Open the `config.yaml` file.
+3. Fill in your cookie values from Step 2:
 
    ```yaml
    gemini:
@@ -61,23 +62,23 @@ Before installing, obtain the necessary cookies for authentication.
          secure_1psidts: "PASTE_YOUR_SECURE_1PSIDTS_VALUE_HERE"
    ```
 
-8. (Optional, but Recommended) To protect the API endpoint with a token, add an `api_key` under the `server` section:
+4. (Optional, but Recommended) To protect the API endpoint with a token, add an `api_key` under the `server` section:
 
    ```yaml
    server:
      api_key: "your-strong-secret-token"
    ```
 
-9. Save the `config.yaml` file.
+5. Save the `config.yaml` file.
 
-### Step 3: Restart and Verify
+### Step 4: Restart and Verify
 
 1. Return to the Gemini FastAPI add-on page in Home Assistant.
 2. Click **Restart**.
 3. Check the **Log** tab to ensure the add-on starts successfully without any cookie-related errors.
 
 > [!NOTE]
-> The add-on exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 2) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
+> The add-on exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 3) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
 
 ### Connecting to Home Assistant
 

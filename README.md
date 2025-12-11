@@ -2,32 +2,34 @@
 
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
-A collection of custom Home Assistant add-ons.
+Custom add-ons that enhance Home Assistant with AI features and other experimental ideas. Every add-on lives in its own folder with documentation, configuration, and icon assets so you can pick only what you need.
 
-## Installation
+## Repository Contents
 
-1. Navigate to **Settings** > **Add-ons** > **Add-on Store** in your Home Assistant instance.
-2. Click the three-dots menu in the top right and select **Repositories**.
-3. Add the following URL: `https://github.com/luuquangvu/ha-addons`
-4. Close the dialog. The new add-ons will now appear in the store.
+- **Gemini FastAPI**  
+  OpenAI-compatible wrapper for Google Gemini that works with browser cookies instead of an official API key, so you can use Gemini completely free. Includes conversation persistence, Google Search integration, and optional API key protection. Docker users can follow the standalone deployment instructions directly in the guide.  
+  Docs: [gemini-fastapi/README.md](gemini-fastapi/README.md)
 
-## Available Add-ons
+## Installation (Add-on Store)
 
-### Gemini FastAPI
+1. In Home Assistant, open **Settings > Add-ons > Add-on Store**.
+2. Click the three-dots menu in the top-right and select **Repositories**.
+3. Paste the repository URL `https://github.com/luuquangvu/ha-addons` and click **Add**.
+4. Close the dialog. All add-ons from this repo now appear inside the store and can be installed like any other add-on.
 
-Exposes an OpenAI-compatible API for Google Gemini.
+> [!TIP]
+> After installing an add-on, click **Start** once so the default configuration files are generated before editing.
 
-- **Authentication**: Uses only browser cookies (`__Secure-1PSID` and `__Secure-1PSIDTS`), no Google API key required.
-- **Persistence**: Automatically saves conversation history and survives restarts.
-- **Upstream Project**: Based on the excellent [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
+## Updating / Removing
 
-> [!NOTE]
-> For complete setup and configuration instructions, please see the [**Gemini FastAPI Add-on Guide**](gemini-fastapi/README.md).
+- Home Assistant automatically checks this repository for updates. You can also press the **Reload** button in the Add-on Store to fetch the latest versions on demand.
+- To remove the repository, open the **Repositories** dialog again, highlight `luuquangvu/ha-addons`, and click **Remove**. Installed add-ons remain until you uninstall them.
 
-## Contributing
+## Support & Contributions
 
-Contributions are welcome! If you have any bugs, feature requests, or questions, please [open an issue](https://github.com/luuquangvu/ha-addons/issues) or submit a pull request.
+- Found a bug, have an idea, or want to contribute? [Open an issue](https://github.com/luuquangvu/ha-addons/issues) or submit a pull request.
+- Gemini FastAPI is based on the outstanding work from [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Released under the MIT License. See the [LICENSE](LICENSE) file for details.
