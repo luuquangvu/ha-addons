@@ -5,6 +5,8 @@ BASE_DIR="/homeassistant/gemini-fastapi"
 CONFIG_DIR="${BASE_DIR}/config"
 DATA_DIR="${BASE_DIR}/data"
 CACHE_DIR="/data/cache"
+CONFIG_FILE="config.yaml"
+ORIGINAL_CONFIG_FILE="config.yaml.default"
 
 mkdir -p "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
 
@@ -20,8 +22,8 @@ link_dir() {
         elif [ -n "${backup}" ]; then
             mkdir -p "$(dirname "${backup}")"
             rm -rf "${backup}"
-            if [[ "${backup}" == */config.yaml.default ]] && [ -f "${target}/config.yaml" ]; then
-                cp -a "${target}/config.yaml" "${backup}"
+            if [[ "${backup}" == */${ORIGINAL_CONFIG_FILE} ]] && [ -f "${target}/${CONFIG_FILE}" ]; then
+                cp -a "${target}/${CONFIG_FILE}" "${backup}"
             else
                 mkdir -p "${backup}"
                 cp -a "${target}/." "${backup}/"
@@ -35,7 +37,7 @@ link_dir() {
     ln -s "${source}" "${target}"
 }
 
-link_dir "${CONFIG_DIR}" "/app/config" "${CONFIG_DIR}/config.yaml.default"
+link_dir "${CONFIG_DIR}" "/app/config" "${CONFIG_DIR}/${ORIGINAL_CONFIG_FILE}"
 link_dir "${DATA_DIR}" "/app/data"
 link_dir "${CACHE_DIR}" "/app/cache"
 
