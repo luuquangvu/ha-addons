@@ -2,7 +2,7 @@ name: Auto bump Home Assistant add-ons on upstream :latest
 
 on:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -159,8 +159,8 @@ jobs:
         if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
         run: |
           set -e
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "${{ env.ADDON_DIR }}/config.yaml" "${{ env.DIGEST_FILE }}"
           git commit -m "chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.ref.outputs.ref }} -> ${{ steps.latest.outputs.latest_digest }})" || exit 0
           git push origin HEAD:main
