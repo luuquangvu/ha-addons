@@ -11,156 +11,189 @@ permissions:
 jobs:
   check-bump-push:
     name: Bump ${{ matrix.addon.name }}
+    runs-on: ubuntu-latest
     concurrency:
       group: auto-bump-${{ matrix.addon.name }}
       cancel-in-progress: false
     strategy:
+      fail-fast: false
       matrix:
         addon:
           - name: gemini-fastapi
             dir: gemini-fastapi
             dockerfile: gemini-fastapi/Dockerfile
             digest_file: .github/upstream-gemini-fastapi.digest
-    runs-on: ubuntu-latest
     env:
       ADDON_DIR: ${{ matrix.addon.dir }}
       DOCKERFILE: ${{ matrix.addon.dockerfile }}
       DIGEST_FILE: ${{ matrix.addon.digest_file }}
+
     steps:
       - name: Checkout main
         uses: actions/checkout@v6
-        with:
-          ref: main
 
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y skopeo jq
-          python -m pip install --upgrade pip PyYAML
+          sudo apt-get install -y skopeo
 
-      - name: Extract upstream ref from Dockerfile
-        id: ref
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: pip install PyYAML
+
+      - name: Extract upstream ref and resolve digest
+        id: resolve
         run: |
-          REF=$(awk '/^FROM[[:space:]]+/ {print $2; exit}' "${DOCKERFILE}")
+          # Extract the FROM image
+          REF=$(grep -m 1 '^FROM' "${DOCKERFILE}" | awk '{print $2}')
           if [ -z "$REF" ]; then
-            echo "Cannot find FROM line in ${DOCKERFILE}" >&2
+            echo "::error::Cannot find FROM line in ${DOCKERFILE}"
             exit 1
           fi
-          echo "ref=$REF" >> "$GITHUB_OUTPUT"
           echo "Upstream ref: $REF"
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
 
-      - name: Resolve current digest of :latest
-        id: latest
-        run: |
-          REF='${{ steps.ref.outputs.ref }}'
+          # Resolve remote digest
           INFO=$(skopeo inspect "docker://$REF")
           DIGEST=$(echo "$INFO" | jq -r '.Digest')
+
           if [ -z "$DIGEST" ] || [ "$DIGEST" = "null" ]; then
-            echo "Failed to resolve digest for $REF" >&2
+            echo "::error::Failed to resolve digest for $REF"
             exit 1
           fi
-          echo "latest_digest=$DIGEST" >> "$GITHUB_OUTPUT"
           echo "Latest digest: $DIGEST"
+          echo "latest_digest=$DIGEST" >> "$GITHUB_OUTPUT"
 
-      - name: Load previous seen digest (if any)
-        id: prev
-        run: |
+          # Check against previous digest
           if [ -f "${DIGEST_FILE}" ]; then
             PREV=$(cat "${DIGEST_FILE}")
           else
             PREV=""
           fi
-          echo "prev_digest=$PREV" >> "$GITHUB_OUTPUT"
           echo "Previous digest: ${PREV:-<none>}"
 
-      - name: Stop if digest unchanged
-        if: steps.prev.outputs.prev_digest == steps.latest.outputs.latest_digest
-        run: |
-          echo "Digest unchanged; nothing to do."
-          exit 0
+          if [ "$PREV" = "$DIGEST" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Digest unchanged."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Digest changed! Proceeding to validation."
+          fi
 
-      - name: Read required architectures from add-on config
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
-        id: req
+      - name: Validate Architectures and Bump Version
+        if: steps.resolve.outputs.changed == 'true'
+        env:
+          UPSTREAM_REF: ${{ steps.resolve.outputs.ref }}
+          LATEST_DIGEST: ${{ steps.resolve.outputs.latest_digest }}
         run: |
-          REQ=$(python - <<'PY'
-          import os, pathlib, yaml
+          # Export manifest to env var for safe Python consumption
+          export RAW_MANIFEST=$(skopeo inspect --raw "docker://${UPSTREAM_REF}")
+
+          # Pass manifest to Python for complex validation & bumping
+          python - <<EOF
+          import os
+          import json
+          import pathlib
+          import re
+          import sys
+          import yaml
+
+          # Load config
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
-          p = addon_dir / "config.yaml"
-          data = yaml.safe_load(p.read_text(encoding="utf-8"))
-          archs = data.get("arch") or []
-          m = {
-              "amd64":  "linux/amd64",
-              "aarch64":"linux/arm64",
+          config_path = addon_dir / "config.yaml"
+          digest_file = pathlib.Path(os.environ["DIGEST_FILE"])
+
+          with open(config_path, "r", encoding="utf-8") as f:
+              data = yaml.safe_load(f)
+
+          # 1. Validate Architectures
+          # Map HA arch to Docker platform (os/arch)
+          ha_arch_map = {
+              "amd64": "linux/amd64",
+              "aarch64": "linux/arm64"
           }
-          req = [m[a] for a in archs if a in m]
-          print(" ".join(req))
-          PY
-          )
-          echo "list=$REQ" >> "$GITHUB_OUTPUT"
-          echo "Required platforms: $REQ"
 
-      - name: Verify upstream provides all required architectures
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
-        run: |
-          set -e
-          REQ='${{ steps.req.outputs.list }}'
-          REF='${{ steps.ref.outputs.ref }}'
+          required_archs = data.get("arch", [])
+          required_platforms = [ha_arch_map[a] for a in required_archs if a in ha_arch_map]
 
-          RAW=$(skopeo inspect --raw "docker://$REF")
+          # Load manifest from env var
+          raw_manifest_str = os.environ.get("RAW_MANIFEST", "{}")
+          raw_manifest = json.loads(raw_manifest_str)
 
-          AVAIL=$(echo "$RAW" | jq -r '
-            if has("manifests") then
-              [ .manifests[].platform | "\(.os)/\(.architecture)" ] | unique | .[]
-            else
-              [ ( (.os // .Os // "linux") + "/" + (.architecture // .Architecture) ) ] | .[]
-            end
-          ')
+          available_platforms = set()
+          if "manifests" in raw_manifest:
+              for m in raw_manifest["manifests"]:
+                  p = m["platform"]
+                  available_platforms.add(f"{p['os']}/{p['architecture']}")
+                  # Handle variant if present (e.g. arm/v7)
+                  if "variant" in p:
+                       available_platforms.add(f"{p['os']}/{p['architecture']}/{p['variant']}")
+          else:
+              # Single image manifest
+              os_name = raw_manifest.get("os", raw_manifest.get("Os", "linux"))
+              arch = raw_manifest.get("architecture", raw_manifest.get("Architecture", "amd64"))
+              available_platforms.add(f"{os_name}/{arch}")
 
-          echo "Available platforms:"
-          echo "$AVAIL" | sed 's/^/  - /'
+          print(f"Required: {required_platforms}")
+          print(f"Available: {available_platforms}")
 
-          MISSING=0
-          for r in $REQ; do
-            echo "$AVAIL" | grep -qx "$r" || { echo "Missing required platform: $r"; MISSING=1; }
-          done
-          [ "$MISSING" -eq 0 ] || { echo "Upstream lacks required platforms; aborting bump."; exit 1; }
+          missing = [p for p in required_platforms if p not in available_platforms]
+          if missing:
+              print(f"::error::Upstream lacks required platforms: {missing}")
+              sys.exit(1)
 
-      - name: Bump version in config.yaml (patch +1) and update digest file
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
-        run: |
-          set -e
-          python - <<'PY'
-          import os, pathlib, re, yaml
-          addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
-          p = addon_dir / "config.yaml"
-          data = yaml.safe_load(p.read_text(encoding="utf-8"))
+          print("Architecture check passed.")
+
+          # 2. Bump Version
           ver = str(data.get("version", "0.0.0"))
           m = re.match(r"^(\d+)\.(\d+)\.(\d+)$", ver)
           if not m:
-            raise SystemExit(f"Unsupported version format in config.yaml: {ver}")
-          a, b, c = map(int, m.groups())
-          c += 1
-          data["version"] = f"{a}.{b}.{c}"
-          p.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
-          print("New version:", data["version"])
-          PY
+              print(f"::error::Unsupported version format: {ver}")
+              sys.exit(1)
 
-          mkdir -p "$(dirname "${DIGEST_FILE}")"
-          echo '${{ steps.latest.outputs.latest_digest }}' > "${DIGEST_FILE}"
+          major, minor, patch = map(int, m.groups())
+          new_ver = f"{major}.{minor}.{patch + 1}"
+          data["version"] = new_ver
+
+          with open(config_path, "w", encoding="utf-8") as f:
+              yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+
+          print(f"Bumped version from {ver} to {new_ver}")
+
+          # 3. Update Digest File
+          digest_file.parent.mkdir(parents=True, exist_ok=True)
+          digest_file.write_text(os.environ["LATEST_DIGEST"], encoding="utf-8")
+
+          EOF
 
       - name: Lint Home Assistant add-on
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+        if: steps.resolve.outputs.changed == 'true'
         uses: frenck/action-addon-linter@v2
         with:
           path: ${{ env.ADDON_DIR }}
 
-      - name: Commit and push to main
-        if: steps.prev.outputs.prev_digest != steps.latest.outputs.latest_digest
+      - name: Commit and push
+        if: steps.resolve.outputs.changed == 'true'
         run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "${{ env.ADDON_DIR }}/config.yaml" "${{ env.DIGEST_FILE }}"
-          git commit -m "chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.ref.outputs.ref }} -> ${{ steps.latest.outputs.latest_digest }})" || exit 0
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add "${ADDON_DIR}/config.yaml" "${DIGEST_FILE}"
+
+          # Safety check: see if anything is actually staged
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          MSG="chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.resolve.outputs.ref }} -> ${{ steps.resolve.outputs.latest_digest }})"
+          git commit -m "$MSG"
+
+          # Pull rebase to handle concurrency
+          git pull --rebase origin main
           git push origin HEAD:main
