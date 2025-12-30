@@ -2,12 +2,13 @@
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that allows Home Assistant, and other clients, to interact with Google's Gemini models without needing an official API key.
+This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that allows Home Assistant, and other clients, to interact with Google's Gemini models without needing an official API key, allowing completely free and unlimited use.
 
 > This add-on uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
 
 ## Features
 
+- **Completely Free And Unlimited Use**: Access the latest Gemini models at no cost, just like you do with your browser.
 - **No Google API Key Required**: Accesses Gemini models using only browser cookies.
 - **Conversation Persistence**: Retains conversation history across restarts.
 - **Google Search Integration**: Provides up-to-date, web-grounded answers.
@@ -116,7 +117,7 @@ services:
       - "CONFIG_GEMINI__CLIENTS__0__ID=client-a"
       - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-secure-1psid"
       - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts"
-      - "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # Optional
+      # - "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # Uncomment to enable proxy for each client
       - "GEMINI_COOKIE_PATH=/app/cache"
     healthcheck:
       test:
@@ -141,7 +142,7 @@ docker run -d --name gemini-fastapi \
   -e "CONFIG_GEMINI__CLIENTS__0__ID=client-a" \
   -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-secure-1psid" \
   -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts" \
-  -e "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # Optional
+# -e "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" \
   -e "GEMINI_COOKIE_PATH=/app/cache" \
   --restart on-failure:3 \
   ghcr.io/luuquangvu/gemini-fastapi:latest

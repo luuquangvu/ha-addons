@@ -6,9 +6,9 @@ Custom add-ons that enhance Home Assistant with AI features and other experiment
 
 ## Repository Contents
 
-- **Gemini FastAPI**  
-  OpenAI-compatible wrapper for Google Gemini that works with browser cookies instead of an official API key, so you can use Gemini completely free. Includes conversation persistence, Google Search integration, and optional API key protection. Docker users can follow the standalone deployment instructions directly in the guide.  
-  Docs: [gemini-fastapi/README.md](gemini-fastapi/README.md)
+- **Gemini FastAPI**
+  - An OpenAI-compatible wrapper for Google Gemini works with browser cookies, eliminating the need for an official API key, allowing completely free and unlimited use. It features conversation persistence, Google Search integration, and optional API key protection. Docker users can easily follow the standalone deployment instructions provided in the guide.
+  - Docs: [gemini-fastapi/README.md](gemini-fastapi/README.md)
 
 ## Installation (Add-on Store)
 
