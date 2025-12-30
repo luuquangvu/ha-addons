@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
-Custom add-ons that enhance Home Assistant with AI features and other experimental ideas. Every add-on lives in its own folder with documentation, configuration, and icon assets so you can pick only what you need.
+Custom add-ons that enhance Home Assistant with AI features and other experimental ideas. Every add-on lives in its own folder with documentation, configuration, and icon assets, so you can pick only what you need.
 
 ## Repository Contents
 

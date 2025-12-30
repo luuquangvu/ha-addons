@@ -9,10 +9,10 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 ## Features
 
 - **Completely Free And Unlimited Use**: Access the latest Gemini models at no cost, just like you do with your browser.
-- **No Google API Key Required**: Accesses Gemini models using only browser cookies.
-- **Conversation Persistence**: Retains conversation history across restarts.
+- **No Google API Key Required**: Access Gemini models using only browser cookies.
+- **Conversation Persistence**: Retain conversation history across restarts.
 - **Google Search Integration**: Provides up-to-date, web-grounded answers.
-- **Multi-modal Support**: Handles text, image, and file inputs.
+- **Multi-modal Support**: Handle text, image, and file inputs.
 - **Flexible Configuration**: Configure via YAML files or environment variables.
 
 ---
@@ -36,7 +36,7 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
    ```
 
 3. Install the **Gemini FastAPI** add-on.
-4. **Start the add-on once.** This will generate the necessary configuration files and then stop.
+4. **Start the add-on at once.** This will generate the necessary configuration files and then stop.
 
 ### Step 2: Get Your Google Gemini Cookies
 
@@ -89,7 +89,7 @@ You can connect this add-on to Home Assistant using any OpenAI-compatible integr
 
 ## Standalone Docker Deployment
 
-For users running the service outside of Home Assistant.
+For users running the service outside Home Assistant.
 
 ### Using Docker Compose
 
