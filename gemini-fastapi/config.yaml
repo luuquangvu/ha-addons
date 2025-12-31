@@ -21,4 +21,4 @@ environment:
   CONFIG_SERVER__PORT: '8000'
   CONFIG_GEMINI__TIMEOUT: '120'
   GEMINI_COOKIE_PATH: /app/cache
-webui: '[PROTO]://[HOST]:[PORT:8000]/docs'
+webui: http://[HOST]:[PORT:8000]/docs
