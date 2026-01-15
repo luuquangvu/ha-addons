@@ -8,7 +8,10 @@ CACHE_DIR="/data/cache"
 CONFIG_FILE="config.yaml"
 ORIGINAL_CONFIG_FILE="config.yaml.default"
 
+# Ensure persistent storage is accessible and owned by the current user
 mkdir -p "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
+chown -R "$(id -u):$(id -g)" "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
+chmod -R 755 "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
 
 # Replace the application directories with symlinks into Home Assistant storage.
 link_dir() {

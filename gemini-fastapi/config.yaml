@@ -1,11 +1,11 @@
 name: Gemini FastAPI
 slug: gemini_fastapi
-version: 1.0.22
+version: 1.0.23
 description: OpenAI-compatible router that proxies Google Gemini for Home Assistant.
 url: https://github.com/luuquangvu/ha-addons/tree/main/gemini-fastapi
 arch:
-- amd64
-- aarch64
+  - amd64
+  - aarch64
 homeassistant: 2025.7.0
 startup: services
 init: false
@@ -14,15 +14,16 @@ ports:
 ports_description:
   8000/tcp: OpenAI-compatible API
 map:
-- type: homeassistant_config
-  read_only: false
+  - type: homeassistant_config
+    read_only: false
 environment:
   CONFIG_SERVER__HOST: 0.0.0.0
-  CONFIG_SERVER__PORT: '8000'
-  CONFIG_GEMINI__TIMEOUT: '120'
+  CONFIG_SERVER__PORT: "8000"
+  CONFIG_GEMINI__TIMEOUT: "120"
   GEMINI_COOKIE_PATH: /app/cache
   CONFIG_GEMINI__MODEL_STRATEGY: overwrite
-  CONFIG_GEMINI__MODELS: '[{"model_name": "gemini-3.0-pro", "model_header": {"x-goog-ext-525001261-jspb":
+  CONFIG_GEMINI__MODELS:
+    '[{"model_name": "gemini-3.0-pro", "model_header": {"x-goog-ext-525001261-jspb":
     "[1,null,null,null,\"9d8ca3786ebdfbea\",null,null,0,[4],null,null,1]"}},{"model_name":
     "gemini-3.0-flash-thinking", "model_header": {"x-goog-ext-525001261-jspb": "[1,null,null,null,\"5bf011840784117a\",null,null,0,[4],null,null,1]"}},{"model_name":
     "gemini-3.0-flash", "model_header": {"x-goog-ext-525001261-jspb": "[1,null,null,null,\"fbb127bbb056c959\",null,null,0,[4],null,null,1]"}}]'

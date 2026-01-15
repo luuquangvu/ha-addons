@@ -1,5 +1,7 @@
 FROM ghcr.io/luuquangvu/gemini-fastapi:latest
 
+USER root
+
 WORKDIR /app
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
