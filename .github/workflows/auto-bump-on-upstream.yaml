@@ -101,6 +101,7 @@ jobs:
           import re
           import sys
           import yaml
+          from datetime import date
 
           # Load config
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
@@ -168,6 +169,30 @@ jobs:
           digest_file.parent.mkdir(parents=True, exist_ok=True)
           digest_file.write_text(os.environ["LATEST_DIGEST"], encoding="utf-8")
 
+          # 4. Update CHANGELOG.md
+          changelog_path = addon_dir / "CHANGELOG.md"
+          old_content = ""
+          if changelog_path.exists():
+              old_content = changelog_path.read_text(encoding="utf-8")
+
+          today = date.today().isoformat()
+          digest_short = os.environ["LATEST_DIGEST"][:12] if "LATEST_DIGEST" in os.environ else "latest"
+
+          new_entry = f"## {new_ver} - {today}\n\n- Update upstream image to {digest_short}\n\n"
+
+          if "# Changelog" in old_content:
+              parts = old_content.split("\n", 1)
+              header = parts[0]
+              rest = parts[1] if len(parts) > 1 else ""
+              if rest.startswith("\n"):
+                  rest = rest[1:]
+              final_content = f"{header}\n\n{new_entry}{rest}"
+          else:
+              final_content = f"# Changelog\n\n{new_entry}{old_content}"
+
+          changelog_path.write_text(final_content, encoding="utf-8")
+          print(f"Updated CHANGELOG.md with version {new_ver}")
+
           EOF
 
       - name: Lint Home Assistant add-on
@@ -182,7 +207,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add "${ADDON_DIR}/config.yaml" "${DIGEST_FILE}"
+          git add "${ADDON_DIR}/config.yaml" "${DIGEST_FILE}" "${ADDON_DIR}/CHANGELOG.md"
 
           # Safety check: see if anything is actually staged
           if git diff --staged --quiet; then
