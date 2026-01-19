@@ -28,15 +28,9 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 
 ### Step 1: Install the Add-on
 
-1. In Home Assistant, navigate to **Settings > Add-ons > Add-on Store**.
-2. Click the 3-dots menu, select **Repositories**, and add this URL:
-
-   ```text
-   https://github.com/luuquangvu/ha-addons
-   ```
-
-3. Install the **Gemini FastAPI** add-on.
-4. **Start the add-on at once.** This will generate the necessary configuration files and then stop.
+1. Ensure you have added the [**Home Assistant Add-ons Repository**](https://github.com/luuquangvu/ha-addons) to your Add-on Store.
+2. Find and install the **Gemini FastAPI** add-on.
+3. **Start the add-on once.** This will generate the necessary configuration files and then stop.
 
 ### Step 2: Get Your Google Gemini Cookies
 
@@ -48,6 +42,7 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
    - `__Secure-1PSID`
    - `__Secure-1PSIDTS`
 6. Keep these values ready.
+7. **Close the incognito window immediately** after copying the values and proceed to the next step promptly. This helps prevent cookie synchronization issues or premature expiration.
 
 ### Step 3: Configure the Add-on
 
@@ -76,14 +71,40 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 
 1. Return to the Gemini FastAPI add-on page in Home Assistant.
 2. Click **Restart**.
-3. Check the **Log** tab to ensure the add-on starts successfully without any cookie-related errors.
+3. Check the **Log** tab to ensure the add-on starts successfully.
 
 > [!NOTE]
 > The add-on exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 3) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
 
+### Troubleshooting & Cookie Updates
+
+Since this add-on relies on browser cookies, they may expire over time (e.g., if you log out of Google or the session times out).
+
+- **Symptoms**: The add-on stops responding, or you see `Failed to initialize client ...` errors in the Logs.
+- **Fix**: Simply repeat **Step 2** and **Step 3** to fetch new cookies and update your `config.yaml`, then restart the add-on.
+
 ### Connecting to Home Assistant
 
-You can connect this add-on to Home Assistant using any OpenAI-compatible integration. For the best experience, try the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) custom integration, which is optimized for this add-on.
+To use Gemini within Home Assistant's Assist pipelines, you need an integration that supports OpenAI-compatible APIs.
+
+#### Recommended: Local OpenAI LLM
+
+We strongly recommend using the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) custom integration. This is a fork specifically optimized for this add-on, supporting local LLM servers out of the box.
+
+1.  **Install via HACS**:
+    - **Automatic**: Click the button below to open the repository directly in HACS:
+
+      [![Open HACS Repository](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luuquangvu&repository=hass_local_openai_llm&category=integration)
+
+    - **Manual**: If the button doesn't work, add `https://github.com/luuquangvu/hass_local_openai_llm` as a **Custom Repository** (Category: Integration) in HACS.
+
+    - Click **Download** and **Restart** Home Assistant once the download is complete.
+
+2.  **Add Integration**: Navigate to **Settings > Devices & Services**, click **Add Integration**, and search for **Local OpenAI LLM**.
+
+3.  **Configure**:
+    - **Server URL**: `http://127.0.0.1:8000/v1`
+    - **API Key**: The key you defined in your `config.yaml` (leave blank if not set).
 
 ---
 
