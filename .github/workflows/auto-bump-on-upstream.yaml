@@ -176,7 +176,10 @@ jobs:
               old_content = changelog_path.read_text(encoding="utf-8")
 
           today = date.today().isoformat()
-          digest_short = os.environ["LATEST_DIGEST"][:12] if "LATEST_DIGEST" in os.environ else "latest"
+
+          digest_short = (
+            f"{os.environ['LATEST_DIGEST'][:19]}..." if "LATEST_DIGEST" in os.environ else "latest"
+          )
 
           new_entry = f"## {new_ver} - {today}\n\n- Update upstream image to {digest_short}\n\n"
 
