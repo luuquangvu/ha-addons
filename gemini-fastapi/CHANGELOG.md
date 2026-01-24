@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.24 - 2026-01-24
+
+- Update upstream image to sha256:133ab
+
 ## 1.0.23 - 2026-01-15
 
 - Fix: Ensure persistent storage is accessible, handle user permissions and resolve the expired cookies issue.
