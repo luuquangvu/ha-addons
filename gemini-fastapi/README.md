@@ -83,6 +83,9 @@ Since this add-on relies on browser cookies, they may expire over time (e.g., if
 - **Symptoms**: The add-on stops responding, or you see `Failed to initialize client ...` errors in the Logs.
 - **Fix**: Simply repeat **Step 2** and **Step 3** to fetch new cookies and update your `config.yaml`, then restart the add-on.
 
+> [!NOTE]
+> If you frequently encounter cookie expiration issues, try retrieving the cookies from a different browser.
+
 ### Connecting to Home Assistant
 
 To use Gemini within Home Assistant's Assist pipelines, you need an integration that supports OpenAI-compatible APIs.
