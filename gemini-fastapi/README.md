@@ -1,8 +1,10 @@
 # Gemini FastAPI - Home Assistant Add-on
 
+[🇻🇳 Tiếng Việt](README.vi.md)
+
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that allows Home Assistant, and other clients, to interact with Google's Gemini models without needing an official API key, allowing completely free and unlimited use.
+This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that enables Home Assistant and other clients to interact with Google's Gemini models without an official API key, providing completely free and unlimited use.
 
 > This add-on uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
 

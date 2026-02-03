@@ -1,5 +1,7 @@
 # Home Assistant Add-ons Repository
 
+[🇻🇳 Tiếng Việt](README.vi.md)
+
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
 Custom add-ons that enhance Home Assistant with AI features and other experimental ideas. Every add-on lives in its own folder with documentation, configuration, and icon assets, so you can pick only what you need.
@@ -7,7 +9,7 @@ Custom add-ons that enhance Home Assistant with AI features and other experiment
 ## Repository Contents
 
 - **Gemini FastAPI**
-  - An OpenAI-compatible wrapper for Google Gemini works with browser cookies, eliminating the need for an official API key, allowing completely free and unlimited use. It features conversation persistence, Google Search integration, and optional API key protection. Docker users can easily follow the standalone deployment instructions provided in the guide.
+  - An OpenAI-compatible wrapper for Google Gemini that works with browser cookies, eliminating the need for an official API key, allowing completely free and unlimited use. It features conversation persistence, Google Search integration, and optional API key protection. Docker users can easily follow the standalone deployment instructions provided in the guide.
   - Docs: [gemini-fastapi/README.md](gemini-fastapi/README.md)
 
 ## Installation (Add-on Store)
