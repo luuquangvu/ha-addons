@@ -1,6 +1,6 @@
 name: Gemini FastAPI
 slug: gemini_fastapi
-version: 1.0.28
+version: 1.0.29
 description: OpenAI-compatible router that proxies Google Gemini for Home Assistant.
 url: https://github.com/luuquangvu/ha-addons/tree/main/gemini-fastapi
 arch:
