@@ -1,12 +1,12 @@
-# Gemini FastAPI - Home Assistant Add-on
+# Gemini FastAPI - Home Assistant App (formerly known as add-on)
 
 [🇻🇳 Tiếng Việt](README.vi.md)
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-This add-on integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that enables Home Assistant and other clients to interact with Google's Gemini models without an official API key, providing completely free and unlimited use.
+This App (formerly known as add-on) integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that enables Home Assistant and other clients to interact with Google's Gemini models without an official API key, providing completely free and unlimited use.
 
-> This add-on uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
+> This App uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
 
 ## Features
 
@@ -22,17 +22,17 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 ## Important: Before You Begin
 
 - **Risk of Use**: Using your browser cookies to access Gemini may violate Google's Terms of Service. This could potentially lead to restrictions on your Google account.
-- **Recommendation**: To minimize risk, it is strongly recommended that you **use a secondary, non-primary Google account** for this add-on.
+- **Recommendation**: To minimize risk, it is strongly recommended that you **use a secondary, non-primary Google account** for this App.
 
 ---
 
-## Add-on Installation & Configuration
+## App Installation & Configuration
 
-### Step 1: Install the Add-on
+### Step 1: Install the App
 
-1. Ensure you have added the [**Home Assistant Add-ons Repository**](https://github.com/luuquangvu/ha-addons) to your Add-on Store.
-2. Find and install the **Gemini FastAPI** add-on.
-3. **Start the add-on once.** This will generate the necessary configuration files and then stop.
+1. Ensure you have added the [**Home Assistant Apps Repository**](https://github.com/luuquangvu/ha-addons) to your App Store.
+2. Find and install the **Gemini FastAPI** App.
+3. **Start the App once.** This will generate the necessary configuration files and then stop.
 
 ### Step 2: Get Your Google Gemini Cookies
 
@@ -46,9 +46,9 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 6. Keep these values ready.
 7. **Close the incognito window immediately** after copying the values and proceed to the next step promptly. This helps prevent cookie synchronization issues or premature expiration.
 
-### Step 3: Configure the Add-on
+### Step 3: Configure the App
 
-1. Using a file editor (like the Studio Code Server add-on or via Samba), navigate to the `/homeassistant/gemini-fastapi/config/` directory created in Step 1.
+1. Using a file editor (like the Studio Code Server App or via Samba), navigate to the `/homeassistant/gemini-fastapi/config/` directory created in Step 1.
 2. Open the `config.yaml` file.
 3. Fill in your cookie values from Step 2:
 
@@ -71,19 +71,19 @@ This add-on integrates the Gemini-FastAPI service with Home Assistant. It expose
 
 ### Step 4: Restart and Verify
 
-1. Return to the Gemini FastAPI add-on page in Home Assistant.
+1. Return to the Gemini FastAPI App page in Home Assistant.
 2. Click **Restart**.
-3. Check the **Log** tab to ensure the add-on starts successfully.
+3. Check the **Log** tab to ensure the App starts successfully.
 
 > [!NOTE]
-> The add-on exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 3) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
+> The App exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 3) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
 
 ### Troubleshooting & Cookie Updates
 
-Since this add-on relies on browser cookies, they may expire over time (e.g., if you log out of Google or the session times out).
+Since this App relies on browser cookies, they may expire over time (e.g., if you log out of Google or the session times out).
 
-- **Symptoms**: The add-on stops responding, or you see `Failed to initialize client ...` errors in the Logs.
-- **Fix**: Simply repeat **Step 2** and **Step 3** to fetch new cookies and update your `config.yaml`, then restart the add-on.
+- **Symptoms**: The App stops responding, or you see `Failed to initialize client ...` errors in the Logs.
+- **Fix**: Simply repeat **Step 2** and **Step 3** to fetch new cookies and update your `config.yaml`, then restart the App.
 
 > [!NOTE]
 > If you frequently encounter cookie expiration issues, try retrieving the cookies from a different browser.
@@ -94,7 +94,7 @@ To use Gemini within Home Assistant's Assist pipelines, you need an integration 
 
 #### Recommended: Local OpenAI LLM
 
-We strongly recommend using the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) custom integration. This is a fork specifically optimized for this add-on, supporting local LLM servers out of the box.
+We strongly recommend using the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) custom integration. This is a fork specifically optimized for this App, supporting local LLM servers out of the box.
 
 1.  **Install via HACS**:
     - **Automatic**: Click the button below to open the repository directly in HACS:

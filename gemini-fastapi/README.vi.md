@@ -1,18 +1,18 @@
-# Gemini FastAPI - Add-on Home Assistant
+# Gemini FastAPI - Home Assistant App (tên cũ là add-on)
 
 [🇺🇸 English](README.md)
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-Add-on này tích hợp dịch vụ Gemini-FastAPI vào Home Assistant, cung cấp một API tương thích với OpenAI. Điều này cho phép Home Assistant và các ứng dụng khách khác tương tác với các mô hình Gemini của Google mà không cần API key chính thức, giúp việc sử dụng hoàn toàn miễn phí và không bị giới hạn.
+App (tên cũ là add-on) này tích hợp dịch vụ Gemini-FastAPI vào Home Assistant, cung cấp một API tương thích với OpenAI. Điều này cho phép Home Assistant và các ứng dụng khách khác tương tác với các mô hình Gemini của Google mà không cần API key chính thức, giúp việc sử dụng hoàn toàn miễn phí và không bị giới hạn.
 
-> Add-on này sử dụng một bản fork từ dự án gốc ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) để cập nhật các tính năng mới nhanh hơn.
+> App này sử dụng một bản fork từ dự án gốc ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) để cập nhật các tính năng mới nhanh hơn.
 
 ## Tính năng nổi bật
 
 - **Hoàn toàn miễn phí & Không giới hạn**: Truy cập các mô hình Gemini mới nhất mà không tốn phí, tương tự như trải nghiệm trên trình duyệt.
 - **Không cần Google API Key**: Hoạt động dựa trên cookie trình duyệt thay vì API key truyền thống.
-- **Lưu trữ hội thoại (Persistence)**: Duy trì lịch sử chat ngay cả khi khởi động lại add-on.
+- **Lưu trữ hội thoại (Persistence)**: Duy trì lịch sử chat ngay cả khi khởi động lại App.
 - **Tích hợp Google Search**: Cung cấp thông tin cập nhật theo thời gian thực từ internet.
 - **Hỗ trợ đa phương thức (Multi-modal)**: Xử lý được cả văn bản, hình ảnh và tệp tin.
 - **Cấu hình linh hoạt**: Dễ dàng tùy chỉnh qua tệp YAML hoặc biến môi trường (Environment Variables).
@@ -22,17 +22,17 @@ Add-on này tích hợp dịch vụ Gemini-FastAPI vào Home Assistant, cung c�
 ## Lưu ý quan trọng: Trước khi bắt đầu
 
 - **Rủi ro sử dụng**: Việc sử dụng cookie trình duyệt để truy cập Gemini có thể vi phạm Điều khoản dịch vụ của Google, dẫn đến rủi ro tài khoản bị hạn chế.
-- **Khuyến nghị**: Để đảm bảo an toàn, bạn **nên sử dụng một tài khoản Google phụ** (không phải tài khoản chính) cho add-on này.
+- **Khuyến nghị**: Để đảm bảo an toàn, bạn **nên sử dụng một tài khoản Google phụ** (không phải tài khoản chính) cho App này.
 
 ---
 
 ## Hướng dẫn Cài đặt & Cấu hình
 
-### Bước 1: Cài đặt Add-on
+### Bước 1: Cài đặt App
 
-1. Đảm bảo bạn đã thêm [**Kho Add-ons cho Home Assistant**](https://github.com/luuquangvu/ha-addons) vào Cửa hàng Add-on.
-2. Tìm và cài đặt add-on **Gemini FastAPI**.
-3. **Khởi động add-on một lần.** Add-on sẽ tự động tạo các tệp cấu hình cần thiết rồi dừng lại.
+1. Đảm bảo bạn đã thêm [**Kho Apps cho Home Assistant**](https://github.com/luuquangvu/ha-addons) vào Cửa hàng Apps.
+2. Tìm và cài đặt App **Gemini FastAPI**.
+3. **Khởi động App một lần.** App sẽ tự động tạo các tệp cấu hình cần thiết rồi dừng lại.
 
 ### Bước 2: Lấy Cookie Google Gemini
 
@@ -46,7 +46,7 @@ Add-on này tích hợp dịch vụ Gemini-FastAPI vào Home Assistant, cung c�
 6. Lưu lại các giá trị này.
 7. **Đóng cửa sổ ẩn danh ngay sau khi sao chép** để tránh xung đột cookie hoặc hết hạn phiên làm việc sớm.
 
-### Bước 3: Cấu hình Add-on
+### Bước 3: Cấu hình App
 
 1. Sử dụng trình chỉnh sửa tệp (như Studio Code Server), truy cập thư mục `/homeassistant/gemini-fastapi/config/`.
 2. Mở tệp `config.yaml`.
@@ -71,30 +71,30 @@ Add-on này tích hợp dịch vụ Gemini-FastAPI vào Home Assistant, cung c�
 
 ### Bước 4: Khởi động lại & Xác minh
 
-1. Quay lại trang add-on Gemini FastAPI.
+1. Quay lại trang App Gemini FastAPI.
 2. Nhấn **Restart**.
 3. Kiểm tra tab **Log** để đảm bảo không có lỗi khởi động.
 
 > [!NOTE]
-> Add-on sử dụng cổng 8000. Bạn nên đặt `api_key` (như Bước 3) để bảo vệ dữ liệu, nhất là khi mở truy cập từ xa qua các dịch vụ như Nginx Proxy Manager.
+> App sử dụng cổng 8000. Bạn nên đặt `api_key` (như Bước 3) để bảo vệ dữ liệu, nhất là khi mở truy cập từ xa qua các dịch vụ như Nginx Proxy Manager.
 
 ### Xử lý sự cố & Cập nhật Cookie
 
-Vì add-on dựa trên cookie trình duyệt, chúng có thể hết hạn (ví dụ: khi bạn đăng xuất Google hoặc phiên làm việc kết thúc).
+Vì App dựa trên cookie trình duyệt, chúng có thể hết hạn (ví dụ: khi bạn đăng xuất Google hoặc phiên làm việc kết thúc).
 
-- **Dấu hiệu**: Add-on không phản hồi hoặc Log báo lỗi `Failed to initialize client ...`.
-- **Cách sửa**: Lặp lại **Bước 2** và **Bước 3** để lấy cookie mới, cập nhật vào `config.yaml` và khởi động lại add-on.
+- **Dấu hiệu**: App không phản hồi hoặc Log báo lỗi `Failed to initialize client ...`.
+- **Cách sửa**: Lặp lại **Bước 2** và **Bước 3** để lấy cookie mới, cập nhật vào `config.yaml` và khởi động lại App.
 
 > [!TIP]
 > Nếu cookie thường xuyên hết hạn, hãy thử lấy cookie từ một trình duyệt khác.
 
 ### Kết nối với Home Assistant
 
-Để sử dụng Gemini làm trợ lý ảo (Assist), bạn cần một integration hỗ trợ OpenAI API.
+Để sử dụng Gemini làm trợ lý ảo (Assist), bạn cần một tích hợp hỗ trợ OpenAI API.
 
 #### Khuyên dùng: Local OpenAI LLM
 
-Bạn nên sử dụng integration [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm). Đây là bản fork được tối ưu hóa riêng cho add-on này.
+Bạn nên sử dụng tích hợp [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm). Đây là bản fork được tối ưu hóa riêng cho App này.
 
 1.  **Cài đặt qua HACS**:
     - **Tự động**: Nhấn nút bên dưới để mở nhanh trong HACS:
@@ -105,7 +105,7 @@ Bạn nên sử dụng integration [**Local OpenAI LLM**](https://github.com/luu
 
     - Tải xuống và **Khởi động lại** Home Assistant.
 
-2.  **Thêm Integration**: Vào **Settings > Devices & Services** > **Add Integration** > Tìm **Local OpenAI LLM**.
+2.  **Thêm tích hợp**: Vào **Settings > Devices & Services** > **Add Integration** > Tìm **Local OpenAI LLM**.
 
 3.  **Cấu hình**:
     - **Server URL**: `http://127.0.0.1:8000/v1`
