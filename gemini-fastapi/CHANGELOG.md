@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.45 - 2026-02-14
+
+- Update upstream image to sha256:8b3af38c51aa...
+
 ## 1.0.44 - 2026-02-14
 
 - Update upstream image to sha256:7b7e1652c2c2...
