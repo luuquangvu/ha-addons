@@ -19,5 +19,5 @@ map:
 environment:
   CONFIG_SERVER__HOST: 0.0.0.0
   CONFIG_SERVER__PORT: '8000'
-  GEMINI_COOKIE_PATH: /app/cache
+  GEMINI_COOKIE_PATH: /data/cache
 webui: http://[HOST]:[PORT:8000]/docs

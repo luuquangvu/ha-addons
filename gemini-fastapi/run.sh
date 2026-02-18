@@ -42,7 +42,6 @@ link_dir() {
 
 link_dir "${CONFIG_DIR}" "/app/config" "${CONFIG_DIR}/${ORIGINAL_CONFIG_FILE}"
 link_dir "${DATA_DIR}" "/app/data"
-link_dir "${CACHE_DIR}" "/app/cache"
 
 cd /app
 exec uv run --no-dev run.py
