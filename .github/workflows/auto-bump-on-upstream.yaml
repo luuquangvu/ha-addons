@@ -21,11 +21,10 @@ jobs:
         addon:
           - name: gemini-fastapi
             dir: gemini-fastapi
-            dockerfile: gemini-fastapi/Dockerfile
+            upstream: ghcr.io/luuquangvu/gemini-fastapi
             digest_file: .github/upstream-gemini-fastapi.digest
     env:
       ADDON_DIR: ${{ matrix.addon.dir }}
-      DOCKERFILE: ${{ matrix.addon.dockerfile }}
       DIGEST_FILE: ${{ matrix.addon.digest_file }}
 
     steps:
@@ -48,27 +47,27 @@ jobs:
       - name: Extract upstream ref and resolve digest
         id: resolve
         run: |
-          # Extract the FROM image
-          REF=$(grep -m 1 '^FROM' "${DOCKERFILE}" | awk '{print $2}')
-          if [ -z "$REF" ]; then
-            echo "::error::Cannot find FROM line in ${DOCKERFILE}"
+          UPSTREAM="${{ matrix.addon.upstream }}"
+          TRACK_REF="${UPSTREAM}:latest"
+          echo "Tracking ref: $TRACK_REF"
+          echo "track_ref=$TRACK_REF" >> "$GITHUB_OUTPUT"
+          echo "image_name=$UPSTREAM" >> "$GITHUB_OUTPUT"
+
+          MANIFEST_FILE="manifest_raw.json"
+          if ! skopeo inspect --raw "docker://$TRACK_REF" > "$MANIFEST_FILE"; then
+            echo "::error::Failed to fetch manifest for $TRACK_REF"
             exit 1
           fi
-          echo "Upstream ref: $REF"
-          echo "ref=$REF" >> "$GITHUB_OUTPUT"
 
-          # Resolve remote digest
-          INFO=$(skopeo inspect "docker://$REF")
-          DIGEST=$(echo "$INFO" | jq -r '.Digest')
-
+          DIGEST=$(skopeo image-digest "docker://$TRACK_REF" || jq -r '.Digest' "$MANIFEST_FILE")
           if [ -z "$DIGEST" ] || [ "$DIGEST" = "null" ]; then
-            echo "::error::Failed to resolve digest for $REF"
-            exit 1
+            DIGEST=$(sha256sum "$MANIFEST_FILE" | awk '{print "sha256:"$1}')
           fi
+
           echo "Latest digest: $DIGEST"
           echo "latest_digest=$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "manifest_file=$MANIFEST_FILE" >> "$GITHUB_OUTPUT"
 
-          # Check against previous digest
           if [ -f "${DIGEST_FILE}" ]; then
             PREV=$(cat "${DIGEST_FILE}")
           else
@@ -87,13 +86,11 @@ jobs:
       - name: Validate Architectures and Bump Version
         if: steps.resolve.outputs.changed == 'true'
         env:
-          UPSTREAM_REF: ${{ steps.resolve.outputs.ref }}
+          TRACK_REF: ${{ steps.resolve.outputs.track_ref }}
+          IMAGE_NAME: ${{ steps.resolve.outputs.image_name }}
           LATEST_DIGEST: ${{ steps.resolve.outputs.latest_digest }}
+          MANIFEST_FILE: ${{ steps.resolve.outputs.manifest_file }}
         run: |
-          # Export manifest to env var for safe Python consumption
-          export RAW_MANIFEST=$(skopeo inspect --raw "docker://${UPSTREAM_REF}")
-
-          # Pass manifest to Python for complex validation & bumping
           python - <<EOF
           import os
           import json
@@ -101,9 +98,10 @@ jobs:
           import re
           import sys
           import yaml
+          import subprocess
           from datetime import date
+          from concurrent.futures import ThreadPoolExecutor
 
-          # Load config
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
           config_path = addon_dir / "config.yaml"
           digest_file = pathlib.Path(os.environ["DIGEST_FILE"])
@@ -111,8 +109,6 @@ jobs:
           with open(config_path, "r", encoding="utf-8") as f:
               data = yaml.safe_load(f)
 
-          # 1. Validate Architectures
-          # Map HA arch to Docker platform (os/arch)
           ha_arch_map = {
               "amd64": "linux/amd64",
               "aarch64": "linux/arm64"
@@ -121,20 +117,18 @@ jobs:
           required_archs = data.get("arch", [])
           required_platforms = [ha_arch_map[a] for a in required_archs if a in ha_arch_map]
 
-          # Load manifest from env var
-          raw_manifest_str = os.environ.get("RAW_MANIFEST", "{}")
-          raw_manifest = json.loads(raw_manifest_str)
+          manifest_file = os.environ.get("MANIFEST_FILE")
+          with open(manifest_file, "r") as f:
+              raw_manifest = json.load(f)
 
           available_platforms = set()
           if "manifests" in raw_manifest:
               for m in raw_manifest["manifests"]:
                   p = m["platform"]
                   available_platforms.add(f"{p['os']}/{p['architecture']}")
-                  # Handle variant if present (e.g. arm/v7)
                   if "variant" in p:
                        available_platforms.add(f"{p['os']}/{p['architecture']}/{p['variant']}")
           else:
-              # Single image manifest
               os_name = raw_manifest.get("os", raw_manifest.get("Os", "linux"))
               arch = raw_manifest.get("architecture", raw_manifest.get("Architecture", "amd64"))
               available_platforms.add(f"{os_name}/{arch}")
@@ -149,7 +143,6 @@ jobs:
 
           print("Architecture check passed.")
 
-          # 2. Bump Version
           ver = str(data.get("version", "0.0.0"))
           m = re.match(r"^(\d+)\.(\d+)\.(\d+)$", ver)
           if not m:
@@ -165,23 +158,75 @@ jobs:
 
           print(f"Bumped version from {ver} to {new_ver}")
 
-          # 3. Update Digest File
           digest_file.parent.mkdir(parents=True, exist_ok=True)
           digest_file.write_text(os.environ["LATEST_DIGEST"], encoding="utf-8")
 
-          # 4. Update CHANGELOG.md
+          print("Attempting to find a specific tag matching the latest digest...")
+          image_name = os.environ.get("IMAGE_NAME")
+          target_digest = os.environ.get("LATEST_DIGEST")
+          dockerfile_path = addon_dir / "Dockerfile"
+          new_tag = None
+
+          def check_tag(tag):
+              try:
+                  cmd = ["skopeo", "inspect", "--format", "{{.Digest}}", f"docker://{image_name}:{tag}"]
+                  res = subprocess.run(cmd, capture_output=True, text=True)
+                  if res.returncode == 0:
+                      return tag, res.stdout.strip()
+              except:
+                  pass
+              return tag, None
+
+          try:
+              res = subprocess.run(["skopeo", "list-tags", f"docker://{image_name}"], capture_output=True, text=True, check=True)
+              tags_data = json.loads(res.stdout)
+              all_tags = tags_data.get("Tags", [])
+
+              pattern = re.compile(r"^\d{8}-[a-f0-9]+$")
+              version_tags = [t for t in all_tags if pattern.match(t)]
+              
+              version_tags.sort(reverse=True)
+              tags_to_check = version_tags[:10]
+
+              print(f"Checking {len(tags_to_check)} tags in parallel...")
+              with ThreadPoolExecutor(max_workers=5) as executor:
+                  results = list(executor.map(check_tag, tags_to_check))
+
+              for tag, t_digest in results:
+                  if t_digest == target_digest:
+                      new_tag = tag
+                      break
+              
+              if new_tag:
+                  print(f"Found matching version tag: {new_tag}")
+                  content = dockerfile_path.read_text(encoding="utf-8")
+                  new_content = re.sub(r"^FROM\s+[^\s]+", f"FROM {image_name}:{new_tag}", content, flags=re.MULTILINE)
+                  new_content = re.sub(r'(io\.hass\.version=["\'])([^"\']+)(["\'])', rf'\1{new_ver}\3', new_content)
+                  
+                  dockerfile_path.write_text(new_content, encoding="utf-8")
+                  print(f"Updated {dockerfile_path} to use tag {new_tag} and version {new_ver}")
+              else:
+                  content = dockerfile_path.read_text(encoding="utf-8")
+                  new_content = re.sub(r'(io\.hass\.version=["\'])([^"\']+)(["\'])', rf'\1{new_ver}\3', content)
+                  if new_content != content:
+                      dockerfile_path.write_text(new_content, encoding="utf-8")
+                      print(f"Updated {dockerfile_path} with new version {new_ver}")
+                  else:
+                      print("Dockerfile already up to date.")
+          except Exception as e:
+              print(f"Error updating Dockerfile: {e}")
+
           changelog_path = addon_dir / "CHANGELOG.md"
           old_content = ""
           if changelog_path.exists():
               old_content = changelog_path.read_text(encoding="utf-8")
 
           today = date.today().isoformat()
+          clean_digest = target_digest.replace("sha256:", "") if target_digest else ""
+          digest_short = f"{clean_digest[:12]}..." if clean_digest else "latest"
+          upstream_ver = new_tag if new_tag else digest_short
 
-          digest_short = (
-            f"{os.environ['LATEST_DIGEST'][:19]}..." if "LATEST_DIGEST" in os.environ else "latest"
-          )
-
-          new_entry = f"## {new_ver} - {today}\n\n- Update upstream image to {digest_short}\n\n"
+          new_entry = f"## {new_ver} - {today}\n\n- Update upstream image to {upstream_ver}\n\n"
 
           if "# Changelog" in old_content:
               parts = old_content.split("\n", 1)
@@ -210,17 +255,15 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add "${ADDON_DIR}/config.yaml" "${DIGEST_FILE}" "${ADDON_DIR}/CHANGELOG.md"
+          git add "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/Dockerfile" "${DIGEST_FILE}" "${ADDON_DIR}/CHANGELOG.md"
 
-          # Safety check: see if anything is actually staged
           if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          MSG="chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.resolve.outputs.ref }} -> ${{ steps.resolve.outputs.latest_digest }})"
+          MSG="chore(${{ matrix.addon.name }}): bump version (upstream ${{ steps.resolve.outputs.track_ref }} -> ${{ steps.resolve.outputs.latest_digest }})"
           git commit -m "$MSG"
 
-          # Pull rebase to handle concurrency
           git pull --rebase origin main
           git push origin HEAD:main
