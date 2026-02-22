@@ -59,7 +59,7 @@ jobs:
             exit 1
           fi
 
-          DIGEST=$(skopeo image-digest "docker://$TRACK_REF" || jq -r '.Digest' "$MANIFEST_FILE")
+          DIGEST=$(skopeo inspect --format '{{.Digest}}' "docker://$TRACK_REF" 2>/dev/null)
           if [ -z "$DIGEST" ] || [ "$DIGEST" = "null" ]; then
             DIGEST=$(sha256sum "$MANIFEST_FILE" | awk '{print "sha256:"$1}')
           fi
@@ -101,6 +101,7 @@ jobs:
           import subprocess
           from datetime import date
           from concurrent.futures import ThreadPoolExecutor
+          from functools import partial
 
           addon_dir = pathlib.Path(os.environ["ADDON_DIR"])
           config_path = addon_dir / "config.yaml"
@@ -167,13 +168,17 @@ jobs:
           dockerfile_path = addon_dir / "Dockerfile"
           new_tag = None
 
-          def check_tag(tag):
+          def check_tag(tag, image_name):
               try:
                   cmd = ["skopeo", "inspect", "--format", "{{.Digest}}", f"docker://{image_name}:{tag}"]
-                  res = subprocess.run(cmd, capture_output=True, text=True)
+                  res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
                   if res.returncode == 0:
-                      return tag, res.stdout.strip()
-              except:
+                      digest = res.stdout.strip()
+                      return tag, digest if digest else None
+              except subprocess.TimeoutExpired:
+                   print(f"Timeout checking tag: {tag}")
+              except Exception as e:
+                  print(f"Error checking tag {tag}: {e}")
                   pass
               return tag, None
 
@@ -189,8 +194,9 @@ jobs:
               tags_to_check = version_tags[:10]
 
               print(f"Checking {len(tags_to_check)} tags in parallel...")
-              with ThreadPoolExecutor(max_workers=5) as executor:
-                  results = list(executor.map(check_tag, tags_to_check))
+              check_func = partial(check_tag, image_name=image_name)
+              with ThreadPoolExecutor(max_workers=2) as executor:
+                  results = list(executor.map(check_func, tags_to_check))
 
               for tag, t_digest in results:
                   if t_digest == target_digest:
@@ -201,7 +207,7 @@ jobs:
                   print(f"Found matching version tag: {new_tag}")
                   content = dockerfile_path.read_text(encoding="utf-8")
                   new_content = re.sub(r"^FROM\s+[^\s]+", f"FROM {image_name}:{new_tag}", content, flags=re.MULTILINE)
-                  new_content = re.sub(r'(io\.hass\.version=["\'])([^"\']+)(["\'])', rf'\1{new_ver}\3', new_content)
+                  new_content = re.sub(r'(io\.hass\.version=["\'])([^"\']+)(["\'])', rf'\g<1>{new_ver}\g<3>', new_content)
                   
                   dockerfile_path.write_text(new_content, encoding="utf-8")
                   print(f"Updated {dockerfile_path} to use tag {new_tag} and version {new_ver}")
