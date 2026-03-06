@@ -1,21 +1,22 @@
-# Gemini FastAPI - Home Assistant App (formerly known as add-on)
+# Google Gemini for Home Assistant - Free & Unlimited AI Integration
 
 [🇻🇳 Tiếng Việt](README.vi.md)
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 
-This App (formerly known as add-on) integrates the Gemini-FastAPI service with Home Assistant. It exposes an OpenAI-compatible API that enables Home Assistant and other clients to interact with Google's Gemini models without an official API key, providing completely free and unlimited use.
+Integrating **Google Gemini for Home Assistant** has never been easier. This App (formerly known as add-on) connects the powerful Google Gemini service directly to your smart home. By exposing an OpenAI-compatible API, it enables Home Assistant, Assist pipelines, and other local clients to interact with Google's Gemini models, completely free and without requiring an official API key.
 
 > This App uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
 
-## Features
+## Key Features of Gemini for Home Assistant
 
-- **Completely Free And Unlimited Use**: Access the latest Gemini models at no cost, just like you do with your browser.
-- **No Google API Key Required**: Access Gemini models using only browser cookies.
-- **Conversation Persistence**: Retain conversation history across restarts.
-- **Google Search Integration**: Provides up-to-date, web-grounded answers.
-- **Multi-modal Support**: Handle text, image, and file inputs.
-- **Flexible Configuration**: Configure via YAML files or environment variables.
+- **Completely Free and Unlimited**: Access the latest **Gemini Pro** and **Gemini Flash** models at no cost, circumventing the need for expensive API subscriptions.
+- **No Google API Key Required**: Securely access Gemini models using only your browser cookies-no waitlists or credit cards needed.
+- **Full OpenAI Compatibility**: Works seamlessly with any Home Assistant integration or client that supports the OpenAI API standard.
+- **Conversation Persistence**: Your smart home AI remembers previous interactions, retaining history even across restarts.
+- **Web-Grounded Answers**: Integrated **Google Search** support provides up-to-date information for your voice assistant.
+- **Multi-modal Capabilities**: Handle text, image, and file inputs for advanced automation and analysis.
+- **Easy Configuration**: Simple setup via YAML or environment variables, optimized for the Home Assistant ecosystem.
 
 ---
 
@@ -88,9 +89,9 @@ Since this App relies on browser cookies, they may expire over time (e.g., if yo
 > [!NOTE]
 > If you frequently encounter cookie expiration issues, try retrieving the cookies from a different browser.
 
-### Connecting to Home Assistant
+### Connecting Gemini to Home Assistant Assist
 
-To use Gemini within Home Assistant's Assist pipelines, you need an integration that supports OpenAI-compatible APIs.
+To use **Gemini for Home Assistant** within your Assist pipelines (voice control), you need an integration that supports OpenAI-compatible APIs.
 
 #### Recommended: Local OpenAI LLM
 
@@ -209,5 +210,4 @@ export CONFIG_GEMINI__MODELS='[{"model_name": "gemini-3.0-pro", "model_header": 
 
 ## Acknowledgments
 
-- **Upstream Service**: [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI)
 - **Gemini API Client**: [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API)

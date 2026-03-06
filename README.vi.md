@@ -1,15 +1,15 @@
-# Kho Apps (tên cũ là add-ons) cho Home Assistant
+# Kho AI & Apps cho Home Assistant - Tích hợp Gemini Miễn phí
 
 [🇺🇸 English](README.md)
 
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
-Các Apps (tên cũ là add-ons) tùy chỉnh giúp nâng cao khả năng của Home Assistant với các tính năng AI và các ý tưởng thử nghiệm khác. Mỗi App nằm trong một thư mục riêng với tài liệu, cấu hình và biểu tượng riêng, vì vậy bạn chỉ cần chọn những gì bạn cần.
+Nâng tầm ngôi nhà thông minh của bạn với **Google Gemini cho Home Assistant** và các công cụ AI mạnh mẽ khác. Kho lưu trữ này cung cấp các Apps (tên cũ là add-ons) tùy chỉnh, giúp mang đến các tính năng AI tiên tiến, tự động hóa thử nghiệm và các tích hợp thông minh vào hệ sinh thái Home Assistant của bạn.
 
 ## Nội dung kho lưu trữ
 
-- **Gemini FastAPI**
-  - Một wrapper tương thích với OpenAI cho Google Gemini, hoạt động thông qua cookie trình duyệt giúp loại bỏ nhu cầu sử dụng API key chính thức, cho phép sử dụng hoàn toàn miễn phí và không giới hạn. Các tính năng bao gồm lưu trữ hội thoại, tích hợp Google Search và bảo mật bằng API key tùy chọn. Người dùng Docker có thể dễ dàng triển khai độc lập theo hướng dẫn trong tài liệu.
+- **Gemini FastAPI (Google Gemini cho Home Assistant)**
+  - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một wrapper tương thích với OpenAI sử dụng cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng API key trả phí. Ứng dụng cho phép chat AI không giới hạn, lưu lịch sử hội thoại và trả lời dựa trên Google Search ngay trong Home Assistant Assist.
   - Tài liệu: [gemini-fastapi/README.vi.md](gemini-fastapi/README.vi.md)
 
 ## Cài đặt (Cửa hàng Apps)
@@ -43,7 +43,7 @@ Nếu phương pháp tự động không hoạt động, bạn có thể thêm k
 ## Hỗ trợ & Đóng góp
 
 - Tìm thấy lỗi, có ý tưởng hoặc muốn đóng góp? [Mở một issue](https://github.com/luuquangvu/ha-addons/issues) hoặc gửi pull request.
-- Gemini FastAPI dựa trên công trình xuất sắc từ [Nativu5/Gemini-FastAPI](https://github.com/Nativu5/Gemini-FastAPI).
+- Gemini FastAPI dựa trên công trình xuất sắc từ [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
 
 ## Giấy phép
 
