@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.64 - 2026-03-09
+
+- Update upstream image to 20260308-bd24c53
+
 ## 1.0.63 - 2026-03-07
 
 - Update upstream image to 20260307-9dfc866

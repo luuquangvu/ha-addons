@@ -1,11 +1,11 @@
-FROM ghcr.io/luuquangvu/gemini-fastapi:20260307-9dfc866
+FROM ghcr.io/luuquangvu/gemini-fastapi:20260308-bd24c53
 
 LABEL \
     io.hass.name="Gemini FastAPI" \
     io.hass.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
     io.hass.arch="amd64|aarch64" \
     io.hass.type="addon" \
-    io.hass.version="1.0.63" \
+    io.hass.version="1.0.64" \
     org.opencontainers.image.title="Gemini FastAPI" \
     org.opencontainers.image.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
     org.opencontainers.image.vendor="Luu Quang Vu" \
