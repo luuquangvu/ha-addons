@@ -1,6 +1,6 @@
 # Kho AI & Apps cho Home Assistant - Tích hợp Gemini Miễn phí
 
-[🇺🇸 English](README.md)
+**[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
 
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 

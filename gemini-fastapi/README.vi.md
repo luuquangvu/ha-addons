@@ -1,6 +1,6 @@
 # Tích hợp Google Gemini cho Home Assistant - AI Miễn phí & Không giới hạn
 
-[🇺🇸 English](README.md)
+**[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 

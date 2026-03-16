@@ -1,6 +1,6 @@
 # Google Gemini for Home Assistant - Free & Unlimited AI Integration
 
-[🇻🇳 Tiếng Việt](README.vi.md)
+**[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
 
 [![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
 

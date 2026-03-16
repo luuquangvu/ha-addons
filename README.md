@@ -1,6 +1,6 @@
 # Home Assistant AI & Apps Repository - Free Gemini Integration
 
-[🇻🇳 Tiếng Việt](README.vi.md)
+**[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
 
 [![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
 
