@@ -10,7 +10,7 @@ Enhance your smart home with **Google Gemini for Home Assistant** and other AI-p
 
 - **Gemini FastAPI (Google Gemini for Home Assistant)**
   - Integrate **Google Gemini** into your smart home for free. This is an OpenAI-compatible wrapper that uses browser cookies, eliminating the need for paid API keys. It enables unlimited AI chat, conversation history, and web-grounded answers via Google Search directly within Home Assistant Assist.
-  - Docs: [gemini-fastapi/README.md](gemini-fastapi/README.md)
+  - Detailed instructions: [gemini-fastapi/README.md](gemini-fastapi/README.md)
 
 ## Installation (App Store)
 

@@ -10,7 +10,7 @@ Nâng tầm ngôi nhà thông minh của bạn với **Google Gemini cho Home As
 
 - **Gemini FastAPI (Google Gemini cho Home Assistant)**
   - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một wrapper tương thích với OpenAI sử dụng cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng API key trả phí. Ứng dụng cho phép chat AI không giới hạn, lưu lịch sử hội thoại và trả lời dựa trên Google Search ngay trong Home Assistant Assist.
-  - Tài liệu: [gemini-fastapi/README.vi.md](gemini-fastapi/README.vi.md)
+  - Hướng dẫn chi tiết: [gemini-fastapi/README.vi.md](gemini-fastapi/README.vi.md)
 
 ## Cài đặt (Cửa hàng Apps)
 
