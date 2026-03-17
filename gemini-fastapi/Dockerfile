@@ -21,12 +21,6 @@ WORKDIR /app
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
 COPY --chmod=755 run.sh /app/run.sh
 
 CMD ["/app/run.sh"]
-
-HEALTHCHECK CMD curl -f http://localhost:8000/health || exit 1

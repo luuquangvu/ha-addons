@@ -146,14 +146,6 @@ services:
       - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts"
       # - "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # Uncomment to enable proxy for each client
       - "GEMINI_COOKIE_PATH=/app/cache"
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "import sys, urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/health').getcode() == 200 else sys.exit(1)",
-        ]
 ```
 
 Then launch it: `docker compose up -d`
