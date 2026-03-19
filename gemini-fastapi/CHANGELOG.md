@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.75 - 2026-03-19
+
+- Update upstream image to 20260319-5041132
+
 ## 1.0.74 - 2026-03-19
 
 - Hold off on updating to this version and wait for the next release.
