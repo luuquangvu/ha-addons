@@ -232,7 +232,7 @@ jobs:
           digest_short = f"{clean_digest[:12]}..." if clean_digest else "latest"
           upstream_ver = new_tag if new_tag else digest_short
 
-          new_entry = f"## {new_ver} - {today}\n\n- Update upstream image to {upstream_ver}\n\n"
+          new_entry = f"## {new_ver} - {today}\n\n- Update version to {upstream_ver}\n- Cập nhật phiên bản lên {upstream_ver}\n\n"
 
           if "# Changelog" in old_content:
               parts = old_content.split("\n", 1)

@@ -6,11 +6,13 @@
 
 ## 1.0.75 - 2026-03-19
 
-- Hold off on updating to this version and wait for the next release.
+- Please postpone updating to this version and wait for the next release.
+- Vui lòng hoãn cập nhật lên phiên bản này và chờ bản phát hành tiếp theo.
 
 ## 1.0.74 - 2026-03-19
 
-- Hold off on updating to this version and wait for the next release.
+- Please postpone updating to this version and wait for the next release.
+- Vui lòng hoãn cập nhật lên phiên bản này và chờ bản phát hành tiếp theo.
 
 ## 1.0.73 - 2026-03-18
 
