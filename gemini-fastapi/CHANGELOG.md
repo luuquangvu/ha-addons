@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.77 - 2026-03-20
+
+- Update version to 20260320-c3730ca
+- Cập nhật phiên bản lên 20260320-c3730ca
+
 ## 1.0.76 - 2026-03-19
 
 - Update upstream image to 20260319-6a0f99b
