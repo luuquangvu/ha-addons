@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.78 - 2026-03-22
+
+- Update version to 20260321-ccbd7bb
+- Cập nhật phiên bản lên 20260321-ccbd7bb
+
 ## 1.0.77 - 2026-03-20
 
 - Update version to 20260320-c3730ca
