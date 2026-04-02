@@ -36,14 +36,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y skopeo
 
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
-        with:
-          python-version: "3.x"
-
-      - name: Install Python dependencies
-        run: pip install PyYAML
-
       - name: Extract upstream ref and resolve digest
         id: resolve
         run: |
@@ -82,6 +74,22 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "Digest changed! Proceeding to validation."
           fi
+
+      - name: Set up Python
+        if: steps.resolve.outputs.changed == 'true'
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+        with:
+          python-version: "3.x"
+
+      - name: Set up Node.js
+        if: steps.resolve.outputs.changed == 'true'
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: 24
+
+      - name: Install Python dependencies
+        if: steps.resolve.outputs.changed == 'true'
+        run: pip install PyYAML
 
       - name: Validate Architectures and Bump Version
         if: steps.resolve.outputs.changed == 'true'
@@ -248,6 +256,10 @@ jobs:
           print(f"Updated CHANGELOG.md with version {new_ver}")
 
           EOF
+
+      - name: Format using Prettier
+        if: steps.resolve.outputs.changed == 'true'
+        run: npx prettier --write "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/CHANGELOG.md"
 
       - name: Lint Home Assistant add-on
         if: steps.resolve.outputs.changed == 'true'
