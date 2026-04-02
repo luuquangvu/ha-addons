@@ -1,50 +1,50 @@
-# Kho AI & Apps cho Home Assistant - Tích hợp Gemini Miễn phí
+# Giải pháp AI cho Home Assistant - Tích hợp Google Gemini & Công cụ Thông minh
+
+[![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
 
-[![License](https://img.shields.io/github/license/luuquangvu/ha-addons)](LICENSE)
+Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh thái Home Assistant của bạn. Kho lưu trữ này cung cấp các App chuyên biệt giúp mang đến AI tạo sinh (Generative AI), tự động hóa thông minh và các tích hợp nâng cao cho ngôi nhà thông minh.
 
-Nâng tầm ngôi nhà thông minh của bạn với **Google Gemini cho Home Assistant** và các công cụ AI mạnh mẽ khác. Kho lưu trữ này cung cấp các Apps (tên cũ là add-ons) tùy chỉnh, giúp mang đến các tính năng AI tiên tiến, tự động hóa thử nghiệm và các tích hợp thông minh vào hệ sinh thái Home Assistant của bạn.
+## Nội dung Kho lưu trữ
 
-## Nội dung kho lưu trữ
+- **Google Gemini cho Home Assistant (Gemini FastAPI)**
+  - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một cổng API tương thích với OpenAI sử dụng session cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng Google Cloud API key. Ứng dụng hỗ trợ ghi nhớ lịch sử hội thoại, xử lý đa phương thức và cung cấp câu trả lời thời gian thực với Google Search ngay trong Home Assistant Assist.
+  - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](gemini-fastapi/README.vi.md)
 
-- **Gemini FastAPI (Google Gemini cho Home Assistant)**
-  - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một wrapper tương thích với OpenAI sử dụng cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng API key trả phí. Ứng dụng cho phép chat AI không giới hạn, lưu lịch sử hội thoại và trả lời dựa trên Google Search ngay trong Home Assistant Assist.
-  - Hướng dẫn chi tiết: [gemini-fastapi/README.vi.md](gemini-fastapi/README.vi.md)
+## Hướng dẫn Cài đặt
 
-## Cài đặt (Cửa hàng Apps)
+Bạn có thể thêm kho lưu trữ này vào Home Assistant bằng một trong các phương pháp sau:
 
-Bạn có thể thêm kho lưu trữ này vào Home Assistant của mình bằng một trong các phương pháp sau:
+### 1. Phương pháp Tự động (Khuyến nghị)
 
-### 1. Phương pháp tự động (Khuyên dùng)
+Nhấp vào nút bên dưới để tự động thêm kho lưu trữ vào Assistant của bạn:
 
-Cách dễ nhất để thêm kho lưu trữ này là nhấp vào nút bên dưới, nút này sẽ hướng dẫn bạn qua quy trình một cách tự động:
+[![Mở Home Assistant của bạn và hiển thị hộp thoại thêm kho App Store với URL kho lưu trữ cụ thể được điền sẵn.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fluuquangvu%2Fha-addons)
 
-[![Mở Home Assistant của bạn và hiển thị hộp thoại thêm kho add-on với URL kho lưu trữ cụ thể được điền sẵn.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fluuquangvu%2Fha-addons)
+### 2. Phương pháp Thủ công
 
-### 2. Phương pháp thủ công
-
-Nếu phương pháp tự động không hoạt động, bạn có thể thêm kho lưu trữ theo cách thủ công bằng các bước sau:
-
-1. Trong Home Assistant, đi tới **Settings > Apps > App Store** (Cài đặt > Apps > Cửa hàng Apps).
+1. Trong Home Assistant, đi tới **Cấu hình > Apps > App Store**.
 2. Nhấp vào **menu ba chấm** (⋮) ở góc trên bên phải và chọn **Repositories** (Kho lưu trữ).
-3. Sao chép và dán URL kho lưu trữ: `https://github.com/luuquangvu/ha-addons`
-4. Nhấp vào **Add** (Thêm) và sau đó **Close** (Đóng) hộp thoại.
-5. Các Apps của kho lưu trữ bây giờ sẽ có sẵn trong cửa hàng để cài đặt.
+3. Thêm URL kho lưu trữ: `https://github.com/luuquangvu/ha-addons`
+4. Nhấp vào **Add** (Thêm) và chọn **Close** (Đóng).
+5. Các App hiện có sẽ xuất hiện trong cửa hàng để bạn có thể cài đặt.
 
 > [!TIP]
-> Sau khi cài đặt một App, hãy nhấp vào **Start** (Bắt đầu) một lần để các tệp cấu hình mặc định được tạo ra trước khi chỉnh sửa.
+> Sau khi cài đặt một App, hãy nhấn **Start** (Bắt đầu) một lần để hệ thống tự động tạo các tệp cấu hình mặc định trước khi bạn bắt đầu chỉnh sửa.
 
-## Cập nhật / Gỡ bỏ
+## Bảo trì và Cập nhật
 
-- Home Assistant tự động kiểm tra kho lưu trữ này để tìm các bản cập nhật. Bạn cũng có thể nhấn nút **Reload** (Tải lại) trong Cửa hàng Apps để lấy các phiên bản mới nhất theo yêu cầu.
-- Để xóa kho lưu trữ, hãy mở lại hộp thoại **Repositories**, chọn `luuquangvu/ha-addons` và nhấp vào **Remove** (Gỡ bỏ). Các Apps đã cài đặt vẫn sẽ tồn tại cho đến khi bạn gỡ cài đặt chúng.
+- **Cập nhật**: Home Assistant sẽ tự động kiểm tra định kỳ các bản cập nhật mới. Bạn cũng có thể nhấn nút **Reload** trong App Store để làm mới danh sách thủ công.
+- **Gỡ bỏ**: Để xóa kho lưu trữ, hãy mở lại hộp thoại **Repositories**, chọn `luuquangvu/ha-addons` và nhấn **Remove**. Các App đã cài đặt sẽ không bị mất cho đến khi bạn gỡ cài đặt chúng thủ công.
 
-## Hỗ trợ & Đóng góp
+---
 
-- Tìm thấy lỗi, có ý tưởng hoặc muốn đóng góp? [Mở một issue](https://github.com/luuquangvu/ha-addons/issues) hoặc gửi pull request.
-- Gemini FastAPI dựa trên công trình xuất sắc từ [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
+## Hỗ trợ & Tài liệu Tham khảo
+
+- Báo lỗi hoặc đóng góp ý kiến qua [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
+- Gemini FastAPI được xây dựng dựa trên dự án xuất sắc từ [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
 
 ## Giấy phép
 
-Được phát hành theo Giấy phép MIT. Xem tệp [LICENSE](LICENSE) để biết chi tiết.
+Phát hành dưới Giấy phép MIT. Xem tệp [LICENSE](LICENSE) để biết thêm chi tiết.

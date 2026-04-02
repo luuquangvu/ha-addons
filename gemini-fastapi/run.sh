@@ -8,7 +8,7 @@ CACHE_DIR="/data/cache"
 CONFIG_FILE="config.yaml"
 ORIGINAL_CONFIG_FILE="config.yaml.default"
 
-echo "[INFO] Starting Gemini FastAPI Add-on..."
+echo "[INFO] Starting Gemini FastAPI App..."
 
 mkdir -p "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
 chown -R "$(id -u):$(id -g)" "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}" || true

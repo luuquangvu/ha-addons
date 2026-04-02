@@ -1,13 +1,13 @@
 # Google Gemini cho Home Assistant
 
-[![Home Assistant Add-on](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
+[![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
 
-Tích hợp trực tiếp trí tuệ nhân tạo Gemini của Google vào hệ sinh thái Home Assistant. Add-on này cung cấp một cổng API tương thích với OpenAI, cho phép Home Assistant Assist, các bot hội thoại và kịch bản tự động hóa tận dụng sức mạnh của AI tạo sinh (Generative AI) tiên tiến mà không cần đăng ký Google Cloud API key.
+Tích hợp trực tiếp trí tuệ nhân tạo Gemini của Google vào hệ sinh thái Home Assistant. App này cung cấp một cổng API tương thích với OpenAI, cho phép Home Assistant Assist, các bot hội thoại và kịch bản tự động hóa tận dụng sức mạnh của AI tạo sinh (Generative AI) tiên tiến mà không cần đăng ký Google Cloud API key.
 
 > [!NOTE]
-> Add-on này sử dụng một bản fork chuyên biệt của [Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI) được tối ưu hóa để tích hợp mượt mà và cập nhật nhanh chóng cho Home Assistant.
+> App này sử dụng một bản fork chuyên biệt của [Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI) được tối ưu hóa để tích hợp mượt mà và cập nhật nhanh chóng cho Home Assistant.
 
 ---
 
@@ -25,18 +25,18 @@ Tích hợp trực tiếp trí tuệ nhân tạo Gemini của Google vào hệ s
 
 ## Lưu ý về Bảo mật và Quyền riêng tư
 
-- **Phương thức Xác thực**: Add-on này sử dụng cookie trình duyệt để xác thực với dịch vụ Google Gemini. Việc này có thể vi phạm Điều khoản dịch vụ của Google, dẫn đến rủi ro tài khoản bị hạn chế.
+- **Phương thức Xác thực**: App này sử dụng cookie trình duyệt để xác thực với dịch vụ Google Gemini. Việc này có thể vi phạm Điều khoản dịch vụ của Google, dẫn đến rủi ro tài khoản bị hạn chế.
 - **Khuyến nghị**: Chúng tôi **đặc biệt khuyến nghị** bạn nên sử dụng một **tài khoản Google phụ tách biệt** để đảm bảo an toàn cho dữ liệu chính của mình.
 
 ---
 
 ## Hướng dẫn Cài đặt và Cấu hình
 
-### Bước 1: Cài đặt Add-on
+### Bước 1: Cài đặt App
 
-1. Thêm kho lưu trữ [**luuquangvu/ha-addons**](https://github.com/luuquangvu/ha-addons) vào Cửa hàng Add-on của Home Assistant.
+1. Thêm kho lưu trữ [**luuquangvu/ha-addons**](https://github.com/luuquangvu/ha-addons) vào Cửa hàng App của Home Assistant.
 2. Tìm và cài đặt **Gemini FastAPI**.
-3. **Khởi động Add-on một lần.** Dịch vụ sẽ tự động tạo các tệp cấu hình mặc định và sau đó dừng lại.
+3. **Khởi động App một lần.** Dịch vụ sẽ tự động tạo các tệp cấu hình mặc định và sau đó dừng lại.
 
 ### Bước 2: Lấy Cookie Xác thực
 
@@ -71,7 +71,7 @@ Tích hợp trực tiếp trí tuệ nhân tạo Gemini của Google vào hệ s
 
 ### Bước 4: Khởi chạy
 
-1. Quay lại trang Add-on Gemini FastAPI và nhấn **Start**.
+1. Quay lại trang App Gemini FastAPI và nhấn **Start**.
 2. Kiểm tra tab **Log** để xác nhận dịch vụ đã khởi tạo thành công.
 
 ---

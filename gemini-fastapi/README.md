@@ -1,13 +1,13 @@
 # Google Gemini for Home Assistant
 
-[![Home Assistant Add-on](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
+[![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
 
-Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant ecosystem. This Add-on provides an OpenAI-compatible API bridge, empowering Home Assistant Assist, conversation agents, and automation scripts with advanced generative AI capabilities without requiring a Google Cloud API key.
+Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant ecosystem. This App provides an OpenAI-compatible API bridge, empowering Home Assistant Assist, conversation agents, and automation scripts with advanced generative AI capabilities without requiring a Google Cloud API key.
 
 > [!NOTE]
-> This Add-on utilizes a specialized fork of [Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI) optimized for seamless Home Assistant integration and rapid updates.
+> This App utilizes a specialized fork of [Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI) optimized for seamless Home Assistant integration and rapid updates.
 
 ---
 
@@ -25,18 +25,18 @@ Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant 
 
 ## Security and Privacy Considerations
 
-- **Authentication Method**: This Add-on uses browser cookies to authenticate with Google Gemini services. Be aware that this may violate Google's Terms of Service, which could result in account restrictions.
+- **Authentication Method**: This App uses browser cookies to authenticate with Google Gemini services. Be aware that this may violate Google's Terms of Service, which could result in account restrictions.
 - **Recommended Practice**: It is strongly advised to use a **dedicated secondary Google account** for this integration to safeguard your primary account data.
 
 ---
 
 ## Installation and Configuration
 
-### Step 1: Add-on Installation
+### Step 1: App Installation
 
-1. Add the [**luuquangvu/ha-addons**](https://github.com/luuquangvu/ha-addons) repository to your Home Assistant Add-on Store.
+1. Add the [**luuquangvu/ha-addons**](https://github.com/luuquangvu/ha-addons) repository to your Home Assistant App Store.
 2. Locate and install **Gemini FastAPI**.
-3. **Start the Add-on once.** The service will initialize default configuration files and then stop automatically.
+3. **Start the App once.** The service will initialize default configuration files and then stop automatically.
 
 ### Step 2: Extract Authentication Cookies
 
@@ -71,7 +71,7 @@ Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant 
 
 ### Step 4: Deployment
 
-1. Return to the Gemini FastAPI Add-on page and click **Start**.
+1. Return to the Gemini FastAPI App page and click **Start**.
 2. Review the **Log** tab to verify successful service initialization.
 
 ---
