@@ -1,205 +1,143 @@
-# Google Gemini for Home Assistant - Free & Unlimited AI Integration
+# Google Gemini for Home Assistant
+
+[![Home Assistant Add-on](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
 
-[![GitHub License](https://img.shields.io/github/license/luuquangvu/ha-addons?style=for-the-badge&labelColor=000000)](https://github.com/luuquangvu/ha-addons/blob/main/LICENSE)
+Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant ecosystem. This Add-on provides an OpenAI-compatible API bridge, empowering Home Assistant Assist, conversation agents, and automation scripts with advanced generative AI capabilities without requiring a Google Cloud API key.
 
-Integrating **Google Gemini for Home Assistant** has never been easier. This App (formerly known as add-on) connects the powerful Google Gemini service directly to your smart home. By exposing an OpenAI-compatible API, it enables Home Assistant, Assist pipelines, and other local clients to interact with Google's Gemini models, completely free and without requiring an official API key.
-
-> This App uses a fork of the upstream project ([luuquangvu/Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI)) to roll out updates faster.
-
-## Key Features of Gemini for Home Assistant
-
-- **Completely Free and Unlimited**: Access the latest **Gemini Pro** and **Gemini Flash** models at no cost, circumventing the need for expensive API subscriptions.
-- **No Google API Key Required**: Securely access Gemini models using only your browser cookies-no waitlists or credit cards needed.
-- **Full OpenAI Compatibility**: Works seamlessly with any Home Assistant integration or client that supports the OpenAI API standard.
-- **Conversation Persistence**: Your smart home AI remembers previous interactions, retaining history even across restarts.
-- **Web-Grounded Answers**: Integrated **Google Search** support provides up-to-date information for your voice assistant.
-- **Multi-modal Capabilities**: Handle text, image, and file inputs for advanced automation and analysis.
-- **Easy Configuration**: Simple setup via YAML or environment variables, optimized for the Home Assistant ecosystem.
+> [!NOTE]
+> This Add-on utilizes a specialized fork of [Gemini-FastAPI](https://github.com/luuquangvu/Gemini-FastAPI) optimized for seamless Home Assistant integration and rapid updates.
 
 ---
 
-## Important: Before You Begin
+## Technical Features
 
-- **Risk of Use**: Using your browser cookies to access Gemini may violate Google's Terms of Service. This could potentially lead to restrictions on your Google account.
-- **Recommendation**: To minimize risk, it is strongly recommended that you **use a secondary, non-primary Google account** for this App.
+- **OpenAI-Compatible API**: Seamlessly integrates with any Home Assistant component or third-party client supporting the OpenAI API standard.
+- **Model Support**: Access Gemini Pro, Gemini Flash Thinking, and Gemini Flash models.
+- **Cookie-Based Authentication**: Access Gemini via standard browser session cookies, bypassing complex Google Cloud Project configurations.
+- **Conversation Context**: Supports multi-turn dialogue with memory, enabling more natural interactions for smart home control.
+- **Google Search Grounding**: Leverages real-time web information for accurate response generation.
+- **Multimodal Capabilities**: Native support for processing text, images, and file attachments in automations.
+- **Home Assistant Optimized**: Designed for local execution with simple configuration via YAML or environment variables.
 
 ---
 
-## App Installation & Configuration
+## Security and Privacy Considerations
 
-### Step 1: Install the App
+- **Authentication Method**: This Add-on uses browser cookies to authenticate with Google Gemini services. Be aware that this may violate Google's Terms of Service, which could result in account restrictions.
+- **Recommended Practice**: It is strongly advised to use a **dedicated secondary Google account** for this integration to safeguard your primary account data.
 
-1. Ensure you have added the [**Home Assistant Apps Repository**](https://github.com/luuquangvu/ha-addons) to your App Store.
-2. Find and install the **Gemini FastAPI** App.
-3. **Start the App once.** This will generate the necessary configuration files and then stop.
+---
 
-### Step 2: Get Your Google Gemini Cookies
+## Installation and Configuration
 
-1. Open a **Private or Incognito** browser window.
-2. Go to [https://gemini.google.com](https://gemini.google.com) and sign in with your chosen Google account (a secondary account is recommended).
-3. Open the browser's Developer Tools (usually by pressing `F12`).
-4. Go to the **Application** > **Storage** tab.
-5. Under the **Cookies** section for `https://gemini.google.com`, find and copy the values for:
+### Step 1: Add-on Installation
+
+1. Add the [**luuquangvu/ha-addons**](https://github.com/luuquangvu/ha-addons) repository to your Home Assistant Add-on Store.
+2. Locate and install **Gemini FastAPI**.
+3. **Start the Add-on once.** The service will initialize default configuration files and then stop automatically.
+
+### Step 2: Extract Authentication Cookies
+
+1. Open a **Private/Incognito** browser window.
+2. Log in to [https://gemini.google.com](https://gemini.google.com) with your secondary Google account.
+3. Open **Developer Tools** (F12 or Right-click > Inspect).
+4. Navigate to the **Application** tab (Chrome/Edge) or **Storage** tab (Firefox).
+5. Under **Cookies**, select `https://gemini.google.com` and locate the following values:
    - `__Secure-1PSID`
    - `__Secure-1PSIDTS`
-6. Keep these values ready.
-7. **Close the incognito window immediately** after copying the values and proceed to the next step promptly. This helps prevent cookie synchronization issues or premature expiration.
+6. **Close the incognito window immediately** after copying to prevent session conflicts.
 
-### Step 3: Configure the App
+### Step 3: Service Configuration
 
-1. Using a file editor (like the Studio Code Server App or via Samba), navigate to the `/homeassistant/gemini-fastapi/config/` directory created in Step 1.
-2. Open the `config.yaml` file.
-3. Fill in your cookie values from Step 2:
+1. Use a file editor (e.g., Studio Code Server) to access `/homeassistant/gemini-fastapi/config/`.
+2. Edit `config.yaml` to include your extracted cookies:
 
    ```yaml
    gemini:
      clients:
-       - id: "client-a" # or any other name
-         secure_1psid: "PASTE_YOUR_SECURE_1PSID_VALUE_HERE"
-         secure_1psidts: "PASTE_YOUR_SECURE_1PSIDTS_VALUE_HERE"
+       - id: "ha-gemini"
+         secure_1psid: "PASTE_YOUR_SECURE_1PSID_HERE"
+         secure_1psidts: "PASTE_YOUR_SECURE_1PSIDTS_HERE"
    ```
 
-4. (Optional, but Recommended) To protect the API endpoint with a token, add an `api_key` under the `server` section:
+3. **(Recommended)** Secure your API endpoint by defining a secret token:
 
    ```yaml
    server:
-     api_key: "your-strong-secret-token"
+     api_key: "your-super-secret-token"
    ```
 
-5. Save the `config.yaml` file.
+### Step 4: Deployment
 
-### Step 4: Restart and Verify
-
-1. Return to the Gemini FastAPI App page in Home Assistant.
-2. Click **Restart**.
-3. Check the **Log** tab to ensure the App starts successfully.
-
-> [!NOTE]
-> The App exposes port 8000 on your Home Assistant host. It is strongly recommended to set an API key (as shown in Step 3) to protect this endpoint, especially if your network is not private. For remote access, always use a secure reverse proxy like Nginx Proxy Manager.
-
-### Troubleshooting & Cookie Updates
-
-Since this App relies on browser cookies, they may expire over time (e.g., if you log out of Google or the session times out).
-
-- **Symptoms**: The App stops responding, or you see `Failed to initialize client ...` errors in the Logs.
-- **Fix**: Simply repeat **Step 2** and **Step 3** to fetch new cookies and update your `config.yaml`, then restart the App.
-
-> [!NOTE]
-> If you frequently encounter cookie expiration issues, try retrieving the cookies from a different browser.
-
-### Connecting Gemini to Home Assistant Assist
-
-To use **Gemini for Home Assistant** within your Assist pipelines (voice control), you need an integration that supports OpenAI-compatible APIs.
-
-#### Recommended: Local OpenAI LLM
-
-We strongly recommend using the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) custom integration. This is a fork specifically optimized for this App, supporting local LLM servers out of the box.
-
-1.  **Install via HACS**:
-    - **Automatic**: Click the button below to open the repository directly in HACS:
-
-      [![Open HACS Repository](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luuquangvu&repository=hass_local_openai_llm&category=integration)
-
-    - **Manual**: If the button doesn't work, add `https://github.com/luuquangvu/hass_local_openai_llm` as a **Custom Repository** (Category: Integration) in HACS.
-
-    - Click **Download** and **Restart** Home Assistant once the download is complete.
-
-2.  **Add Integration**: Navigate to **Settings > Devices & Services**, click **Add Integration**, and search for **Local OpenAI LLM**.
-
-3.  **Configure**:
-    - **Server URL**: `http://127.0.0.1:8000/v1`
-    - **API Key**: The key you defined in your `config.yaml` (leave blank if not set).
+1. Return to the Gemini FastAPI Add-on page and click **Start**.
+2. Review the **Log** tab to verify successful service initialization.
 
 ---
 
-## Standalone Docker Deployment
+## Home Assistant Integration
 
-For users running the service outside Home Assistant.
+To utilize Gemini as a conversation agent, we recommend the [**Local OpenAI LLM**](https://github.com/luuquangvu/hass_local_openai_llm) integration.
 
-### Using Docker Compose
+1. **Install via HACS**:
+   [![Open HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=luuquangvu&repository=hass_local_openai_llm&category=integration)
+2. **Add the Integration**: Navigate to **Settings > Devices & Services** and search for "Local OpenAI LLM".
+3. **Connection Settings**:
+   - **Base URL**: `http://YOUR_HA_IP:8000/v1` (or `http://127.0.0.1:8000/v1` if running on the same host)
+   - **API Key**: The `api_key` defined in your `config.yaml`.
 
-Create a `compose.yaml`:
+---
+
+## Containerized Deployment (Docker)
+
+### Docker Compose
 
 ```yaml
 services:
   gemini-fastapi:
-    container_name: gemini-fastapi
     image: ghcr.io/luuquangvu/gemini-fastapi:latest
-    pull_policy: always
-    restart: on-failure:3
+    container_name: gemini-fastapi
+    restart: unless-stopped
     ports:
       - "8000:8000"
     volumes:
       - ./data:/app/data
       - ./cache:/app/cache
-      # - ./config:/app/config # Uncomment to use a config file instead of env vars
-      # - ./certs:/app/certs # Uncomment to enable HTTPS
     environment:
-      - "TZ=Asia/Ho_Chi_Minh" # Set your timezone
-      - "CONFIG_SERVER__HOST=0.0.0.0"
-      - "CONFIG_SERVER__PORT=8000"
-      - "CONFIG_SERVER__API_KEY=your-api-key-here"
-      - "CONFIG_GEMINI__CLIENTS__0__ID=client-a"
-      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-secure-1psid"
-      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts"
-      # - "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" # Uncomment to enable proxy for each client
+      - "TZ=Asia/Ho_Chi_Minh"
+      - "CONFIG_SERVER__API_KEY=your-api-key"
+      - "CONFIG_GEMINI__CLIENTS__0__ID=main-client"
+      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-1psid"
+      - "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-1psidts"
       - "GEMINI_COOKIE_PATH=/app/cache"
 ```
 
-Then launch it: `docker compose up -d`
-
-### Using Docker CLI
+### Docker CLI
 
 ```bash
 docker run -d --name gemini-fastapi \
   -p 8000:8000 \
   -v ./data:/app/data \
   -v ./cache:/app/cache \
-  -e "CONFIG_SERVER__API_KEY=your-api-key-here" \
-  -e "CONFIG_GEMINI__CLIENTS__0__ID=client-a" \
-  -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-secure-1psid" \
-  -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-secure-1psidts" \
-# -e "CONFIG_GEMINI__CLIENTS__0__PROXY=socks5://127.0.0.1:1080" \
+  -e "CONFIG_SERVER__API_KEY=your-api-key" \
+  -e "CONFIG_GEMINI__CLIENTS__0__ID=main-client" \
+  -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSID=your-1psid" \
+  -e "CONFIG_GEMINI__CLIENTS__0__SECURE_1PSIDTS=your-1psidts" \
   -e "GEMINI_COOKIE_PATH=/app/cache" \
-  --restart on-failure:3 \
   ghcr.io/luuquangvu/gemini-fastapi:latest
 ```
 
-> [!IMPORTANT]
->
-> - Mount `/app/data` to persist conversation history.
-> - Mount `/app/cache` to preserve refreshed cookies and avoid frequent re-authentication.
+---
+
+## Troubleshooting
+
+- **Authentication Failure**: If the log indicates initialization failure, your session cookies may have expired. Please repeat the extraction process.
+- **Connection Issues**: Verify that port `8000` is accessible and the `api_key` matches your Home Assistant configuration.
+- **Session Stability**: If cookies expire frequently, consider using a different browser engine for extraction (e.g., Firefox).
 
 ---
 
-## Custom Models
+## Credits
 
-You can define custom models in `config.yaml` or via environment variables.
-
-### YAML Configuration
-
-```yaml
-gemini:
-  model_strategy: "append" # "append" (default + custom) or "overwrite" (custom only)
-  models:
-    - model_name: "gemini-3.0-pro"
-      model_header:
-        x-goog-ext-525001261-jspb: '[1,null,null,null,"9d8ca3786ebdfbea",null,null,0,[4],null,null,1]'
-```
-
-### Environment Variables
-
-You can supply models as a JSON string or list structure via `CONFIG_GEMINI__MODELS`. This provides a flexible way to override settings via the shell or in automated environments (e.g. Docker) without modifying the configuration file.
-
-```bash
-export CONFIG_GEMINI__MODEL_STRATEGY="overwrite"
-export CONFIG_GEMINI__MODELS='[{"model_name": "gemini-3.0-pro", "model_header": {"x-goog-ext-525001261-jspb": "[1,null,null,null,\"9d8ca3786ebdfbea\",null,null,0,[4],null,null,1]"}}]'
-```
-
----
-
-## Acknowledgments
-
-- **Gemini API Client**: [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API)
+- Built upon the [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API) library.
