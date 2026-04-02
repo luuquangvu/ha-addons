@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout main
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install tools
         run: |
@@ -37,7 +37,7 @@ jobs:
           sudo apt-get install -y skopeo
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: "3.x"
 
@@ -251,7 +251,7 @@ jobs:
 
       - name: Lint Home Assistant add-on
         if: steps.resolve.outputs.changed == 'true'
-        uses: frenck/action-addon-linter@v2
+        uses: frenck/action-addon-linter@f995494fd84fae6310d23617e66d0e37de4f14eb # v2
         with:
           path: ${{ env.ADDON_DIR }}
 
