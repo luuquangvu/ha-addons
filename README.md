@@ -2,7 +2,7 @@
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-App-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
-**[ 🇺🇸 English | [Tiếng Việt](README.vi.md) ]**
+**[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
 
 Integrate advanced AI capabilities into your Home Assistant instance. This repository provides specialized Apps designed to bring state-of-the-art Generative AI, intelligent automations, and advanced integrations to your smart home ecosystem.
 
