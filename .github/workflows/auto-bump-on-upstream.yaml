@@ -5,13 +5,12 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch: {}
 
-permissions:
-  contents: write
-
 jobs:
   check-bump-push:
     name: Bump ${{ matrix.addon.name }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     concurrency:
       group: auto-bump-${{ matrix.addon.name }}
       cancel-in-progress: false
