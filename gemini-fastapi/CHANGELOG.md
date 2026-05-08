@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.91 - 2026-05-08
+
+- Update version to 20260507-a2f1ebd
+- Cập nhật phiên bản lên 20260507-a2f1ebd
+
 ## 1.0.90 - 2026-04-28
 
 - Update version to 20260428-9d56d33
