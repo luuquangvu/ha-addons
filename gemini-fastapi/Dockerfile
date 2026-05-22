@@ -19,8 +19,7 @@ USER root
 
 WORKDIR /app
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-COPY --chmod=755 run.sh /app/run.sh
+COPY --chmod=755 scripts/run.sh /app/run.sh
+COPY scripts/merge_config.py /app/merge_config.py
 
 CMD ["/app/run.sh"]

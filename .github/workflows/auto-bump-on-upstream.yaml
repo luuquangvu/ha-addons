@@ -96,7 +96,7 @@ jobs:
           IMAGE_NAME: ${{ steps.resolve.outputs.image_name }}
           LATEST_DIGEST: ${{ steps.resolve.outputs.latest_digest }}
           MANIFEST_FILE: ${{ steps.resolve.outputs.manifest_file }}
-        run: uv run --with PyYAML python tools/bump-addon.py
+        run: uv run --with PyYAML tools/bump-addon.py
 
       - name: Format using Prettier (latest version)
         if: steps.resolve.outputs.changed == 'true'
