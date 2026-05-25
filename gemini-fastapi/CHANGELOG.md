@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.98 - 2026-05-25
+
+- Update version to 20260525-c448cfb
+- Cập nhật phiên bản lên 20260525-c448cfb
+
 ## 1.0.97 - 2026-05-25
 
 - Update version to 20260525-c0b59d9
