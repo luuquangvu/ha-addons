@@ -134,13 +134,7 @@ docker run -d --name gemini-fastapi \
 
 - **Authentication Failure**: If the log indicates initialization failure, your session cookies may have expired. Please repeat the extraction process.
 - **Connection Issues**: Verify that port `8000` is accessible and the `api_key` matches your Home Assistant configuration.
-- **Session Stability**: If cookies expire frequently, try to disable "Device Bound Session Credentials" in Google Chrome by following the steps below:
-  - Open Google Chrome.
-  - Type `chrome://flags` in the address bar.
-  - Search for "Device Bound Session Credentials".
-  - Select "Disabled".
-  - Restart Chrome.
-  - Then, repeat the cookie extraction process.
+- **Session Stability**: If cookies expire frequently, use Firefox to extract cookies. Chrome/Edge's new versions use "Device Bound Session Credentials", which increases security but makes cookies live only for a few hours and cannot be renewed.
 
 ---
 
