@@ -134,7 +134,7 @@ docker run -d --name gemini-fastapi \
 
 - **Lỗi Xác thực**: Nếu log báo lỗi khởi tạo, cookie phiên làm việc của bạn có thể đã hết hạn. Vui lòng thực hiện lại quy trình lấy cookie.
 - **Lỗi Kết nối**: Đảm bảo cổng `8000` có thể truy cập được và `api_key` khớp chính xác với cấu hình trong Home Assistant.
-- **Độ ổn định Phiên**: Nếu cookie hết hạn thường xuyên, hãy thử sử dụng trình duyệt khác (ví dụ: Firefox) để lấy cookie.
+- **Độ ổn định Phiên**: Nếu cookie hết hạn thường xuyên, hãy sử dụng Chrome phiên bản **145** (hoặc cũ hơn) để lấy cookie. Các phiên bản Chrome cũ có thể tải về tại [ReChrome](https://www.rechrome.dev/)
 
 ---
 

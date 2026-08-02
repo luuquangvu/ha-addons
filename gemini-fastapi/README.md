@@ -134,7 +134,7 @@ docker run -d --name gemini-fastapi \
 
 - **Authentication Failure**: If the log indicates initialization failure, your session cookies may have expired. Please repeat the extraction process.
 - **Connection Issues**: Verify that port `8000` is accessible and the `api_key` matches your Home Assistant configuration.
-- **Session Stability**: If cookies expire frequently, consider using a different browser engine for extraction (e.g., Firefox).
+- **Session Stability**: If cookies expire frequently, consider using a **Chrome version 145** (or older) for extraction. Old Chrome versions can be downloaded from [ReChrome](https://www.rechrome.dev/)
 
 ---
 

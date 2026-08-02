@@ -1,14 +1,15 @@
-import os
 import json
+import os
 import pathlib
 import re
-import sys
-import yaml
 import subprocess
+import sys
 import uuid
-from datetime import date
 from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, datetime
 from functools import partial
+
+import yaml
 
 
 def get_env(name):
@@ -125,13 +126,15 @@ def main():
                 "{{.Digest}}",
                 f"docker://{image_name}:{tag}",
             ]
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            res = subprocess.run(
+                cmd, check=True, capture_output=True, text=True, timeout=10
+            )
             if res.returncode == 0:
                 digest = res.stdout.strip()
                 return tag, digest or None
         except subprocess.TimeoutExpired:
             print(f"Timeout checking tag: {tag}")
-        except Exception as e:
+        except (subprocess.SubprocessError, OSError) as e:
             print(f"Error checking tag {tag}: {e}")
         return tag, None
 
@@ -194,7 +197,13 @@ def main():
                 print(f"Updated {dockerfile_path} with new version {new_ver}")
             else:
                 print("Dockerfile already up to date.")
-    except Exception as e:
+    except (
+        subprocess.SubprocessError,
+        OSError,
+        json.JSONDecodeError,
+        KeyError,
+        re.error,
+    ) as e:
         print(f"Error updating Dockerfile: {e}")
 
     changelog_path = addon_dir / "CHANGELOG.md"
@@ -202,7 +211,7 @@ def main():
     if changelog_path.exists():
         old_content = changelog_path.read_text(encoding="utf-8")
 
-    today = date.today().isoformat()
+    today = datetime.now(UTC).date().isoformat()
     clean_digest = target_digest.replace("sha256:", "") if target_digest else ""
     digest_short = f"{clean_digest[:12]}..." if clean_digest else "latest"
     upstream_ver = new_tag or digest_short
@@ -213,8 +222,7 @@ def main():
         parts = old_content.split("\n", 1)
         header = parts[0]
         rest = parts[1] if len(parts) > 1 else ""
-        if rest.startswith("\n"):
-            rest = rest[1:]
+        rest = rest.removeprefix("\n")
         final_content = f"{header}\n\n{new_entry}{rest}"
     else:
         final_content = f"# Changelog\n\n{new_entry}{old_content}"
