@@ -2,7 +2,7 @@
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
-**[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
+**[🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt**
 
 Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh thái Home Assistant của bạn. Kho lưu trữ này cung cấp các App chuyên biệt giúp mang đến AI tạo sinh (Generative AI), tự động hóa thông minh và các tích hợp nâng cao cho ngôi nhà thông minh.
 
@@ -11,6 +11,10 @@ Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh
 - **Google Gemini cho Home Assistant (Gemini FastAPI)**
   - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một cổng API tương thích với OpenAI sử dụng session cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng Google Cloud API key. Ứng dụng hỗ trợ ghi nhớ lịch sử hội thoại, xử lý đa phương thức và cung cấp câu trả lời thời gian thực với Google Search ngay trong Home Assistant Assist.
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](gemini-fastapi/README.vi.md)
+
+- **Giọng nói tiếng Việt cho Home Assistant (Wyoming Vietnamese)**
+  - Mang giọng nói tiếng Việt đến Assist mà vẫn chạy hoàn toàn trên thiết bị của bạn. App cung cấp cả nhận diện giọng nói và tổng hợp giọng nói qua một cổng Wyoming Protocol duy nhất, với 19 giọng tiếng Việt, không cần tài khoản đám mây và không cần API key.
+  - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](wyoming-vietnamese/README.vi.md)
 
 ## Hướng dẫn Cài đặt
 

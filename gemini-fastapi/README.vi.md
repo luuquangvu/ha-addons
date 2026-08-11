@@ -2,7 +2,7 @@
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
-**[ [🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt ]**
+**[🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt**
 
 Tích hợp trực tiếp trí tuệ nhân tạo Gemini của Google vào hệ sinh thái Home Assistant. App này cung cấp một cổng API tương thích với OpenAI, cho phép Home Assistant Assist, các bot hội thoại và kịch bản tự động hóa tận dụng sức mạnh của AI tạo sinh (Generative AI) tiên tiến mà không cần đăng ký Google Cloud API key.
 

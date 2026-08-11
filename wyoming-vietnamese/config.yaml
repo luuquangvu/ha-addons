@@ -1,0 +1,36 @@
+name: Wyoming Vietnamese
+slug: wyoming_vietnamese
+version: 1.0.0
+description: Vietnamese speech-to-text and text-to-speech over the Wyoming protocol.
+url: https://github.com/luuquangvu/ha-addons/tree/main/wyoming-vietnamese
+arch:
+  - amd64
+  - aarch64
+homeassistant: 2025.7.0
+startup: services
+init: false
+ports:
+  10300/tcp: 10300
+ports_description:
+  10300/tcp: Wyoming STT/TTS
+watchdog: tcp://[HOST]:[PORT:10300]
+environment:
+  CACHE_DIR: /data/cache
+  DOWNLOAD_DIR: /data/models
+  WYOMING_PORT: "10300"
+options:
+  tts_voice: ngoc-huyen-moi, ngoc-ngan
+  cpu_threads: 0
+  offline: false
+  tts_sentence_silence_ms: 400
+  tts_clause_silence_ms: 180
+  tts_silence_jitter_percent: 25
+  log_level: info
+schema:
+  tts_voice: str
+  cpu_threads: int(0,)
+  offline: bool
+  tts_sentence_silence_ms: int(0,3000)
+  tts_clause_silence_ms: int(0,3000)
+  tts_silence_jitter_percent: int(0,100)
+  log_level: list(debug|info|warning|error|critical)

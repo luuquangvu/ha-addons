@@ -1,3 +1,5 @@
+"""Bump an add-on's version, Dockerfile pin, and changelog after an upstream update."""
+
 import json
 import os
 import pathlib
@@ -13,6 +15,7 @@ import yaml
 
 
 def get_env(name):
+    """Return the named environment variable, exiting with a GitHub Actions error if unset."""
     val = os.environ.get(name)
     if not val:
         print(f"::error::Environment variable {name} not set")
@@ -21,6 +24,7 @@ def get_env(name):
 
 
 def main():
+    """Bump the add-on's version, pin the Dockerfile to the new image, and update the changelog."""
     addon_dir = pathlib.Path(get_env("ADDON_DIR"))
     config_path = addon_dir / "config.yaml"
     digest_file = pathlib.Path(get_env("DIGEST_FILE"))
@@ -31,7 +35,7 @@ def main():
         print(f"::error::Config file not found at {config_path}")
         sys.exit(1)
 
-    with open(config_path, "r", encoding="utf-8") as f:
+    with open(config_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     ha_arch_map = {"amd64": "linux/amd64", "aarch64": "linux/arm64"}
@@ -39,9 +43,7 @@ def main():
     required_archs = data.get("arch", [])
     unknown_archs = [a for a in required_archs if a not in ha_arch_map]
     if unknown_archs:
-        print(
-            f"::error::Unsupported arch value(s) in config: {', '.join(unknown_archs)}"
-        )
+        print(f"::error::Unsupported arch value(s) in config: {', '.join(unknown_archs)}")
         sys.exit(1)
 
     required_platforms = [ha_arch_map[a] for a in required_archs]
@@ -56,7 +58,7 @@ def main():
         print(f"::error::Manifest file not found: {manifest_file_path}")
         sys.exit(1)
 
-    with open(manifest_file, "r") as f:
+    with open(manifest_file) as f:
         raw_manifest = json.load(f)
 
     available_platforms = set()
@@ -71,9 +73,7 @@ def main():
         arch = raw_manifest.get("architecture") or raw_manifest.get("Architecture")
 
         if not os_name or not arch:
-            print(
-                "::error::Unexpected manifest structure: missing OS or Architecture information."
-            )
+            print("::error::Unexpected manifest structure: missing OS or Architecture information.")
             sys.exit(1)
 
         available_platforms.add(f"{os_name}/{arch}")
@@ -83,9 +83,7 @@ def main():
 
     missing = []
     for req in required_platforms:
-        if not any(
-            avail == req or avail.startswith(f"{req}/") for avail in available_platforms
-        ):
+        if not any(avail == req or avail.startswith(f"{req}/") for avail in available_platforms):
             missing.append(req)
 
     if missing:
@@ -126,9 +124,7 @@ def main():
                 "{{.Digest}}",
                 f"docker://{image_name}:{tag}",
             ]
-            res = subprocess.run(
-                cmd, check=True, capture_output=True, text=True, timeout=10
-            )
+            res = subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=10)
             if res.returncode == 0:
                 digest = res.stdout.strip()
                 return tag, digest or None
@@ -181,13 +177,9 @@ def main():
             )
 
             dockerfile_path.write_text(new_content, encoding="utf-8")
-            print(
-                f"Updated {dockerfile_path} to use tag {new_tag} and version {new_ver}"
-            )
+            print(f"Updated {dockerfile_path} to use tag {new_tag} and version {new_ver}")
         else:
-            print(
-                "No matching specific tag found. Updating Dockerfile version label only."
-            )
+            print("No matching specific tag found. Updating Dockerfile version label only.")
             content = dockerfile_path.read_text(encoding="utf-8")
             new_content = re.sub(
                 r'(io\.hass\.version=["\'])([^"\']+)(["\'])', rf"\1{new_ver}\3", content
@@ -216,7 +208,11 @@ def main():
     digest_short = f"{clean_digest[:12]}..." if clean_digest else "latest"
     upstream_ver = new_tag or digest_short
 
-    new_entry = f"## {new_ver} - {today}\n\n- Update version to {upstream_ver}\n- Cập nhật phiên bản lên {upstream_ver}\n\n"
+    new_entry = (
+        f"## {new_ver} - {today}\n\n"
+        f"- Update version to {upstream_ver}\n"
+        f"- Cập nhật phiên bản lên {upstream_ver}\n\n"
+    )
 
     if "# Changelog" in old_content:
         parts = old_content.split("\n", 1)

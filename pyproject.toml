@@ -1,0 +1,57 @@
+[project]
+name = "ha-addons"
+version = "0.1.0"
+description = "Home Assistant add-ons"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+[dependency-groups]
+dev = [
+  "interrogate",
+  "pyright",
+  "PyYAML",
+  "ruamel.yaml",
+  "ruff",
+  "ty",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "D",   # pydocstyle
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "G",   # flake8-logging-format
+  "I",   # isort
+  "LOG", # flake8-logging
+  "N",   # pep8-naming
+  "PIE", # flake8-pie
+  "PT",  # flake8-pytest-style
+  "RET", # flake8-return
+  "RUF", # ruff-specific rules
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "UP",  # pyupgrade
+  "W",   # pycodestyle warnings
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+typeCheckingMode = "standard"
+
+[tool.interrogate]
+fail-under = 100
+ignore-nested-functions = true
+ignore-overloaded-functions = true
+exclude = ["scratch"]

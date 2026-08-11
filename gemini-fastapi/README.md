@@ -2,7 +2,7 @@
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
-**[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
+**🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md)**
 
 Integrate Google's state-of-the-art Gemini AI directly into your Home Assistant ecosystem. This App provides an OpenAI-compatible API bridge, empowering Home Assistant Assist, conversation agents, and automation scripts with advanced generative AI capabilities without requiring a Google Cloud API key.
 

@@ -2,7 +2,7 @@
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-App-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
-**[ 🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md) ]**
+**🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md)**
 
 Integrate advanced AI capabilities into your Home Assistant instance. This repository provides specialized Apps designed to bring state-of-the-art Generative AI, intelligent automations, and advanced integrations to your smart home ecosystem.
 
@@ -11,6 +11,10 @@ Integrate advanced AI capabilities into your Home Assistant instance. This repos
 - **Google Gemini for Home Assistant (Gemini FastAPI)**
   - Integrate **Google Gemini** into your smart home for free. This OpenAI-compatible API bridge uses browser session cookies, eliminating the need for Google Cloud API keys. It enables conversation history, multimodal processing, and real-time answers via Google Search directly within Home Assistant Assist.
   - **📖 Detailed Documentation:** [Read the full guide here →](gemini-fastapi/README.md)
+
+- **Vietnamese Voice for Home Assistant (Wyoming Vietnamese)**
+  - Give Assist a Vietnamese voice that runs entirely on your own hardware. This App serves both speech-to-text and text-to-speech over a single Wyoming Protocol port, with 19 Vietnamese voices, no cloud account, and no API key.
+  - **📖 Detailed Documentation:** [Read the full guide here →](wyoming-vietnamese/README.md)
 
 ## Installation Guide
 

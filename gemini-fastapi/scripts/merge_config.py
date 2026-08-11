@@ -29,6 +29,7 @@ yaml.representer.add_representer(
 
 
 def load_yaml(path: Path) -> Any:
+    """Load a YAML file, returning an empty mapping if it is absent or empty."""
     if not path.exists():
         return {}
 
@@ -39,6 +40,7 @@ def load_yaml(path: Path) -> Any:
 
 
 def dump_yaml(path: Path, data: Any) -> None:
+    """Write YAML to path atomically via a temp file in the same directory."""
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temp_name = tempfile.mkstemp(
         prefix=f".{path.name}.",
@@ -57,15 +59,18 @@ def dump_yaml(path: Path, data: Any) -> None:
 
 
 def copy_file(source: Path, target: Path) -> None:
+    """Copy source to target, creating the target's parent directory."""
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
 
 
 def is_mapping(value: Any) -> bool:
+    """Return whether value is a mapping (e.g. a YAML block)."""
     return isinstance(value, MutableMapping)
 
 
 def copy_key_comment(source: Any, target: Any, key: Any) -> None:
+    """Copy the ruamel.yaml comment attached to key from source onto target."""
     if not hasattr(source, "ca") or not hasattr(target, "ca"):
         return
     if key not in source.ca.items:
@@ -75,18 +80,17 @@ def copy_key_comment(source: Any, target: Any, key: Any) -> None:
 
 
 def copy_default_value(source: Any) -> Any:
+    """Deep-copy a default value so it can be inserted into the user config."""
     return copy.deepcopy(source)
 
 
 def get_list_item_template(value: Any) -> Any:
+    """Return the first mapping item of a list, used as a template for merging."""
     if not isinstance(value, list) or not value:
         return None
 
     first_item = value[0]
-    if not is_mapping(first_item):
-        return None
-
-    return first_item
+    return first_item if is_mapping(first_item) else None
 
 
 def merge_config(
@@ -98,6 +102,12 @@ def merge_config(
     updated: list[str] | None = None,
     removed: list[str] | None = None,
 ) -> Any:
+    """Recursively merge new_default into user_config, preserving user edits.
+
+    Tracks keys that were added, reset to a new default (because the user had
+    never changed them from the old default), or removed as stale, appending
+    their dotted paths to the added/updated/removed lists.
+    """
     if added is None:
         added = []
     if updated is None:
@@ -121,9 +131,7 @@ def merge_config(
                     updated,
                     removed,
                 )
-                if old_user_value != user_config[key] and old_user_value == old_map.get(
-                    key
-                ):
+                if old_user_value != user_config[key] and old_user_value == old_map.get(key):
                     copy_key_comment(new_default, user_config, key)
             else:
                 user_config[key] = copy_default_value(new_value)
@@ -132,11 +140,7 @@ def merge_config(
 
         for key, old_value in list(old_map.items()):
             key_path = f"{path}.{key}" if path else str(key)
-            if (
-                key not in new_default
-                and key in user_config
-                and user_config[key] == old_value
-            ):
+            if key not in new_default and key in user_config and user_config[key] == old_value:
                 del user_config[key]
                 removed.append(key_path)
 
@@ -172,6 +176,7 @@ def merge_config(
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse the --default/--user/--state/--backup command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--default", required=True, type=Path)
     parser.add_argument("--user", required=True, type=Path)
@@ -181,6 +186,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    """Merge the default config into the user config and report the changes."""
     args = parse_args()
 
     if not args.default.exists():
