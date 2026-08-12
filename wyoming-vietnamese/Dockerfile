@@ -1,11 +1,11 @@
-FROM ghcr.io/luuquangvu/wyoming-vietnamese:20260811-3e801eb
+FROM ghcr.io/luuquangvu/wyoming-vietnamese:20260812-cb4d8e7
 
 LABEL \
   io.hass.name="Wyoming Vietnamese" \
   io.hass.description="Vietnamese speech-to-text and text-to-speech over the Wyoming protocol." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.0" \
+  io.hass.version="1.0.1" \
   org.opencontainers.image.title="Wyoming Vietnamese" \
   org.opencontainers.image.description="Vietnamese speech-to-text and text-to-speech over the Wyoming protocol." \
   org.opencontainers.image.vendor="Luu Quang Vu" \
