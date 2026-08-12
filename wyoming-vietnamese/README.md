@@ -55,15 +55,15 @@ Leave it **off** until the first start has finished downloading. The port is ope
 
 ## Configuration Options
 
-| Option                       | Default                     | Description                                                                                       |
-| ---------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------- |
-| `tts_voice`                  | `ngoc-huyen-moi, ngoc-ngan` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice.      |
-| `cpu_threads`                | `0`                         | Inference threads. `0` auto-detects the available CPU threads.                                    |
-| `offline`                    | `false`                     | Set to `true` only after every model has been downloaded. Startup then fails instead of fetching. |
-| `tts_sentence_silence_ms`    | `400`                       | Pause between sentences and lines, in milliseconds. Raise it for slower reading.                  |
-| `tts_clause_silence_ms`      | `180`                       | Pause after commas and other clause punctuation, in milliseconds.                                 |
-| `tts_silence_jitter_percent` | `25`                        | Random +/- spread applied to each pause so delivery sounds less robotic.                          |
-| `log_level`                  | `info`                      | Use `debug` for detailed logs while troubleshooting.                                              |
+| Option                       | Default                                   | Description                                                                                       |
+| ---------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `tts_voice`                  | `ngoc-huyen-moi, phuong-trang, ngoc-ngan` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice.      |
+| `cpu_threads`                | `0`                                       | Inference threads. `0` auto-detects the available CPU threads.                                    |
+| `offline`                    | `false`                                   | Set to `true` only after every model has been downloaded. Startup then fails instead of fetching. |
+| `tts_sentence_silence_ms`    | `400`                                     | Pause between sentences and lines, in milliseconds. Raise it for slower reading.                  |
+| `tts_clause_silence_ms`      | `180`                                     | Pause after commas and other clause punctuation, in milliseconds.                                 |
+| `tts_silence_jitter_percent` | `25`                                      | Random +/- spread applied to each pause so delivery sounds less robotic.                          |
+| `log_level`                  | `info`                                    | Use `debug` for detailed logs while troubleshooting.                                              |
 
 ### Available Voices
 

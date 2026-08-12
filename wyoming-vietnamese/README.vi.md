@@ -55,15 +55,15 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 
 ## Các Tùy chọn Cấu hình
 
-| Tùy chọn                     | Mặc định                    | Mô tả                                                                                                 |
-| ---------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `tts_voice`                  | `ngoc-huyen-moi, ngoc-ngan` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
-| `cpu_threads`                | `0`                         | Số luồng CPU dùng cho suy luận. Để `0` để tự động dùng số luồng phù hợp.                              |
-| `offline`                    | `false`                     | Chỉ đặt `true` sau khi đã tải đủ mô hình. Khi thiếu mô hình, App sẽ báo lỗi thay vì kết nối Internet. |
-| `tts_sentence_silence_ms`    | `400`                       | Khoảng nghỉ giữa các câu, tính bằng mili giây. Tăng giá trị nếu giọng đọc hơi nhanh.                  |
-| `tts_clause_silence_ms`      | `180`                       | Khoảng nghỉ sau dấu phẩy và các dấu câu trong mệnh đề, tính bằng mili giây.                           |
-| `tts_silence_jitter_percent` | `25`                        | Mức thay đổi ngẫu nhiên +/- cho mỗi khoảng nghỉ, giúp câu đọc tự nhiên hơn.                           |
-| `log_level`                  | `info`                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
+| Tùy chọn                     | Mặc định                                  | Mô tả                                                                                                 |
+| ---------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `tts_voice`                  | `ngoc-huyen-moi, phuong-trang, ngoc-ngan` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
+| `cpu_threads`                | `0`                                       | Số luồng CPU dùng cho suy luận. Để `0` để tự động dùng số luồng phù hợp.                              |
+| `offline`                    | `false`                                   | Chỉ đặt `true` sau khi đã tải đủ mô hình. Khi thiếu mô hình, App sẽ báo lỗi thay vì kết nối Internet. |
+| `tts_sentence_silence_ms`    | `400`                                     | Khoảng nghỉ giữa các câu, tính bằng mili giây. Tăng giá trị nếu giọng đọc hơi nhanh.                  |
+| `tts_clause_silence_ms`      | `180`                                     | Khoảng nghỉ sau dấu phẩy và các dấu câu trong mệnh đề, tính bằng mili giây.                           |
+| `tts_silence_jitter_percent` | `25`                                      | Mức thay đổi ngẫu nhiên +/- cho mỗi khoảng nghỉ, giúp câu đọc tự nhiên hơn.                           |
+| `log_level`                  | `info`                                    | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
 
 ### Các giọng có sẵn
 
