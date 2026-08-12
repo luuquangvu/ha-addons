@@ -110,7 +110,7 @@ services:
       - "10300:10300"
     environment:
       - "TZ=Asia/Ho_Chi_Minh"
-      - "TTS_VOICE=ngoc-huyen-moi, ngoc-ngan"
+      - "TTS_VOICE=ngoc-huyen-moi, phuong-trang, ngoc-ngan"
       - "CPU_THREADS=0"
       - "OFFLINE=false"
       - "LOG_LEVEL=info"
@@ -129,7 +129,7 @@ volumes:
 docker run -d --name wyoming-vietnamese \
   --restart unless-stopped \
   -p 10300:10300 \
-  -e "TTS_VOICE=ngoc-huyen-moi, ngoc-ngan" \
+  -e "TTS_VOICE=ngoc-huyen-moi, phuong-trang, ngoc-ngan" \
   -e "LOG_LEVEL=info" \
   -v wyoming-vietnamese-cache:/app/.cache \
   -v wyoming-vietnamese-models:/app/models \
