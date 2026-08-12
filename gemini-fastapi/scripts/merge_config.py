@@ -93,84 +93,104 @@ def get_list_item_template(value: Any) -> Any:
     return first_item if is_mapping(first_item) else None
 
 
+class MergeTracker:
+    """Collects dotted-path keys added, reset to default, or removed during a merge."""
+
+    def __init__(self) -> None:
+        """Initialize empty added/updated/removed lists."""
+        self.added: list[str] = []
+        self.updated: list[str] = []
+        self.removed: list[str] = []
+
+
 def merge_config(
     old_default: Any,
     new_default: Any,
     user_config: Any,
+    tracker: MergeTracker,
     path: str = "",
-    added: list[str] | None = None,
-    updated: list[str] | None = None,
-    removed: list[str] | None = None,
 ) -> Any:
     """Recursively merge new_default into user_config, preserving user edits.
 
     Tracks keys that were added, reset to a new default (because the user had
     never changed them from the old default), or removed as stale, appending
-    their dotted paths to the added/updated/removed lists.
+    their dotted paths onto tracker.
     """
-    if added is None:
-        added = []
-    if updated is None:
-        updated = []
-    if removed is None:
-        removed = []
-
     if is_mapping(new_default) and is_mapping(user_config):
-        old_map = old_default if is_mapping(old_default) else {}
-
-        for key, new_value in new_default.items():
-            key_path = f"{path}.{key}" if path else str(key)
-            if key in user_config:
-                old_user_value = copy.deepcopy(user_config[key])
-                user_config[key] = merge_config(
-                    old_map.get(key),
-                    new_value,
-                    user_config[key],
-                    key_path,
-                    added,
-                    updated,
-                    removed,
-                )
-                if old_user_value != user_config[key] and old_user_value == old_map.get(key):
-                    copy_key_comment(new_default, user_config, key)
-            else:
-                user_config[key] = copy_default_value(new_value)
-                copy_key_comment(new_default, user_config, key)
-                added.append(key_path)
-
-        for key, old_value in list(old_map.items()):
-            key_path = f"{path}.{key}" if path else str(key)
-            if key not in new_default and key in user_config and user_config[key] == old_value:
-                del user_config[key]
-                removed.append(key_path)
-
-        return user_config
+        return _merge_mapping(old_default, new_default, user_config, tracker, path)
 
     if user_config == old_default and user_config != new_default:
         if path:
-            updated.append(path)
+            tracker.updated.append(path)
         return copy_default_value(new_default)
 
     new_item_template = get_list_item_template(new_default)
     if new_item_template is not None and isinstance(user_config, list):
-        old_item_template = get_list_item_template(old_default)
+        return _merge_list(old_default, new_default, user_config, tracker, path)
 
-        for index, user_item in enumerate(user_config):
-            if not is_mapping(user_item):
-                continue
+    return user_config
 
-            item_path = f"{path}[{index}]"
-            user_config[index] = merge_config(
-                old_item_template,
-                new_item_template,
-                user_item,
-                item_path,
-                added,
-                updated,
-                removed,
+
+def _merge_mapping(
+    old_default: Any,
+    new_default: MutableMapping[Any, Any],
+    user_config: MutableMapping[Any, Any],
+    tracker: MergeTracker,
+    path: str,
+) -> MutableMapping[Any, Any]:
+    """Merge a mapping level of new_default into user_config."""
+    old_map = old_default if is_mapping(old_default) else {}
+
+    for key, new_value in new_default.items():
+        key_path = f"{path}.{key}" if path else str(key)
+        if key in user_config:
+            old_user_value = copy.deepcopy(user_config[key])
+            user_config[key] = merge_config(
+                old_map.get(key),
+                new_value,
+                user_config[key],
+                tracker,
+                key_path,
             )
+            if old_user_value != user_config[key] and old_user_value == old_map.get(key):
+                copy_key_comment(new_default, user_config, key)
+        else:
+            user_config[key] = copy_default_value(new_value)
+            copy_key_comment(new_default, user_config, key)
+            tracker.added.append(key_path)
 
-        return user_config
+    for key, old_value in list(old_map.items()):
+        key_path = f"{path}.{key}" if path else str(key)
+        if key not in new_default and key in user_config and user_config[key] == old_value:
+            del user_config[key]
+            tracker.removed.append(key_path)
+
+    return user_config
+
+
+def _merge_list(
+    old_default: Any,
+    new_default: Any,
+    user_config: list[Any],
+    tracker: MergeTracker,
+    path: str,
+) -> list[Any]:
+    """Merge each mapping item of a user's list against the default's item template."""
+    new_item_template = get_list_item_template(new_default)
+    old_item_template = get_list_item_template(old_default)
+
+    for index, user_item in enumerate(user_config):
+        if not is_mapping(user_item):
+            continue
+
+        item_path = f"{path}[{index}]"
+        user_config[index] = merge_config(
+            old_item_template,
+            new_item_template,
+            user_item,
+            tracker,
+            item_path,
+        )
 
     return user_config
 
@@ -183,6 +203,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--state", required=True, type=Path)
     parser.add_argument("--backup", required=True, type=Path)
     return parser.parse_args()
+
+
+def _write_updated_config(
+    args: argparse.Namespace,
+    user_config: Any,
+    tracker: MergeTracker,
+) -> None:
+    """Back up the user config, write the merged result, and report what changed."""
+    copy_file(args.user, args.backup)
+    dump_yaml(args.user, user_config)
+    print(f"[INFO] Updated user config defaults: {args.user}")
+    if tracker.added:
+        print(f"[INFO] Added config defaults: {', '.join(tracker.added)}")
+    if tracker.updated:
+        print(f"[INFO] Updated unchanged config defaults: {', '.join(tracker.updated)}")
+    if tracker.removed:
+        print(f"[INFO] Removed unchanged stale defaults: {', '.join(tracker.removed)}")
+    print(f"[INFO] Previous user config backup: {args.backup}")
 
 
 def main() -> int:
@@ -207,29 +245,11 @@ def main() -> int:
         print(f"[ERROR] Failed to parse YAML config: {error}", file=sys.stderr)
         return 1
 
-    added: list[str] = []
-    updated: list[str] = []
-    removed: list[str] = []
-    merge_config(
-        old_default,
-        new_default,
-        user_config,
-        added=added,
-        updated=updated,
-        removed=removed,
-    )
+    tracker = MergeTracker()
+    merge_config(old_default, new_default, user_config, tracker)
 
-    if added or updated or removed:
-        copy_file(args.user, args.backup)
-        dump_yaml(args.user, user_config)
-        print(f"[INFO] Updated user config defaults: {args.user}")
-        if added:
-            print(f"[INFO] Added config defaults: {', '.join(added)}")
-        if updated:
-            print(f"[INFO] Updated unchanged config defaults: {', '.join(updated)}")
-        if removed:
-            print(f"[INFO] Removed unchanged stale defaults: {', '.join(removed)}")
-        print(f"[INFO] Previous user config backup: {args.backup}")
+    if tracker.added or tracker.updated or tracker.removed:
+        _write_updated_config(args, user_config, tracker)
     else:
         print("[INFO] User config is already up to date.")
 
