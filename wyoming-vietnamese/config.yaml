@@ -13,13 +13,12 @@ ports:
   10300/tcp: 10300
 ports_description:
   10300/tcp: Wyoming STT/TTS
-watchdog: tcp://[HOST]:[PORT:10300]
 environment:
   CACHE_DIR: /data/cache
   DOWNLOAD_DIR: /data/models
   WYOMING_PORT: "10300"
 options:
-  tts_voice: ngoc-huyen-moi, ngoc-ngan
+  tts_voice: ngoc-huyen-moi, phuong-trang, ngoc-ngan
   cpu_threads: 0
   offline: false
   tts_sentence_silence_ms: 400
