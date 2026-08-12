@@ -97,6 +97,7 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
         with:
           node-version: 24
+          cache: "npm"
 
       - name: Install dependencies
         if: steps.resolve.outputs.changed == 'true'
@@ -124,9 +125,12 @@ jobs:
 
       - name: Commit and push
         if: steps.resolve.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
 
           git add "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/Dockerfile" "${DIGEST_FILE}" "${ADDON_DIR}/CHANGELOG.md"
 
