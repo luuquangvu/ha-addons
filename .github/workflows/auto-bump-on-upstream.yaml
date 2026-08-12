@@ -88,11 +88,17 @@ jobs:
         if: steps.resolve.outputs.changed == 'true'
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
+      - name: Install dependencies
+        run: uv sync --all-groups
+
       - name: Set up Node.js
         if: steps.resolve.outputs.changed == 'true'
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
         with:
           node-version: 24
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Validate Architectures and Bump Version
         id: bump
@@ -102,7 +108,7 @@ jobs:
           IMAGE_NAME: ${{ steps.resolve.outputs.image_name }}
           LATEST_DIGEST: ${{ steps.resolve.outputs.latest_digest }}
           MANIFEST_FILE: ${{ steps.resolve.outputs.manifest_file }}
-        run: uv run --with PyYAML tools/bump-addon.py
+        run: uv run tools/bump-addon.py
 
       - name: Format using Prettier (latest version)
         if: steps.resolve.outputs.changed == 'true'
