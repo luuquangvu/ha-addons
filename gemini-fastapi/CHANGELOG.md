@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.106 - 2026-08-13
+
+- Update version to 20260813-261030c
+- Cập nhật phiên bản lên 20260813-261030c
+
 ## 1.0.105 - 2026-08-13
 
 - Update version to 20260813-40225eb
