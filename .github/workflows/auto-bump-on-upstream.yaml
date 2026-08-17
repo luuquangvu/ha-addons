@@ -3,7 +3,18 @@ name: Auto bump Home Assistant add-ons on upstream :latest
 on:
   schedule:
     - cron: "0 0 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_bump:
+        description: Add-on to bump even when its upstream image digest is unchanged
+        type: choice
+        required: true
+        default: none
+        options:
+          - none
+          - gemini-fastapi
+          - wyoming-vietnamese
+          - all
 
 jobs:
   check-bump-push:
@@ -29,6 +40,7 @@ jobs:
     env:
       ADDON_DIR: ${{ matrix.addon.dir }}
       DIGEST_FILE: ${{ matrix.addon.digest_file }}
+      FORCE_BUMP: ${{ github.event_name == 'workflow_dispatch' && (inputs.force_bump == 'all' || inputs.force_bump == matrix.addon.name) }}
 
     defaults:
       run:
@@ -76,12 +88,16 @@ jobs:
           fi
           echo "Previous digest: ${PREV:-<none>}"
 
-          if [ "$PREV" = "$DIGEST" ]; then
+          if [ "$PREV" = "$DIGEST" ] && [ "$FORCE_BUMP" != "true" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Digest unchanged."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Digest changed! Proceeding to validation."
+            if [ "$PREV" = "$DIGEST" ]; then
+              echo "Digest unchanged, but a version bump was manually requested. Proceeding to validation."
+            else
+              echo "Digest changed! Proceeding to validation."
+            fi
           fi
 
       - name: Install uv
@@ -90,7 +106,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.resolve.outputs.changed == 'true'
-        run: uv sync --all-groups
+        run: uv sync --locked --all-groups
 
       - name: Set up Node.js
         if: steps.resolve.outputs.changed == 'true'
