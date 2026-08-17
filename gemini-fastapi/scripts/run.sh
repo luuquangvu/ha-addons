@@ -51,7 +51,7 @@ fi
 
 if [ -f "${APP_CONFIG_DIR}/${CONFIG_FILE}" ] && [ ! -L "${APP_CONFIG_DIR}" ]; then
   echo "[INFO] Merging config defaults into user config..."
-  uv run --no-dev --with ruamel.yaml /app/merge_config.py \
+  python /app/merge_config.py \
     --default "${APP_CONFIG_DIR}/${CONFIG_FILE}" \
     --user "${CONFIG_DIR}/${CONFIG_FILE}" \
     --state "${CONFIG_DIR}/${ORIGINAL_CONFIG_FILE}" \
@@ -65,4 +65,4 @@ link_dir "${DATA_DIR}" "${APP_DATA_DIR}"
 
 echo "[INFO] Launching application..."
 cd /app
-exec uv run --no-dev run.py
+exec python run.py
