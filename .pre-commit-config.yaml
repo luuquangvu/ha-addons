@@ -36,9 +36,16 @@ repos:
         pass_filenames: false
         always_run: true
 
+      - id: tally
+        name: Run Tally
+        entry: uv run tally lint --fix .
+        language: system
+        pass_filenames: false
+        always_run: true
+
       - id: taplo
         name: Run Taplo
-        entry: uv run taplo format pyproject.toml
+        entry: uv run taplo format .
         language: system
         pass_filenames: false
         always_run: true

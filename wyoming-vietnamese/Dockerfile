@@ -14,6 +14,7 @@ LABEL \
   io.hass.type="addon" \
   io.hass.version="1.0.2"
 
+# tally ignore=hadolint/DL3002
 USER root
 
 WORKDIR /app
