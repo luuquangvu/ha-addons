@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.114 - 2026-08-19
+
+- Update version to 20260819-7d1744e
+- Cập nhật phiên bản lên 20260819-7d1744e
+
 ## 1.0.113 - 2026-08-17
 
 - Resolve the missing uv command

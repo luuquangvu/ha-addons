@@ -1,4 +1,4 @@
-FROM ghcr.io/luuquangvu/gemini-fastapi:20260817-24ab2f0
+FROM ghcr.io/luuquangvu/gemini-fastapi:20260819-7d1744e
 
 LABEL \
   org.opencontainers.image.title="Gemini FastAPI" \
@@ -12,7 +12,7 @@ LABEL \
   io.hass.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.113"
+  io.hass.version="1.0.114"
 
 # tally ignore=hadolint/DL3002
 USER root
