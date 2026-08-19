@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3 - 2026-08-19
+
+- Update version to 20260819-d257c73
+- Cập nhật phiên bản lên 20260819-d257c73
+
 ## 1.0.2 - 2026-08-16
 
 - Update version to 20260816-a888f10
