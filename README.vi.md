@@ -13,7 +13,7 @@ Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](gemini-fastapi/README.vi.md)
 
 - **Giọng nói tiếng Việt cho Home Assistant (Wyoming Vietnamese)**
-  - Mang giọng nói tiếng Việt đến Assist mà vẫn chạy hoàn toàn trên thiết bị của bạn. App cung cấp cả nhận diện giọng nói và tổng hợp giọng nói qua một cổng Wyoming Protocol duy nhất, với 19 giọng tiếng Việt, không cần tài khoản đám mây và không cần API key.
+  - Mang giọng nói tiếng Việt đến Assist mà vẫn chạy hoàn toàn trên thiết bị của bạn. App cung cấp cả nhận diện giọng nói và tổng hợp giọng nói qua một cổng Wyoming Protocol duy nhất, với 20 giọng tiếng Việt, không cần tài khoản đám mây và không cần API key.
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](wyoming-vietnamese/README.vi.md)
 
 ## Hướng dẫn Cài đặt

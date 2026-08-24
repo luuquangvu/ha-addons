@@ -15,7 +15,7 @@ Giúp Assist của Home Assistant nghe và trả lời bằng tiếng Việt t�
 
 - **Gộp STT và TTS**: Cả hai dịch vụ dùng chung cổng Wyoming `10300`.
 - **Chạy nội bộ hoàn toàn**: Không cần tài khoản đám mây hay khóa API (API key). Âm thanh và văn bản không phải gửi tới dịch vụ bên ngoài trong quá trình sử dụng.
-- **19 giọng tiếng Việt**: Chọn một hoặc nhiều giọng; giọng đầu tiên trong cấu hình là giọng mặc định trong Assist.
+- **20 giọng tiếng Việt**: Chọn một hoặc nhiều giọng; giọng đầu tiên trong cấu hình là giọng mặc định trong Assist.
 - **Lưu mô hình cố định**: Mô hình chỉ tải một lần vào phân vùng `/data` của App, nên các lần khởi động sau nhanh hơn.
 - **Chế độ ngoại tuyến**: Sau khi tải đủ mô hình, dịch vụ có thể chạy hoàn toàn không cần Internet.
 - **Nhịp đọc tự nhiên**: Khoảng nghỉ giữa câu, giữa mệnh đề và độ ngẫu nhiên đều có thể tùy chỉnh để tránh giọng đọc máy móc.
@@ -88,6 +88,7 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 | `tran-thanh`           | Trấn Thành           |
 | `tai-an`               | Tài An               |
 | `viet-thao`            | Việt Thảo            |
+| `adam`                 | Adam                 |
 
 Mỗi giọng thêm vào đều được tải về và giữ trong bộ nhớ, nên bạn chỉ nên chọn những giọng thực sự dùng đến.
 

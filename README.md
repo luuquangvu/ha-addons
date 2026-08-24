@@ -13,7 +13,7 @@ Integrate advanced AI capabilities into your Home Assistant instance. This repos
   - **📖 Detailed Documentation:** [Read the full guide here →](gemini-fastapi/README.md)
 
 - **Vietnamese Voice for Home Assistant (Wyoming Vietnamese)**
-  - Give Assist a Vietnamese voice that runs entirely on your own hardware. This App serves both speech-to-text and text-to-speech over a single Wyoming Protocol port, with 19 Vietnamese voices, no cloud account, and no API key.
+  - Give Assist a Vietnamese voice that runs entirely on your own hardware. This App serves both speech-to-text and text-to-speech over a single Wyoming Protocol port, with 20 Vietnamese voices, no cloud account, and no API key.
   - **📖 Detailed Documentation:** [Read the full guide here →](wyoming-vietnamese/README.md)
 
 ## Installation Guide

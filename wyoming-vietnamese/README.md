@@ -15,7 +15,7 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 
 - **Combined STT and TTS**: Both services are advertised on the shared Wyoming port `10300`.
 - **Fully Local**: No cloud account and no API key. Audio and text are not sent to a third-party service during use.
-- **19 Vietnamese Voices**: Select one or more voices; the first one configured is the default in Assist.
+- **20 Vietnamese Voices**: Select one or more voices; the first one configured is the default in Assist.
 - **Persistent Models**: Models are downloaded once into the App's `/data` storage, so later restarts are fast.
 - **Offline Mode**: Once every model is cached, the service can run without any Internet access.
 - **Natural Pacing**: Sentence and clause pauses, plus a random jitter, are configurable to avoid robotic delivery.
@@ -88,6 +88,7 @@ Leave it **off** until the first start has finished downloading. The port is ope
 | `tran-thanh`           | Trấn Thành           |
 | `tai-an`               | Tài An               |
 | `viet-thao`            | Việt Thảo            |
+| `adam`                 | Adam                 |
 
 Each additional voice is downloaded and kept loaded in memory, so select only the voices you actually use.
 
