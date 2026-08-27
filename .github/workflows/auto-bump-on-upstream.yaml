@@ -129,9 +129,11 @@ jobs:
           MANIFEST_FILE: ${{ steps.resolve.outputs.manifest_file }}
         run: uv run tools/bump-addon.py
 
-      - name: Format using Prettier (latest version)
+      - name: Format files
         if: steps.resolve.outputs.changed == 'true'
-        run: npx prettier --write "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/CHANGELOG.md"
+        run: |
+          npx prettier --write "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/CHANGELOG.md"
+          uv run tally lint --fix "${ADDON_DIR}/Dockerfile"
 
       - name: Lint Home Assistant add-on
         if: steps.resolve.outputs.changed == 'true'
