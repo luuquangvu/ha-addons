@@ -1,6 +1,6 @@
 name: Wyoming Vietnamese
 slug: wyoming_vietnamese
-version: 1.0.5
+version: 1.0.6
 description: Vietnamese speech-to-text and text-to-speech over the Wyoming protocol.
 url: https://github.com/luuquangvu/ha-addons/tree/main/wyoming-vietnamese
 arch:
