@@ -133,7 +133,7 @@ jobs:
         if: steps.resolve.outputs.changed == 'true'
         run: |
           npx prettier --write "${ADDON_DIR}/config.yaml" "${ADDON_DIR}/CHANGELOG.md"
-          uv run tally lint --fix "${ADDON_DIR}/Dockerfile"
+          uv run tally lint --fix --slow-checks on "${ADDON_DIR}/Dockerfile"
 
       - name: Lint Home Assistant add-on
         if: steps.resolve.outputs.changed == 'true'
