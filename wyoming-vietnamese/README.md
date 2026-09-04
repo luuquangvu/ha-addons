@@ -152,6 +152,6 @@ docker run -d --name wyoming-vietnamese \
 ## Credits
 
 - [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts) for the Vietnamese voice models.
-- [hynt](https://huggingface.co/hynt) for the `Zipformer-30M-RNNT-6000h` recognition model.
+- [hynt](https://huggingface.co/hynt) for the `Zipformer-30M-RNNT-6000h` STT recognition model.
 - [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) for the STT and TTS inference engines.
 - [Wyoming Protocol](https://github.com/OHF-Voice/wyoming) for the Home Assistant Voice integration layer.

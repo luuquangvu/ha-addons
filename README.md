@@ -1,10 +1,10 @@
-# Advanced AI for Home Assistant - Google Gemini & Intelligent Tools
+# Advanced AI for Home Assistant
 
 [![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-App-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **🇺🇸 English | [🇻🇳 Tiếng Việt](README.vi.md)**
 
-Integrate advanced AI capabilities into your Home Assistant instance. This repository provides specialized Apps designed to bring state-of-the-art Generative AI, intelligent automations, and advanced integrations to your smart home ecosystem.
+Integrate advanced AI capabilities into your Home Assistant instance. This repository provides specialized Apps designed to bring state-of-the-art Generative AI, local voice processing (STT & TTS), intelligent automations, and advanced integrations to your smart home ecosystem.
 
 ## Repository Contents
 
@@ -35,7 +35,7 @@ Click the button below to automatically add the repository to your Assistant:
 5. The available Apps will now appear in the store for installation.
 
 > [!TIP]
-> After installing an App, **Start** it once to generate default configuration files before editing the settings.
+> Configuration and first-start behavior depend on the App (e.g., **Gemini FastAPI** generates default configuration files on initial launch, while **Wyoming Vietnamese** downloads speech and voice models on its first run). Please consult each App's individual documentation for specific instructions.
 
 ## Maintenance
 
@@ -46,8 +46,10 @@ Click the button below to automatically add the repository to your Assistant:
 
 ## Support & Credits
 
-- Report issues or contribute via [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
-- Gemini FastAPI is built upon the library from [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
+- **Support**: Report issues or contribute via [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
+- **Credits**:
+  - **Gemini FastAPI**: Built upon the [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API) project.
+  - **Wyoming Vietnamese**: Powered by models and libraries from [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), and the [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
 
 ## License
 

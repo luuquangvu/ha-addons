@@ -140,4 +140,4 @@ docker run -d --name gemini-fastapi \
 
 ## Lời cảm ơn
 
-- Xây dựng dựa trên thư viện [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
+- Xây dựng dựa trên dự án xuất sắc Gemini-API từ [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).

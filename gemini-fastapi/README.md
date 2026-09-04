@@ -140,4 +140,4 @@ docker run -d --name gemini-fastapi \
 
 ## Credits
 
-- Built upon the [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API) library.
+- Built upon the excellent Gemini-API project from [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).

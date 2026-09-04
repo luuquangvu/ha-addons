@@ -1,10 +1,10 @@
-# Giải pháp AI cho Home Assistant - Tích hợp Google Gemini & Công cụ Thông minh
+# Giải pháp AI cho Home Assistant
 
-[![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-Add--on-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
+[![Home Assistant App](https://img.shields.io/badge/Home%20Assistant-App-blue?style=for-the-badge&logo=home-assistant)](https://github.com/luuquangvu/ha-addons)
 
 **[🇺🇸 English](README.md) | 🇻🇳 Tiếng Việt**
 
-Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh thái Home Assistant của bạn. Kho lưu trữ này cung cấp các App chuyên biệt giúp mang đến AI tạo sinh (Generative AI), tự động hóa thông minh và các tích hợp nâng cao cho ngôi nhà thông minh.
+Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh thái Home Assistant của bạn. Kho lưu trữ này cung cấp các App chuyên biệt giúp mang đến AI tạo sinh (Generative AI), xử lý giọng nói cục bộ (STT & TTS), tự động hóa thông minh và các tích hợp nâng cao cho ngôi nhà thông minh.
 
 ## Nội dung Kho lưu trữ
 
@@ -35,7 +35,7 @@ Nhấp vào nút bên dưới để tự động thêm kho lưu trữ vào Assis
 5. Các App hiện có sẽ xuất hiện trong cửa hàng để bạn có thể cài đặt.
 
 > [!TIP]
-> Sau khi cài đặt một App, hãy nhấn **Start** (Bắt đầu) một lần để hệ thống tự động tạo các tệp cấu hình mặc định trước khi bạn bắt đầu chỉnh sửa.
+> Cách cấu hình và hành vi ở lần khởi động đầu tiên phụ thuộc vào từng App (ví dụ: **Gemini FastAPI** sẽ tạo các tệp cấu hình mặc định ở lần chạy đầu, trong khi **Wyoming Vietnamese** sẽ tải về các mô hình nhận diện và giọng đọc). Vui lòng tham khảo tài liệu chi tiết của từng App để biết hướng dẫn cụ thể.
 
 ## Bảo trì và Cập nhật
 
@@ -44,10 +44,12 @@ Nhấp vào nút bên dưới để tự động thêm kho lưu trữ vào Assis
 
 ---
 
-## Hỗ trợ & Tài liệu Tham khảo
+## Hỗ trợ & Lời cảm ơn
 
-- Báo lỗi hoặc đóng góp ý kiến qua [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
-- Gemini FastAPI được xây dựng dựa trên dự án xuất sắc từ [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
+- **Hỗ trợ**: Báo lỗi hoặc đóng góp ý kiến qua [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
+- **Lời cảm ơn**:
+  - **Gemini FastAPI**: Xây dựng dựa trên dự án [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
+  - **Wyoming Vietnamese**: Sử dụng mô hình và thư viện từ [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) và [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
 
 ## Giấy phép
 

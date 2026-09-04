@@ -152,6 +152,6 @@ docker run -d --name wyoming-vietnamese \
 ## Lời cảm ơn
 
 - [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts) cung cấp các mô hình giọng đọc tiếng Việt.
-- [hynt](https://huggingface.co/hynt) cung cấp mô hình nhận diện `Zipformer-30M-RNNT-6000h`.
+- [hynt](https://huggingface.co/hynt) cung cấp mô hình nhận diện STT `Zipformer-30M-RNNT-6000h`.
 - [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) cung cấp bộ máy suy luận STT và TTS.
 - [Wyoming Protocol](https://github.com/OHF-Voice/wyoming) giúp kết nối dịch vụ với hệ sinh thái Home Assistant Voice.
