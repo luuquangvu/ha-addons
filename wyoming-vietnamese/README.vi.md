@@ -18,7 +18,7 @@ Giúp Assist của Home Assistant nghe và trả lời bằng tiếng Việt t�
 - **20 giọng tiếng Việt**: Chọn một hoặc nhiều giọng; giọng đầu tiên trong cấu hình là giọng mặc định trong Assist.
 - **Lưu mô hình cố định**: Mô hình chỉ tải một lần vào phân vùng `/data` của App, nên các lần khởi động sau nhanh hơn.
 - **Chế độ ngoại tuyến**: Sau khi tải đủ mô hình, dịch vụ có thể chạy hoàn toàn không cần Internet.
-- **Nhịp đọc tự nhiên**: Khoảng nghỉ giữa câu, giữa mệnh đề và độ ngẫu nhiên đều có thể tùy chỉnh để tránh giọng đọc máy móc.
+- **Ngắt nghỉ tự nhiên theo chuẩn ngữ pháp**: Tự động căn chỉnh khoảng nghỉ giữa đoạn văn, câu và vế câu (dấu phẩy), giúp câu văn mạch lạc, không bị dồn chữ.
 
 ---
 
@@ -55,15 +55,13 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 
 ## Các Tùy chọn Cấu hình
 
-| Tùy chọn                     | Mặc định                                                                    | Mô tả                                                                                                 |
-| ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `tts_voice`                  | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
-| `cpu_threads`                | `0`                                                                         | Số luồng CPU dùng cho suy luận. Để `0` để tự động dùng số luồng phù hợp.                              |
-| `offline`                    | `false`                                                                     | Chỉ đặt `true` sau khi đã tải đủ mô hình. Khi thiếu mô hình, App sẽ báo lỗi thay vì kết nối Internet. |
-| `tts_sentence_silence_ms`    | `400`                                                                       | Khoảng nghỉ giữa các câu, tính bằng mili giây. Tăng giá trị nếu giọng đọc hơi nhanh.                  |
-| `tts_clause_silence_ms`      | `180`                                                                       | Khoảng nghỉ sau dấu phẩy và các dấu câu trong mệnh đề, tính bằng mili giây.                           |
-| `tts_silence_jitter_percent` | `20`                                                                        | Mức thay đổi ngẫu nhiên +/- cho mỗi khoảng nghỉ, giúp câu đọc tự nhiên hơn.                           |
-| `log_level`                  | `info`                                                                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
+| Tùy chọn    | Mặc định                                                                    | Mô tả                                                                                                 |
+| ----------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
+| `log_level` | `info`                                                                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
+
+> [!NOTE]
+> Các thiết lập chuyên sâu như khoảng lặng giữa các đoạn văn (700 ms), giữa các câu (500 ms), giữa các vế câu (300 ms) và tự động nhận diện số luồng CPU đều đã được định cấu hình tối ưu sẵn theo chuẩn ngữ pháp.
 
 ### Các giọng có sẵn
 
@@ -110,11 +108,9 @@ services:
     ports:
       - "10300:10300"
     environment:
-      - "TZ=Asia/Ho_Chi_Minh"
-      - "TTS_VOICE=ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
-      - "CPU_THREADS=0"
-      - "OFFLINE=false"
-      - "LOG_LEVEL=info"
+      WYOMING_PORT: 10300
+      TTS_VOICE: "ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
+      LOG_LEVEL: "info"
     volumes:
       - cache:/app/.cache
       - models:/app/models
@@ -143,9 +139,7 @@ docker run -d --name wyoming-vietnamese \
 
 - **Không thêm được Wyoming trong Home Assistant**: Kiểm tra App đang chạy và cổng `10300` có thể truy cập được. Xem tab **Log** để tìm lỗi khởi động.
 - **App khởi động lâu ở lần đầu**: Mô hình STT và từng giọng được tải ở lần khởi động đầu tiên. Hãy giữ kết nối Internet cho tới khi nhật ký báo dịch vụ đã sẵn sàng.
-- **Khởi động lỗi khi bật `offline`**: Đặt `offline` về `false`, khởi động lại và chờ tải xong trước khi bật lại.
-- **Đổi giọng nhưng Home Assistant vẫn đọc giọng cũ**: Đối chiếu mã giọng với bảng ở trên, khởi động lại App, rồi mở lại trang Trợ lý giọng nói.
-- **Giọng đọc quá nhanh**: Tăng `tts_sentence_silence_ms` và `tts_clause_silence_ms`.
+- **Đổi giọng nhưng Home Assistant vẫn đọc giọng cũ**: Đối chiếu mã giọng với bảng ở trên, khởi động lại App, rồi mở lại trang Trợ lý giọng nói hoặc chọn Tải lại (Reload) tích hợp Wyoming Protocol trong Home Assistant.
 
 ---
 

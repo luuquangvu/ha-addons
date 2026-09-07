@@ -18,7 +18,7 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 - **20 Vietnamese Voices**: Select one or more voices; the first one configured is the default in Assist.
 - **Persistent Models**: Models are downloaded once into the App's `/data` storage, so later restarts are fast.
 - **Offline Mode**: Once every model is cached, the service can run without any Internet access.
-- **Natural Pacing**: Sentence and clause pauses, plus a random jitter, are configurable to avoid robotic delivery.
+- **Natural Grammar-Aware Pacing**: Automatically adjusts pauses between paragraphs, sentences, and clauses (commas) for smooth, natural phrasing without rushed delivery.
 
 ---
 
@@ -55,15 +55,13 @@ Leave it **off** until the first start has finished downloading. The port is ope
 
 ## Configuration Options
 
-| Option                       | Default                                                                     | Description                                                                                       |
-| ---------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `tts_voice`                  | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice.      |
-| `cpu_threads`                | `0`                                                                         | Inference threads. `0` auto-detects the available CPU threads.                                    |
-| `offline`                    | `false`                                                                     | Set to `true` only after every model has been downloaded. Startup then fails instead of fetching. |
-| `tts_sentence_silence_ms`    | `400`                                                                       | Pause between sentences and lines, in milliseconds. Raise it for slower reading.                  |
-| `tts_clause_silence_ms`      | `180`                                                                       | Pause after commas and other clause punctuation, in milliseconds.                                 |
-| `tts_silence_jitter_percent` | `20`                                                                        | Random +/- spread applied to each pause so delivery sounds less robotic.                          |
-| `log_level`                  | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                              |
+| Option      | Default                                                                     | Description                                                                                  |
+| ----------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice. |
+| `log_level` | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                         |
+
+> [!NOTE]
+> Advanced engine settings—such as paragraph pauses (700 ms), sentence pauses (500 ms), clause pauses (300 ms), and automatic CPU thread detection—are pre-configured with optimized defaults for natural speech delivery.
 
 ### Available Voices
 
@@ -110,11 +108,9 @@ services:
     ports:
       - "10300:10300"
     environment:
-      - "TZ=Asia/Ho_Chi_Minh"
-      - "TTS_VOICE=ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
-      - "CPU_THREADS=0"
-      - "OFFLINE=false"
-      - "LOG_LEVEL=info"
+      WYOMING_PORT: 10300
+      TTS_VOICE: "ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
+      LOG_LEVEL: "info"
     volumes:
       - cache:/app/.cache
       - models:/app/models
@@ -143,9 +139,7 @@ docker run -d --name wyoming-vietnamese \
 
 - **Wyoming cannot be added in Home Assistant**: Confirm the App is running and that port `10300` is reachable. Check the **Log** tab for startup errors.
 - **The App stays busy on first start**: The STT model and each voice are downloaded on the first start. Keep the Internet connection available until the log reports that the service is ready.
-- **Startup fails with `offline` enabled**: Set `offline` back to `false`, restart, and wait for the download to finish before enabling it again.
-- **Home Assistant still uses the old voice**: Verify the voice ID against the table above, restart the App, then reload the Voice assistants page.
-- **Speech sounds rushed**: Increase `tts_sentence_silence_ms` and `tts_clause_silence_ms`.
+- **Home Assistant still uses the old voice**: Verify the voice ID against the table above, restart the App, then reload the Voice assistants page or reload the Wyoming Protocol integration in Home Assistant.
 
 ---
 

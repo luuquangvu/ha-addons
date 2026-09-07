@@ -14,11 +14,6 @@ PROGRAM_MODULE = "wyoming_vietnamese"
 # Add-on option name -> environment variable read by wyoming_vietnamese.config.
 OPTION_ENV_NAMES: dict[str, str] = {
     "tts_voice": "TTS_VOICE",
-    "cpu_threads": "CPU_THREADS",
-    "offline": "OFFLINE",
-    "tts_sentence_silence_ms": "TTS_SENTENCE_SILENCE_MS",
-    "tts_clause_silence_ms": "TTS_CLAUSE_SILENCE_MS",
-    "tts_silence_jitter_percent": "TTS_SILENCE_JITTER_PERCENT",
     "log_level": "LOG_LEVEL",
 }
 
