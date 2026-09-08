@@ -60,33 +60,30 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 | `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
 | `log_level` | `info`                                                                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
 
-> [!NOTE]
-> Các thiết lập chuyên sâu như khoảng lặng giữa các đoạn văn (700 ms), giữa các câu (500 ms), giữa các vế câu (300 ms) và tự động nhận diện số luồng CPU đều đã được định cấu hình tối ưu sẵn theo chuẩn ngữ pháp.
-
 ### Các giọng có sẵn
 
-| Mã                     | Tên hiển thị         |
-| ---------------------- | -------------------- |
-| `ban-mai`              | Ban Mai              |
-| `chieu-thanh`          | Chiếu Thành          |
-| `duy-onyx-moi`         | Duy Onyx (mới)       |
-| `duy-oryx`             | Duy Oryx             |
-| `lac-phi`              | Lạc Phi              |
-| `mai-phuong`           | Mai Phương           |
-| `minh-khang`           | Minh Khang           |
-| `minh-quang`           | Minh Quang           |
-| `manh-dung`            | Mạnh Dũng            |
-| `my-tam`               | Mỹ Tâm               |
-| `my-tam-real`          | Mỹ Tâm Real          |
-| `ngoc-huyen-moi`       | Ngọc Huyền (mới)     |
-| `ngoc-ngan`            | Ngọc Ngạn            |
-| `phuong-trang`         | Phương Trang         |
-| `thanh-phuong-viettel` | Thanh Phương Viettel |
-| `thien-tam`            | Thiện Tâm            |
-| `tran-thanh`           | Trấn Thành           |
-| `tai-an`               | Tài An               |
-| `viet-thao`            | Việt Thảo            |
-| `adam`                 | Adam                 |
+| Mã giọng (`id`)        | Tên hiển thị         | Vùng miền / Đặc trưng                                                  | Mặc định |
+| :--------------------- | :------------------- | :--------------------------------------------------------------------- | :------: |
+| `ngoc-huyen-moi`       | Ngọc Huyền (mới)     | Nữ miền Bắc (tự nhiên, trong trẻo, phong cách đọc truyện và review)    |  **Có**  |
+| `ban-mai`              | Ban Mai              | Nữ miền Bắc (dịu dàng, truyền cảm, phong cách phát thanh viên)         |          |
+| `thanh-phuong-viettel` | Thanh Phương Viettel | Nữ miền Bắc (rõ ràng, lưu loát, chuẩn phong cách trợ lý và tổng đài)   |          |
+| `mai-phuong`           | Mai Phương           | Nữ miền Bắc (nhẹ nhàng, ấm áp, phong cách đọc sách nói)                |          |
+| `phuong-trang`         | Phương Trang         | Nữ miền Bắc (trầm ấm, truyền cảm, phong cách thuyết minh)              |          |
+| `duy-onyx-moi`         | Duy Onyx (mới)       | Nam miền Bắc (trầm ấm, tự nhiên, phong cách trợ lý nam)                |          |
+| `duy-oryx`             | Duy Oryx             | Nam miền Bắc (trầm, đĩnh đạc)                                          |          |
+| `minh-khang`           | Minh Khang           | Nam miền Bắc (trẻ trung, cuốn hút, phong cách kênh Kiến Giải Mã)       |          |
+| `minh-quang`           | Minh Quang           | Nam miền Bắc (chững chạc, rõ ràng, phong cách đọc tin tức)             |          |
+| `manh-dung`            | Mạnh Dũng            | Nam miền Bắc (hào sảng, dứt khoát, phong cách ký sự và tài liệu)       |          |
+| `chieu-thanh`          | Chiếu Thành          | Nam miền Nam (trầm ấm, phong cách kể chuyện kiếm hiệp và dã sử)        |          |
+| `thien-tam`            | Thiện Tâm            | Nam miền Nam (từ tốn, sâu lắng, phong cách tâm sự và audio Phật giáo)  |          |
+| `ngoc-ngan`            | Ngọc Ngạn            | Nam miền Bắc (trầm, hóm hỉnh, phong cách MC dẫn chuyện Paris By Night) |          |
+| `tran-thanh`           | Trấn Thành           | Nam miền Nam (hoạt ngôn, biểu cảm, phong cách nghệ sĩ hài hước)        |          |
+| `viet-thao`            | Việt Thảo            | Nam miền Nam (hóm hỉnh, gần gũi, phong cách MC sân khấu)               |          |
+| `tai-an`               | Tài An               | Nam miền Bắc (rành mạch, phong cách thuyết minh lịch sử CD Media)      |          |
+| `lac-phi`              | Lạc Phi              | Nữ miền Bắc (truyền cảm, phong cách thuyết minh và review phim)        |          |
+| `my-tam`               | Mỹ Tâm               | Nữ miền Nam / Miền Trung (giọng ca sĩ Mỹ Tâm, âm vị chuẩn toàn quốc)   |          |
+| `my-tam-real`          | Mỹ Tâm Real          | Nữ miền Nam (giọng ca sĩ Mỹ Tâm, ngữ điệu miền Nam chân thực)          |          |
+| `adam`                 | adam                 | Nam quốc tế (chất giọng ElevenLabs Adam đọc tiếng Việt)                |          |
 
 Mỗi giọng thêm vào đều được tải về và giữ trong bộ nhớ, nên bạn chỉ nên chọn những giọng thực sự dùng đến.
 

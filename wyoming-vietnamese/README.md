@@ -60,33 +60,30 @@ Leave it **off** until the first start has finished downloading. The port is ope
 | `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice. |
 | `log_level` | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                         |
 
-> [!NOTE]
-> Advanced engine settings—such as paragraph pauses (700 ms), sentence pauses (500 ms), clause pauses (300 ms), and automatic CPU thread detection—are pre-configured with optimized defaults for natural speech delivery.
-
 ### Available Voices
 
-| ID                     | Display name         |
-| ---------------------- | -------------------- |
-| `ban-mai`              | Ban Mai              |
-| `chieu-thanh`          | Chiếu Thành          |
-| `duy-onyx-moi`         | Duy Onyx (mới)       |
-| `duy-oryx`             | Duy Oryx             |
-| `lac-phi`              | Lạc Phi              |
-| `mai-phuong`           | Mai Phương           |
-| `minh-khang`           | Minh Khang           |
-| `minh-quang`           | Minh Quang           |
-| `manh-dung`            | Mạnh Dũng            |
-| `my-tam`               | Mỹ Tâm               |
-| `my-tam-real`          | Mỹ Tâm Real          |
-| `ngoc-huyen-moi`       | Ngọc Huyền (mới)     |
-| `ngoc-ngan`            | Ngọc Ngạn            |
-| `phuong-trang`         | Phương Trang         |
-| `thanh-phuong-viettel` | Thanh Phương Viettel |
-| `thien-tam`            | Thiện Tâm            |
-| `tran-thanh`           | Trấn Thành           |
-| `tai-an`               | Tài An               |
-| `viet-thao`            | Việt Thảo            |
-| `adam`                 | Adam                 |
+| Voice ID (`id`)        | Display Name         | Region / Characteristics                                                 | Default |
+| :--------------------- | :------------------- | :----------------------------------------------------------------------- | :-----: |
+| `ngoc-huyen-moi`       | Ngọc Huyền (mới)     | Northern Female (natural, clear, storytelling & review style)            | **Yes** |
+| `ban-mai`              | Ban Mai              | Northern Female (gentle, expressive, broadcaster style)                  |         |
+| `thanh-phuong-viettel` | Thanh Phương Viettel | Northern Female (clear, articulate, voice assistant & call center style) |         |
+| `mai-phuong`           | Mai Phương           | Northern Female (soft, warm, audiobook narration style)                  |         |
+| `phuong-trang`         | Phương Trang         | Northern Female (deep, warm, expressive, narration & documentary style)  |         |
+| `duy-onyx-moi`         | Duy Onyx (mới)       | Northern Male (deep, warm, natural, male assistant style)                |         |
+| `duy-oryx`             | Duy Oryx             | Northern Male (deep, poised and steady)                                  |         |
+| `minh-khang`           | Minh Khang           | Northern Male (youthful, engaging, "Kiến Giải Mã" explanation style)     |         |
+| `minh-quang`           | Minh Quang           | Northern Male (mature, clear, news reading style)                        |         |
+| `manh-dung`            | Mạnh Dũng            | Northern Male (resonant, decisive, reportage & documentary style)        |         |
+| `chieu-thanh`          | Chiếu Thành          | Southern Male (deep, warm, martial arts & historical storytelling style) |         |
+| `thien-tam`            | Thiện Tâm            | Southern Male (calm, contemplative, conversational & Buddhist audio)     |         |
+| `ngoc-ngan`            | Ngọc Ngạn            | Northern Male (deep, witty, Paris By Night host style)                   |         |
+| `tran-thanh`           | Trấn Thành           | Southern Male (eloquent, expressive, comedic entertainer style)          |         |
+| `viet-thao`            | Việt Thảo            | Southern Male (witty, approachable, stage MC style)                      |         |
+| `tai-an`               | Tài An               | Northern Male (crisp, articulate, CD Media historical narration style)   |         |
+| `lac-phi`              | Lạc Phi              | Northern Female (expressive, movie review & narration style)             |         |
+| `my-tam`               | Mỹ Tâm               | Southern / Central Female (singer Mỹ Tâm tone, standard phonetics)       |         |
+| `my-tam-real`          | Mỹ Tâm Real          | Southern Female (singer Mỹ Tâm tone, authentic Southern intonation)      |         |
+| `adam`                 | Adam                 | International Male (ElevenLabs Adam voice reading Vietnamese)            |         |
 
 Each additional voice is downloaded and kept loaded in memory, so select only the voices you actually use.
 
