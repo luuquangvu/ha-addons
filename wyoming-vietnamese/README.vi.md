@@ -15,7 +15,10 @@ Giúp Assist của Home Assistant nghe và trả lời bằng tiếng Việt t�
 
 - **Gộp STT và TTS**: Cả hai dịch vụ dùng chung cổng Wyoming `10300`.
 - **Chạy nội bộ hoàn toàn**: Không cần tài khoản đám mây hay khóa API (API key). Âm thanh và văn bản không phải gửi tới dịch vụ bên ngoài trong quá trình sử dụng.
-- **20 giọng tiếng Việt**: Chọn một hoặc nhiều giọng; giọng đầu tiên trong cấu hình là giọng mặc định trong Assist.
+- **Linh hoạt 2 engine TTS (NghiTTS vs ZeroTTS)**:
+  - **Engine NghiTTS (`nghitts`)**: Sử dụng mô hình VITS NghiTTS chạy qua `sherpa-onnx` (22.05 kHz), tốc độ phản hồi cực nhanh, lý tưởng cho Raspberry Pi và phần cứng tiết kiệm điện.
+  - **Engine ZeroTTS (`zerotts`)**: Sử dụng mô hình ZeroTTS (GGUF Q8_0 + MOSS Codec 48 kHz qua runtime C++ GGML), chất lượng giọng đọc AI neural tự nhiên và biểu cảm vượt trội.
+- **Danh mục giọng đọc phong phú**: 20 giọng đọc NghiTTS và 8 giọng đọc ZeroTTS bao gồm miền Bắc, miền Nam, nam và nữ.
 - **Lưu mô hình cố định**: Mô hình chỉ tải một lần vào phân vùng `/data` của App, nên các lần khởi động sau nhanh hơn.
 - **Chế độ ngoại tuyến**: Sau khi tải đủ mô hình, dịch vụ có thể chạy hoàn toàn không cần Internet.
 - **Ngắt nghỉ tự nhiên theo chuẩn ngữ pháp**: Tự động căn chỉnh khoảng nghỉ giữa đoạn văn, câu và vế câu (dấu phẩy), giúp câu văn mạch lạc, không bị dồn chữ.
@@ -36,7 +39,7 @@ Giúp Assist của Home Assistant nghe và trả lời bằng tiếng Việt t�
 2. Theo dõi tab **Log** cho tới khi dịch vụ báo đã sẵn sàng.
 
 > [!IMPORTANT]
-> Sau khi thay đổi tùy chọn, hãy **khởi động lại (Restart)** App. Các tùy chọn chỉ được đọc khi tiến trình khởi động.
+> Sau khi thay đổi tùy chọn, hãy **khởi động lại (Restart)** App. Các tùy chọn chỉ được đọc khi tiến trình khởi động. Sau khi đổi `tts_engine`, bạn cần **tải lại (Reload)** tích hợp **Wyoming Protocol** trong Home Assistant (**Cài đặt > Thiết bị & dịch vụ > Wyoming Protocol > ⋮ > Tải lại**) để áp dụng engine mới và cập nhật danh sách giọng đọc.
 
 ### Bước 3: Tích hợp với Home Assistant
 
@@ -55,12 +58,20 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 
 ## Các Tùy chọn Cấu hình
 
-| Tùy chọn    | Mặc định                                                                    | Mô tả                                                                                                 |
-| ----------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | Một hoặc nhiều mã giọng, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định. |
-| `log_level` | `info`                                                                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                          |
+> [!NOTE]
+> Sau khi đổi `tts_engine`, hãy khởi động lại App và **tải lại (Reload)** tích hợp **Wyoming Protocol** trong Home Assistant (**Cài đặt > Thiết bị & dịch vụ > Wyoming Protocol > ⋮ > Tải lại**) để thay đổi và danh sách giọng đọc có hiệu lực.
+>
+> Đối với thiết bị cấu hình thấp (như Raspberry Pi hoặc phần cứng tiết kiệm điện), khuyến nghị chọn `tts_engine: nghitts` và chỉ cấu hình duy nhất **1 giọng đọc** trong `tts_voice` (ví dụ: `ngoc-huyen-moi`) để giảm tải RAM/CPU và giúp hệ thống hoạt động mượt mà nhất.
+
+| Tùy chọn     | Mặc định                                                                    | Mô tả                                                                                                                                 |
+| ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `tts_engine` | `nghitts`                                                                   | Engine phát giọng đọc: `nghitts` (NghiTTS qua sherpa-onnx) hoặc `zerotts` (ZeroTTS qua GGML).                                         |
+| `tts_voice`  | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | Một hoặc nhiều mã giọng của engine đã chọn, ngăn cách bằng dấu phẩy và/hoặc khoảng trắng. Mã đầu tiên là giọng mặc định trong Assist. |
+| `log_level`  | `info`                                                                      | Đặt `debug` khi cần xem nhật ký chi tiết để chẩn đoán sự cố.                                                                          |
 
 ### Các giọng có sẵn
+
+#### Bảng mã giọng đọc engine NghiTTS (22.05 kHz)
 
 | Mã giọng (`id`)        | Tên hiển thị         | Vùng miền / Đặc trưng                                                  | Mặc định |
 | :--------------------- | :------------------- | :--------------------------------------------------------------------- | :------: |
@@ -85,7 +96,20 @@ Hãy để **tắt** cho tới khi lần khởi động đầu tiên tải xong 
 | `my-tam-real`          | Mỹ Tâm Real          | Nữ miền Nam (giọng ca sĩ Mỹ Tâm, ngữ điệu miền Nam chân thực)          |          |
 | `adam`                 | adam                 | Nam quốc tế (chất giọng ElevenLabs Adam đọc tiếng Việt)                |          |
 
-Mỗi giọng thêm vào đều được tải về và giữ trong bộ nhớ, nên bạn chỉ nên chọn những giọng thực sự dùng đến.
+#### Bảng mã giọng đọc engine ZeroTTS (Neural 48 kHz)
+
+| Mã giọng (`id`) | Tên hiển thị | Giới tính / Vùng miền | Mặc định |
+| :-------------- | :----------- | :-------------------- | :------: |
+| `maichi`        | Mai Chi      | Nữ miền Bắc           |  **Có**  |
+| `baotrang`      | Bảo Trang    | Nữ miền Bắc           |          |
+| `giahuy`        | Gia Huy      | Nam miền Bắc          |          |
+| `hamy`          | Hà My        | Nữ miền Bắc           |          |
+| `huuduc`        | Hữu Đức      | Nam miền Bắc          |          |
+| `kimoanh`       | Kim Oanh     | Nữ miền Bắc           |          |
+| `quangminh`     | Quang Minh   | Nam miền Bắc          |          |
+| `tiendat`       | Tiến Đạt     | Nam miền Bắc          |          |
+
+Mỗi giọng thêm vào đều được tải về và giữ trong bộ nhớ, nên bạn chỉ nên chọn những giọng thực sự dùng đến. Với các thiết bị cấu hình yếu, chỉ nên chọn 1 giọng đọc cùng engine `nghitts` để đạt hiệu năng mượt mà và tối ưu tài nguyên nhất.
 
 ---
 
@@ -106,6 +130,7 @@ services:
       - "10300:10300"
     environment:
       WYOMING_PORT: 10300
+      TTS_ENGINE: "nghitts"
       TTS_VOICE: "ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
       LOG_LEVEL: "info"
     volumes:
@@ -123,6 +148,7 @@ volumes:
 docker run -d --name wyoming-vietnamese \
   --restart unless-stopped \
   -p 10300:10300 \
+  -e "TTS_ENGINE=nghitts" \
   -e "TTS_VOICE=ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong" \
   -e "LOG_LEVEL=info" \
   -v wyoming-vietnamese-cache:/app/.cache \
@@ -136,7 +162,7 @@ docker run -d --name wyoming-vietnamese \
 
 - **Không thêm được Wyoming trong Home Assistant**: Kiểm tra App đang chạy và cổng `10300` có thể truy cập được. Xem tab **Log** để tìm lỗi khởi động.
 - **App khởi động lâu ở lần đầu**: Mô hình STT và từng giọng được tải ở lần khởi động đầu tiên. Hãy giữ kết nối Internet cho tới khi nhật ký báo dịch vụ đã sẵn sàng.
-- **Đổi giọng nhưng Home Assistant vẫn đọc giọng cũ**: Đối chiếu mã giọng với bảng ở trên, khởi động lại App, rồi mở lại trang Trợ lý giọng nói hoặc chọn Tải lại (Reload) tích hợp Wyoming Protocol trong Home Assistant.
+- **Đổi giọng hoặc engine nhưng Home Assistant vẫn đọc giọng cũ**: Đối chiếu mã giọng với bảng ở trên, khởi động lại App, rồi mở lại trang Trợ lý giọng nói hoặc chọn **Tải lại (Reload)** tích hợp Wyoming Protocol trong Home Assistant (**Cài đặt > Thiết bị & dịch vụ > Wyoming Protocol > ⋮ > Tải lại**).
 
 ---
 

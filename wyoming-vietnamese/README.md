@@ -15,7 +15,10 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 
 - **Combined STT and TTS**: Both services are advertised on the shared Wyoming port `10300`.
 - **Fully Local**: No cloud account and no API key. Audio and text are not sent to a third-party service during use.
-- **20 Vietnamese Voices**: Select one or more voices; the first one configured is the default in Assist.
+- **Dual TTS Engine (NghiTTS vs ZeroTTS)**:
+  - **NghiTTS (`nghitts`)**: Fast VITS model (22.05 kHz) running via `sherpa-onnx`, highly optimized for low-power hardware like Raspberry Pi.
+  - **ZeroTTS (`zerotts`)**: Neural voice model (GGUF Q8_0 + MOSS Codec 48 kHz via GGML C++ runtime) delivering studio-quality natural phrasing and expression.
+- **Rich Voice Catalog**: 20 NghiTTS voices and 8 ZeroTTS voices covering Northern and Southern accents, male and female.
 - **Persistent Models**: Models are downloaded once into the App's `/data` storage, so later restarts are fast.
 - **Offline Mode**: Once every model is cached, the service can run without any Internet access.
 - **Natural Grammar-Aware Pacing**: Automatically adjusts pauses between paragraphs, sentences, and clauses (commas) for smooth, natural phrasing without rushed delivery.
@@ -36,7 +39,7 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 2. Watch the **Log** tab until the service reports that it is ready.
 
 > [!IMPORTANT]
-> Changing an option requires **restarting** the App. Options are applied at process start.
+> Changing an option requires **restarting** the App. Options are applied at process start. After changing `tts_engine`, the **Wyoming Protocol** integration in Home Assistant must also be **reloaded** (**Settings > Devices & Services > Wyoming Protocol > ⋮ > Reload**) to take effect and update the voice catalog.
 
 ### Step 3: Home Assistant Integration
 
@@ -55,12 +58,20 @@ Leave it **off** until the first start has finished downloading. The port is ope
 
 ## Configuration Options
 
-| Option      | Default                                                                     | Description                                                                                  |
-| ----------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `tts_voice` | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces. The first one is the default voice. |
-| `log_level` | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                         |
+> [!NOTE]
+> After changing `tts_engine`, restart the App and **reload** the **Wyoming Protocol** integration in Home Assistant (**Settings > Devices & Services > Wyoming Protocol > ⋮ > Reload**) so Home Assistant updates the voice catalog and applies the new engine.
+>
+> For low-end devices (e.g., Raspberry Pi or hardware with limited resources), choose `nghitts` with only **1 voice** in `tts_voice` (e.g., `ngoc-huyen-moi`) to reduce CPU/RAM usage and ensure the smoothest performance.
+
+| Option       | Default                                                                     | Description                                                                                                                    |
+| ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `tts_engine` | `nghitts`                                                                   | TTS engine to use: `nghitts` (NghiTTS via sherpa-onnx) or `zerotts` (ZeroTTS via GGML).                                        |
+| `tts_voice`  | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces for the selected engine. The first one is the default voice in Assist. |
+| `log_level`  | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                                                           |
 
 ### Available Voices
+
+#### NghiTTS Voices (22.05 kHz)
 
 | Voice ID (`id`)        | Display Name         | Region / Characteristics                                                 | Default |
 | :--------------------- | :------------------- | :----------------------------------------------------------------------- | :-----: |
@@ -85,7 +96,20 @@ Leave it **off** until the first start has finished downloading. The port is ope
 | `my-tam-real`          | Mỹ Tâm Real          | Southern Female (singer Mỹ Tâm tone, authentic Southern intonation)      |         |
 | `adam`                 | Adam                 | International Male (ElevenLabs Adam voice reading Vietnamese)            |         |
 
-Each additional voice is downloaded and kept loaded in memory, so select only the voices you actually use.
+#### ZeroTTS Voices (Neural 48 kHz)
+
+| Voice ID (`id`) | Display Name | Region / Characteristics | Default |
+| :-------------- | :----------- | :----------------------- | :-----: |
+| `maichi`        | Mai Chi      | Northern Female          | **Yes** |
+| `baotrang`      | Bảo Trang    | Northern Female          |         |
+| `giahuy`        | Gia Huy      | Northern Male            |         |
+| `hamy`          | Hà My        | Northern Female          |         |
+| `huuduc`        | Hữu Đức      | Northern Male            |         |
+| `kimoanh`       | Kim Oanh     | Northern Female          |         |
+| `quangminh`     | Quang Minh   | Northern Male            |         |
+| `tiendat`       | Tiến Đạt     | Northern Male            |         |
+
+Each additional voice is downloaded and kept loaded in memory, so select only the voices you actually use. On low-end devices, configure only 1 voice with `nghitts` for the smoothest performance and minimal CPU/RAM usage.
 
 ---
 
@@ -106,6 +130,7 @@ services:
       - "10300:10300"
     environment:
       WYOMING_PORT: 10300
+      TTS_ENGINE: "nghitts"
       TTS_VOICE: "ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
       LOG_LEVEL: "info"
     volumes:
@@ -123,6 +148,7 @@ volumes:
 docker run -d --name wyoming-vietnamese \
   --restart unless-stopped \
   -p 10300:10300 \
+  -e "TTS_ENGINE=nghitts" \
   -e "TTS_VOICE=ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong" \
   -e "LOG_LEVEL=info" \
   -v wyoming-vietnamese-cache:/app/.cache \
@@ -136,7 +162,7 @@ docker run -d --name wyoming-vietnamese \
 
 - **Wyoming cannot be added in Home Assistant**: Confirm the App is running and that port `10300` is reachable. Check the **Log** tab for startup errors.
 - **The App stays busy on first start**: The STT model and each voice are downloaded on the first start. Keep the Internet connection available until the log reports that the service is ready.
-- **Home Assistant still uses the old voice**: Verify the voice ID against the table above, restart the App, then reload the Voice assistants page or reload the Wyoming Protocol integration in Home Assistant.
+- **Home Assistant still uses the old voice or engine**: Verify the voice ID against the table above, restart the App, then reload the Voice assistants page or reload the **Wyoming Protocol** integration in Home Assistant (**Settings > Devices & Services > Wyoming Protocol > ⋮ > Reload**).
 
 ---
 

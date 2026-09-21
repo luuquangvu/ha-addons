@@ -13,6 +13,7 @@ PROGRAM_MODULE = "wyoming_vietnamese"
 
 # Add-on option name -> environment variable read by wyoming_vietnamese.config.
 OPTION_ENV_NAMES: dict[str, str] = {
+    "tts_engine": "TTS_ENGINE",
     "tts_voice": "TTS_VOICE",
     "log_level": "LOG_LEVEL",
 }

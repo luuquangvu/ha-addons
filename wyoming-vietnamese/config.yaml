@@ -18,8 +18,10 @@ environment:
   DOWNLOAD_DIR: /data/models
   WYOMING_PORT: "10300"
 options:
+  tts_engine: nghitts
   tts_voice: ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong
   log_level: info
 schema:
+  tts_engine: list(nghitts|zerotts)
   tts_voice: str
   log_level: list(debug|info|warning|error|critical)
