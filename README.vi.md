@@ -13,7 +13,7 @@ Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](gemini-fastapi/README.vi.md)
 
 - **Giọng nói tiếng Việt cho Home Assistant (Wyoming Vietnamese)**
-  - Mang giọng nói tiếng Việt đến Assist mà vẫn chạy hoàn toàn trên thiết bị của bạn. App cung cấp cả nhận diện giọng nói và tổng hợp giọng nói qua một cổng Wyoming Protocol duy nhất, với 20 giọng tiếng Việt, không cần tài khoản đám mây và không cần API key.
+  - Mang giọng nói tiếng Việt đến Assist mà vẫn chạy hoàn toàn trên thiết bị của bạn. App cung cấp cả nhận diện giọng nói và tổng hợp giọng nói qua một cổng Wyoming Protocol duy nhất, với 28 giọng đọc tiếng Việt qua 2 engine thế hệ mới (NghiTTS & ZeroTTS), không cần tài khoản đám mây và không cần API key.
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](wyoming-vietnamese/README.vi.md)
 
 ## Hướng dẫn Cài đặt
@@ -49,7 +49,7 @@ Nhấp vào nút bên dưới để tự động thêm kho lưu trữ vào Assis
 - **Hỗ trợ**: Báo lỗi hoặc đóng góp ý kiến qua [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
 - **Lời cảm ơn**:
   - **Gemini FastAPI**: Xây dựng dựa trên dự án [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API).
-  - **Wyoming Vietnamese**: Sử dụng mô hình và thư viện từ [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) và [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
+  - **Wyoming Vietnamese**: Sử dụng mô hình và thư viện từ [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [zeroweight-ai/ZeroTTS](https://github.com/zeroweight-ai/ZeroTTS), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) và [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
 
 ## Giấy phép
 

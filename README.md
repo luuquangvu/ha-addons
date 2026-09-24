@@ -13,7 +13,7 @@ Integrate advanced AI capabilities into your Home Assistant instance. This repos
   - **📖 Detailed Documentation:** [Read the full guide here →](gemini-fastapi/README.md)
 
 - **Vietnamese Voice for Home Assistant (Wyoming Vietnamese)**
-  - Give Assist a Vietnamese voice that runs entirely on your own hardware. This App serves both speech-to-text and text-to-speech over a single Wyoming Protocol port, with 20 Vietnamese voices, no cloud account, and no API key.
+  - Give Assist a Vietnamese voice that runs entirely on your own hardware. This App serves both speech-to-text and text-to-speech over a single Wyoming Protocol port, with 28 Vietnamese voices across 2 next-gen engines (NghiTTS & ZeroTTS), no cloud account, and no API key.
   - **📖 Detailed Documentation:** [Read the full guide here →](wyoming-vietnamese/README.md)
 
 ## Installation Guide
@@ -49,7 +49,7 @@ Click the button below to automatically add the repository to your Assistant:
 - **Support**: Report issues or contribute via [GitHub Issues](https://github.com/luuquangvu/ha-addons/issues).
 - **Credits**:
   - **Gemini FastAPI**: Built upon the [HanaokaYuzu/Gemini-API](https://github.com/HanaokaYuzu/Gemini-API) project.
-  - **Wyoming Vietnamese**: Powered by models and libraries from [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), and the [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
+  - **Wyoming Vietnamese**: Powered by models and libraries from [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts), [zeroweight-ai/ZeroTTS](https://github.com/zeroweight-ai/ZeroTTS), [hynt](https://huggingface.co/hynt), [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), and the [Wyoming Protocol](https://github.com/OHF-Voice/wyoming).
 
 ## License
 
