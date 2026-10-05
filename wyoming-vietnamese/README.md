@@ -15,12 +15,28 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 
 - **All-in-One STT & TTS**: Combines both speech-to-text and text-to-speech over a single Wyoming Protocol port (`10300`), saving system resources and simplifying Home Assistant configuration.
 - **100% Local & Privacy First**: All voice commands, recognition, and smart home responses are processed locally without cloud dependencies, API fees, or external data transmission.
+- **Dual High-Quality STT Engines**:
+  - **Zipformer Engine (`stt_engine: zipformer` - Default)**: Built on `hynt/Zipformer-30M-RNNT-6000h` (30M parameters) via `sherpa-onnx`. Ultra-lightweight with near-instant recognition latency and minimal resource consumption, ideal for Raspberry Pi 4/5 and NAS.
+  - **Gipformer Engine (`stt_engine: gipformer`)**: Built on `g-group-ai-lab/gipformer1.5-68M-rnnt` (68M parameters) via `sherpa-onnx`. Delivers state-of-the-art (SOTA) accuracy with superior noise robustness, excelling at real-world conversations and diverse Northern, Central, and Southern dialects.
 - **Dual Next-Gen TTS Engines**:
   - **NghiTTS Engine (`tts_engine: nghitts`)**: Built on the VITS architecture (22.05 kHz) powered by the highly optimized C++ `sherpa-onnx` runtime. Sub-second response latency (< 0.2s) with minimal resource consumption, ideal for Raspberry Pi 4/5 and low-power hardware.
   - **ZeroTTS Engine (`tts_engine: zerotts`)**: Utilizes the ZeroTTS neural speech language model (GGUF Q8_0 format) with MOSS Audio Codec 48 kHz via C++ GGML runtime. Delivers studio-grade audio quality, vivid expression, and human-like natural phrasing.
 - **Rich Library of 28 Voices**: 20 NghiTTS voices and 8 ZeroTTS voices covering Northern, Central, and Southern accents, male and female, suited for voice assistants, news broadcasters, narrators, and audiobooks.
 - **Natural Grammar-Aware Pacing**: Automatically detects sentence and clause boundaries (periods, commas, colons) and paragraph breaks to apply appropriate pauses, ensuring smooth, fluent delivery.
 - **Persistent Model Storage & Offline Ready**: Automatically downloads and verifies models (SHA-256) on first start into persistent `/data` storage, ready for long-term offline operation without an ongoing Internet connection.
+
+---
+
+## Quick Comparison: STT Engines
+
+| Criteria                  | Zipformer Engine (`zipformer` - Default)                 | Gipformer Engine (`gipformer`)                                                                   |
+| :------------------------ | :------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| **Model**                 | `hynt/Zipformer-30M-RNNT-6000h`                          | `g-group-ai-lab/gipformer1.5-68M-rnnt`                                                           |
+| **Core Architecture**     | Zipformer Transducer (INT8 ONNX) via `sherpa-onnx`       | Zipformer Transducer (INT8 ONNX) via `sherpa-onnx`                                               |
+| **Parameter Count**       | 30 million (30M)                                         | 68 million (68M)                                                                                 |
+| **Recognition Speed**     | Ultra-fast, minimal latency                              | Fast, smooth on modern hardware                                                                  |
+| **Recognition Qualities** | Extremely lightweight, standard smart home command vocab | SOTA accuracy, outstanding noise robustness, excels at real-life conversation and local dialects |
+| **Hardware Requirements** | Optimized for Raspberry Pi 4/5, Mini PC, NAS             | Well-suited for Raspberry Pi 5, x86 Mini PC, home servers                                        |
 
 ---
 
@@ -47,7 +63,7 @@ Let Home Assistant Assist listen and answer in natural Vietnamese, entirely insi
 
 ### Step 2: First Start
 
-1. Click **Start**. The first start needs Internet access and may take several minutes while the STT model and the selected voices are downloaded.
+1. Click **Start**. The first start needs Internet access and may take several minutes while the selected STT model and TTS voices are downloaded.
 2. Watch the **Log** tab until the service reports that it is ready.
 
 > [!IMPORTANT]
@@ -77,6 +93,7 @@ Leave it **off** until the first start has finished downloading. The port is ope
 
 | Option       | Default                                                                     | Description                                                                                                                    |
 | ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `stt_engine` | `zipformer`                                                                 | Speech-to-text (STT) engine: `zipformer` (30M, ultra-lightweight) or `gipformer` (Gipformer 1.5 68M SOTA).                     |
 | `tts_engine` | `nghitts`                                                                   | TTS engine to use: `nghitts` (NghiTTS via sherpa-onnx) or `zerotts` (ZeroTTS via GGML).                                        |
 | `tts_voice`  | `ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong` | One or more voice IDs separated by commas and/or spaces for the selected engine. The first one is the default voice in Assist. |
 | `log_level`  | `info`                                                                      | Use `debug` for detailed logs while troubleshooting.                                                                           |
@@ -142,6 +159,7 @@ services:
       - "10300:10300"
     environment:
       WYOMING_PORT: 10300
+      STT_ENGINE: "zipformer"
       TTS_ENGINE: "nghitts"
       TTS_VOICE: "ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong"
       LOG_LEVEL: "info"
@@ -161,6 +179,7 @@ docker run -d \
   --name wyoming-vietnamese \
   --restart unless-stopped \
   -p 10300:10300 \
+  -e STT_ENGINE="zipformer" \
   -e TTS_ENGINE="nghitts" \
   -e TTS_VOICE="ngoc-huyen-moi, duy-onyx-moi, thanh-phuong-viettel, ngoc-ngan, mai-phuong" \
   -v wyoming-vietnamese-cache:/app/.cache \
@@ -198,9 +217,9 @@ docker compose up --build -d
 
 ### 2. App takes long or exits on first start
 
-- **Check Internet Connection**: On first start, Internet access is required to download the STT Zipformer model and configured TTS voices (typically 1 to 3 minutes depending on network speed).
+- **Check Internet Connection**: On first start, Internet access is required to download the selected STT model (Zipformer or Gipformer) and configured TTS voices (typically 1 to 3 minutes depending on network speed).
 - **Monitor Download Progress**: Check the **Log** tab in real-time to follow file downloads and SHA-256 integrity verification.
-- **Hardware Limitations**: If the system has limited RAM (< 2 GB), select `tts_engine: nghitts` and configure only 1 or 2 essential voices to conserve memory.
+- **Hardware Limitations**: If the system has limited RAM (< 2 GB), select `stt_engine: zipformer`, `tts_engine: nghitts`, and configure only 1 or 2 essential voices to conserve memory.
 
 ### 3. Changed `tts_voice` but Home Assistant does not show new voices
 
@@ -218,6 +237,7 @@ Built upon excellent open-source projects:
 
 - [nghimestudio/nghitts](https://github.com/nghimestudio/nghitts): High-quality Vietnamese text-to-speech voice models for `nghitts`.
 - [zeroweight-ai/ZeroTTS](https://github.com/zeroweight-ai/ZeroTTS): ZeroTTS neural speech language models and C++ GGML runtime for `zerotts`.
-- [hynt](https://huggingface.co/hynt): Vietnamese speech-to-text recognition model `Zipformer-30M-RNNT-6000h`.
+- [hynt](https://huggingface.co/hynt): Vietnamese speech-to-text recognition model `Zipformer-30M-RNNT-6000h` (STT).
+- [g-group-ai-lab](https://huggingface.co/g-group-ai-lab): Vietnamese speech-to-text recognition model `gipformer1.5-68M-rnnt` (STT).
 - [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx): Highly optimized offline inference engine for STT and TTS.
 - [Wyoming Protocol](https://github.com/OHF-Voice/wyoming): Open voice assistant protocol for the Home Assistant ecosystem.
