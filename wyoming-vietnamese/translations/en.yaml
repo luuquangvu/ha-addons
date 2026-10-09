@@ -1,0 +1,15 @@
+configuration:
+  stt_engine:
+    name: Speech-to-text engine
+    description: "Speech-to-text (STT) engine: zipformer (30M, ultra-lightweight) or gipformer (Gipformer 1.5 68M SOTA)."
+  tts_engine:
+    name: Text-to-speech engine
+    description: "Text-to-speech (TTS) engine: nghitts (NghiTTS via sherpa-onnx) or zerotts (ZeroTTS via GGML)."
+  tts_voice:
+    name: Text-to-speech voices
+    description: "One or more voice IDs separated by commas or spaces for the selected engine. The first voice is the default in Assist."
+  log_level:
+    name: Log level
+    description: "Logging level for the add-on. Set to debug for detailed troubleshooting logs."
+network:
+  10300/tcp: Wyoming STT/TTS protocol port

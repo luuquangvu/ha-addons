@@ -1,0 +1,2 @@
+network:
+  8000/tcp: Cổng API tương thích OpenAI

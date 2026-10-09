@@ -1,0 +1,15 @@
+configuration:
+  stt_engine:
+    name: Engine nhận diện giọng nói (STT)
+    description: "Engine nhận diện giọng nói (STT): zipformer (30M, siêu nhẹ) hoặc gipformer (Gipformer 1.5 68M SOTA)."
+  tts_engine:
+    name: Engine phát giọng đọc (TTS)
+    description: "Engine phát giọng đọc (TTS): nghitts (NghiTTS qua sherpa-onnx) hoặc zerotts (ZeroTTS qua GGML)."
+  tts_voice:
+    name: Giọng đọc TTS
+    description: "Một hoặc nhiều mã giọng của engine đã chọn, phân tách bằng dấu phẩy hoặc khoảng trắng. Mã đầu tiên là giọng mặc định trong Assist."
+  log_level:
+    name: Mức độ ghi nhật ký
+    description: "Mức độ ghi nhật ký hoạt động. Đặt debug khi cần theo dõi chi tiết để chẩn đoán lỗi."
+network:
+  10300/tcp: Cổng dịch vụ Wyoming STT/TTS

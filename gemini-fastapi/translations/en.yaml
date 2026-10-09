@@ -1,0 +1,2 @@
+network:
+  8000/tcp: OpenAI-compatible API port
