@@ -13,6 +13,18 @@ from functools import partial
 
 import yaml
 
+CALLOUT_NOTE = (
+    "> [!NOTE]\n"
+    ">\n"
+    "> If you find this addon useful, please consider giving it a ⭐ on"
+    " [GitHub](https://github.com/luuquangvu/ha-addons) to support my work"
+    " and help others discover it. Thank you very much! ❤️\n"
+    ">\n"
+    "> Nếu bạn thấy addon này hữu ích, hãy cân nhắc cho nó 1 ⭐ trên"
+    " [GitHub](https://github.com/luuquangvu/ha-addons) để nhiều người biết"
+    " đến và sử dụng nó hơn nhé. Cảm ơn rất nhiều! ❤️"
+)
+
 
 def get_env(name):
     """Return the named environment variable, exiting with a GitHub Actions error if unset."""
@@ -214,14 +226,23 @@ def main():
         f"- Cập nhật phiên bản lên {upstream_ver}\n\n"
     )
 
-    if "# Changelog" in old_content:
-        parts = old_content.split("\n", 1)
-        header = parts[0]
-        rest = parts[1] if len(parts) > 1 else ""
-        rest = rest.removeprefix("\n")
-        final_content = f"{header}\n\n{new_entry}{rest}"
+    content = old_content.strip()
+    if not content:
+        final_content = f"# Changelog\n\n{CALLOUT_NOTE}\n\n{new_entry}"
     else:
-        final_content = f"# Changelog\n\n{new_entry}{old_content}"
+        if "> [!NOTE]" not in content:
+            if "# Changelog" in content:
+                content = content.replace("# Changelog", f"# Changelog\n\n{CALLOUT_NOTE}", 1)
+            else:
+                content = f"# Changelog\n\n{CALLOUT_NOTE}\n\n{content}"
+
+        match = re.search(r"^## ", content, re.MULTILINE)
+        if match:
+            header = content[: match.start()].rstrip()
+            rest = content[match.start() :]
+            final_content = f"{header}\n\n{new_entry}{rest}"
+        else:
+            final_content = f"{content.rstrip()}\n\n{new_entry}"
 
     changelog_path.write_text(final_content, encoding="utf-8")
     print(f"Updated CHANGELOG.md with version {new_ver}")
