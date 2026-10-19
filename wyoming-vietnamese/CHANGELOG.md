@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.24 - 2026-10-19
+
+- Update version to 20261018-dfa5aa2
+- Cập nhật phiên bản lên 20261018-dfa5aa2
+
 ## 1.0.23 - 2026-10-14
 
 - Update version to 20261014-ac2203a
