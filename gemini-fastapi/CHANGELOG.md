@@ -1,10 +1,7 @@
 # Changelog
 
 > [!NOTE]
->
 > If you find this addon useful, please consider giving it a ⭐ on [GitHub](https://github.com/luuquangvu/ha-addons) to support my work and help others discover it. Thank you very much! ❤️
->
-> Nếu bạn thấy addon này hữu ích, hãy cân nhắc cho nó 1 ⭐ trên [GitHub](https://github.com/luuquangvu/ha-addons) để nhiều người biết đến và sử dụng nó hơn nhé. Cảm ơn rất nhiều! ❤️
 
 ## 1.0.120 - 2026-10-18
 
