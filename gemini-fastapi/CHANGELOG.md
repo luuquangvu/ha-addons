@@ -3,6 +3,11 @@
 > [!NOTE]
 > If you find this addon useful, please consider giving it a ⭐ on [GitHub](https://github.com/luuquangvu/ha-addons) to support my work and help others discover it. Thank you very much! ❤️
 
+## 1.0.122 - 2026-10-30
+
+- Update version to 20261029-323aa90
+- Cập nhật phiên bản lên 20261029-323aa90
+
 ## 1.0.121 - 2026-10-28
 
 - Update version to 20261028-1ff566c
