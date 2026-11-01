@@ -12,10 +12,8 @@ LABEL \
   io.hass.description="Vietnamese speech-to-text and text-to-speech over the Wyoming protocol." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.28"
+  io.hass.version="1.0.29"
 
-# tally ignore=hadolint/DL3057
-# tally ignore=hadolint/DL3002
 USER root
 
 WORKDIR /app

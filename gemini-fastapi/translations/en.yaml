@@ -1,2 +1,25 @@
+configuration:
+  api_key:
+    name: API key
+    description: "Optional token required by API clients. Leave empty to disable authentication."
+  clients:
+    name: Gemini accounts
+    description: "One or more Gemini accounts. Add accounts to spread requests across them. Each account needs both the __Secure-1PSID and __Secure-1PSIDTS cookies. With no account configured, the App runs in guest mode."
+    fields:
+      id:
+        name: Client ID
+        description: "Optional. Leave empty to derive a stable ID from the account cookie. Set it explicitly for a readable name or to pin an account."
+      secure_1psid:
+        name: Secure 1PSID cookie
+        description: "Required together with Secure 1PSIDTS. The __Secure-1PSID cookie value from gemini.google.com."
+      secure_1psidts:
+        name: Secure 1PSIDTS cookie
+        description: "Required together with Secure 1PSID. The __Secure-1PSIDTS cookie value from gemini.google.com. Gemini cannot sign in with only one of the two cookies."
+      proxy:
+        name: Proxy URL
+        description: "Optional proxy for this account, for example socks5://127.0.0.1:1080. Leave empty for a direct connection."
+  log_level:
+    name: Log level
+    description: "Logging level for the add-on. Set to debug for detailed troubleshooting logs."
 network:
   8000/tcp: OpenAI-compatible API port

@@ -9,7 +9,7 @@ Integrate advanced AI capabilities into your Home Assistant instance. This repos
 ## Repository Contents
 
 - **Google Gemini for Home Assistant (Gemini FastAPI)**
-  - Integrate **Google Gemini** into your smart home for free. This OpenAI-compatible API bridge uses browser session cookies, eliminating the need for Google Cloud API keys. It enables conversation history, multimodal processing, and real-time answers via Google Search directly within Home Assistant Assist.
+  - Integrate **Google Gemini** into your smart home for free. This OpenAI-compatible API bridge uses browser session cookies, eliminating the need for Google Cloud API keys. It enables conversation history, multimodal processing, real-time answers via Google Search, and multiple Gemini accounts for load balancing directly within Home Assistant Assist.
   - **📖 Detailed Documentation:** [Read the full guide here →](gemini-fastapi/README.md)
 
 - **Vietnamese Voice for Home Assistant (Wyoming Vietnamese)**
@@ -35,7 +35,7 @@ Click the button below to automatically add the repository to your Assistant:
 5. The available Apps will now appear in the store for installation.
 
 > [!TIP]
-> Configuration and first-start behavior depend on the App (e.g., **Gemini FastAPI** generates default configuration files on initial launch, while **Wyoming Vietnamese** downloads speech and voice models on its first run). Please consult each App's individual documentation for specific instructions.
+> Configuration and first-start behavior depend on the App (e.g., **Gemini FastAPI** is configured from the App's **Configuration** tab, while **Wyoming Vietnamese** downloads speech and voice models on its first run). Please consult each App's individual documentation for specific instructions.
 
 ## Maintenance
 

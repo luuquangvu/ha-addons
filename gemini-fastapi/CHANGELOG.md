@@ -3,6 +3,23 @@
 > [!NOTE]
 > If you find this addon useful, please consider giving it a ⭐ on [GitHub](https://github.com/luuquangvu/ha-addons) to support my work and help others discover it. Thank you very much! ❤️
 
+## 1.0.123 - 2026-11-01
+
+- **Configuration is now in the App's Configuration tab.** You no longer need to edit `config.yaml`. Enter your cookies and API key in the App.
+- **Cấu hình giờ nằm trong tab Cấu hình của App.** Bạn không cần chỉnh sửa `config.yaml` nữa. Hãy nhập cookie và API key ngay trong App.
+- **One-time migration.** On the first start after updating, the App removes the old `/homeassistant/gemini-fastapi/config` folder and moves your conversations to its own `/data` storage. If no account is configured yet, the App starts in guest mode: add your cookies and API key in the Configuration tab and restart it.
+- **Di chuyển một lần.** Ở lần khởi động đầu tiên sau khi cập nhật, App sẽ xóa thư mục cấu hình cũ `/homeassistant/gemini-fastapi/config` và chuyển hội thoại sang vùng lưu trữ `/data` riêng. Nếu chưa có tài khoản, App sẽ khởi động ở chế độ khách: hãy nhập cookie và API key trong tab Cấu hình rồi khởi động lại.
+- **Multiple Gemini accounts.** Add more than one account to share requests and reduce rate limits. Each account can use its own proxy.
+- **Nhiều tài khoản Gemini.** Thêm nhiều tài khoản để chia sẻ yêu cầu và giảm giới hạn tần suất. Mỗi tài khoản có thể dùng proxy riêng.
+- **Both cookies are required.** Each account needs `__Secure-1PSID` and `__Secure-1PSIDTS`. With no account, the App runs in guest mode: text works, but there is no conversation history, file uploads, or model choice.
+- **Bắt buộc cả hai cookie.** Mỗi tài khoản cần `__Secure-1PSID` và `__Secure-1PSIDTS`. Nếu chưa có tài khoản, App chạy ở chế độ khách: vẫn trả lời văn bản nhưng không có lịch sử hội thoại, không tải tệp lên và không chọn được mô hình.
+- **Automatic client IDs are based on the account cookie.** They stay the same when you reorder or remove accounts, but change if the `1PSID` cookie changes. To keep an old conversation, set its previous client ID (for example `client-id-1`) explicitly.
+- **ID client tự động dựa trên cookie tài khoản.** ID không đổi khi bạn đổi thứ tự hoặc xóa tài khoản, nhưng sẽ đổi nếu cookie `1PSID` thay đổi. Để giữ hội thoại cũ, hãy đặt rõ ID client trước đây (ví dụ `client-id-1`).
+- **Only the options in the Configuration tab can be changed.** Other upstream `config.yaml` settings use their defaults.
+- **Chỉ các tùy chọn trong tab Cấu hình là có thể thay đổi.** Các cài đặt khác trong `config.yaml` của upstream sẽ dùng giá trị mặc định.
+- **`/homeassistant` is only used for this one-time migration.** If it is unavailable, the App still starts and tries again next time.
+- **`/homeassistant` chỉ được dùng cho lần di chuyển một lần này.** Nếu không khả dụng, App vẫn khởi động và thử lại ở lần sau.
+
 ## 1.0.122 - 2026-10-30
 
 - Update version to 20261029-323aa90

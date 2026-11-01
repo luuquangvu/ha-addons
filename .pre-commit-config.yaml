@@ -29,6 +29,13 @@ repos:
         pass_filenames: false
         always_run: true
 
+      - id: unittest
+        name: Run Unit Tests
+        entry: uv run python -m unittest discover -s tests
+        language: system
+        pass_filenames: false
+        always_run: true
+
       - id: interrogate
         name: Run Interrogate
         entry: uv run interrogate

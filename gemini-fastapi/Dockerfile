@@ -12,21 +12,13 @@ LABEL \
   io.hass.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.122"
+  io.hass.version="1.0.123"
 
-# tally ignore=hadolint/DL3057
-# tally ignore=hadolint/DL3002
 USER root
 
 WORKDIR /app
 
-RUN <<EOF
-set -eux
-/app/.venv/bin/python -m ensurepip --upgrade
-/app/.venv/bin/python -m pip install --no-cache-dir ruamel.yaml
-EOF
-
 COPY --chmod=755 scripts/run.sh /app/run.sh
-COPY scripts/merge_config.py /app/merge_config.py
+COPY scripts/apply_options.py /app/apply_options.py
 
 CMD ["/app/run.sh"]

@@ -1,21 +1,51 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="/homeassistant/gemini-fastapi"
-CONFIG_DIR="${BASE_DIR}/config"
-DATA_DIR="${BASE_DIR}/data"
-CACHE_DIR="/data/cache"
-APP_CONFIG_DIR="/app/config"
-APP_DATA_DIR="/app/data"
-CONFIG_FILE="config.yaml"
-ORIGINAL_CONFIG_FILE="config.yaml.default"
-CONFIG_BACKUP_FILE="config.yaml.bak"
+HOMEASSISTANT_DIR="${HOMEASSISTANT_DIR:-/homeassistant}"
+LEGACY_DIR="${LEGACY_DIR:-${HOMEASSISTANT_DIR}/gemini-fastapi}"
+LEGACY_CONFIG_DIR="${LEGACY_CONFIG_DIR:-${LEGACY_DIR}/config}"
+LEGACY_DATA_DIR="${LEGACY_DATA_DIR:-${LEGACY_DIR}/data}"
+MIGRATION_MARKER="${MIGRATION_MARKER:-/data/.homeassistant-migrated}"
+DATA_DIR="${DATA_DIR:-/data/storage}"
+APP_DIR="${APP_DIR:-/app}"
+APP_DATA_DIR="${APP_DATA_DIR:-${APP_DIR}/data}"
+PYTHON="${PYTHON:-python}"
+RUN_SCRIPT="${RUN_SCRIPT:-${APP_DIR}/apply_options.py}"
 
 echo "[INFO] Starting Gemini FastAPI App..."
 
-mkdir -p "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}"
-chown -R "$(id -u):$(id -g)" "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}" || true
-chmod -R 755 "${CONFIG_DIR}" "${DATA_DIR}" "${CACHE_DIR}" || true
+mkdir -p "${DATA_DIR}"
+
+# The homeassistant_config mount is used only to retire the old layout.
+# Conversation data is copied before the old config is removed, and an existing
+# /data/storage is never overwritten, so a failed or repeated migration cannot
+# discard the current conversation store.
+if [ ! -f "${MIGRATION_MARKER}" ]; then
+  if [ -d "${HOMEASSISTANT_DIR}" ]; then
+    migration_complete=1
+
+    if [ -d "${LEGACY_DATA_DIR}" ]; then
+      if [ -z "$(ls -A "${DATA_DIR}")" ]; then
+        echo "[INFO] Moving conversation data from ${LEGACY_DATA_DIR} to ${DATA_DIR}..."
+        cp -a "${LEGACY_DATA_DIR}/." "${DATA_DIR}/"
+        rm -rf -- "${LEGACY_DATA_DIR}"
+      else
+        echo "[WARN] ${DATA_DIR} already contains data; not overwriting it with ${LEGACY_DATA_DIR}. Remove or move the legacy data folder to finish the migration." >&2
+        migration_complete=0
+      fi
+    fi
+
+    if [ "${migration_complete}" -eq 1 ]; then
+      if [ -e "${LEGACY_CONFIG_DIR}" ] || [ -L "${LEGACY_CONFIG_DIR}" ]; then
+        echo "[INFO] Removing legacy configuration directory ${LEGACY_CONFIG_DIR}; settings now live in the Configuration tab."
+        rm -rf -- "${LEGACY_CONFIG_DIR}"
+      fi
+      : > "${MIGRATION_MARKER}"
+    fi
+  else
+    echo "[WARN] ${HOMEASSISTANT_DIR} is not available; the one-time migration runs on a later start." >&2
+  fi
+fi
 
 link_dir() {
   local source="$1"
@@ -44,25 +74,8 @@ link_dir() {
   ln -s "${source}" "${target}"
 }
 
-if [ -d "${APP_CONFIG_DIR}" ] && [ ! -L "${APP_CONFIG_DIR}" ] && [ -z "$(ls -A "${CONFIG_DIR}")" ]; then
-  echo "[INFO] Initializing ${CONFIG_DIR} with default files from ${APP_CONFIG_DIR}..."
-  cp -a "${APP_CONFIG_DIR}/." "${CONFIG_DIR}/"
-fi
-
-if [ -f "${APP_CONFIG_DIR}/${CONFIG_FILE}" ] && [ ! -L "${APP_CONFIG_DIR}" ]; then
-  echo "[INFO] Merging config defaults into user config..."
-  python /app/merge_config.py \
-    --default "${APP_CONFIG_DIR}/${CONFIG_FILE}" \
-    --user "${CONFIG_DIR}/${CONFIG_FILE}" \
-    --state "${CONFIG_DIR}/${ORIGINAL_CONFIG_FILE}" \
-    --backup "${CONFIG_DIR}/${CONFIG_BACKUP_FILE}"
-else
-  echo "[WARN] Default config ${APP_CONFIG_DIR}/${CONFIG_FILE} not found; skipping config merge."
-fi
-
-link_dir "${CONFIG_DIR}" "${APP_CONFIG_DIR}"
 link_dir "${DATA_DIR}" "${APP_DATA_DIR}"
 
 echo "[INFO] Launching application..."
-cd /app
-exec python run.py
+cd "${APP_DIR}"
+exec "${PYTHON}" "${RUN_SCRIPT}"

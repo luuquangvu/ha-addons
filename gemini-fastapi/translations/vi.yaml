@@ -1,2 +1,25 @@
+configuration:
+  api_key:
+    name: API key
+    description: "Token tùy chọn mà các ứng dụng dùng API phải gửi kèm. Để trống nếu không muốn xác thực."
+  clients:
+    name: Tài khoản Gemini
+    description: "Một hoặc nhiều tài khoản Gemini. Thêm tài khoản để phân tán yêu cầu. Mỗi tài khoản cần cả cookie __Secure-1PSID và __Secure-1PSIDTS. Nếu không có tài khoản nào, App sẽ chạy ở chế độ khách."
+    fields:
+      id:
+        name: ID client
+        description: "Tùy chọn. Để trống để tạo ID ổn định từ cookie tài khoản. Đặt rõ nếu muốn tên dễ đọc hoặc cần ghim tài khoản."
+      secure_1psid:
+        name: Cookie Secure 1PSID
+        description: "Bắt buộc cùng với Secure 1PSIDTS. Giá trị cookie __Secure-1PSID lấy từ gemini.google.com."
+      secure_1psidts:
+        name: Cookie Secure 1PSIDTS
+        description: "Bắt buộc cùng với Secure 1PSID. Giá trị cookie __Secure-1PSIDTS lấy từ gemini.google.com. Gemini không thể đăng nhập nếu chỉ có một trong hai cookie."
+      proxy:
+        name: URL proxy
+        description: "Proxy tùy chọn cho tài khoản này, ví dụ socks5://127.0.0.1:1080. Để trống để kết nối trực tiếp."
+  log_level:
+    name: Mức độ ghi nhật ký
+    description: "Mức độ ghi nhật ký hoạt động. Đặt debug khi cần theo dõi chi tiết để chẩn đoán lỗi."
 network:
   8000/tcp: Cổng API tương thích OpenAI

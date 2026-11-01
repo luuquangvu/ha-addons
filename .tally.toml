@@ -1,0 +1,2 @@
+[rules]
+exclude = ["hadolint/DL3002", "hadolint/DL3057"]

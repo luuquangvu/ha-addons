@@ -6,16 +6,7 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
 [dependency-groups]
-dev = [
-  "interrogate",
-  "prek",
-  "pyright",
-  "PyYAML",
-  "ruamel.yaml",
-  "ruff",
-  "tally-cli",
-  "ty",
-]
+dev = ["interrogate", "prek", "pyright", "PyYAML", "ruff", "tally-cli", "ty"]
 
 [tool.ruff]
 line-length = 100

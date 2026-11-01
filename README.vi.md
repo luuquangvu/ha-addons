@@ -9,7 +9,7 @@ Tích hợp các công nghệ trí tuệ nhân tạo tiên tiến vào hệ sinh
 ## Nội dung Kho lưu trữ
 
 - **Google Gemini cho Home Assistant (Gemini FastAPI)**
-  - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một cổng API tương thích với OpenAI sử dụng session cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng Google Cloud API key. Ứng dụng hỗ trợ ghi nhớ lịch sử hội thoại, xử lý đa phương thức và cung cấp câu trả lời thời gian thực với Google Search ngay trong Home Assistant Assist.
+  - Tích hợp **Google Gemini** vào nhà thông minh hoàn toàn miễn phí. Đây là một cổng API tương thích với OpenAI sử dụng session cookie trình duyệt, giúp loại bỏ nhu cầu sử dụng Google Cloud API key. Ứng dụng hỗ trợ ghi nhớ lịch sử hội thoại, xử lý đa phương thức, cung cấp câu trả lời thời gian thực với Google Search và hỗ trợ nhiều tài khoản Gemini để cân bằng tải ngay trong Home Assistant Assist.
   - **📖 Hướng dẫn Chi tiết:** [Xem hướng dẫn đầy đủ tại đây →](gemini-fastapi/README.vi.md)
 
 - **Giọng nói tiếng Việt cho Home Assistant (Wyoming Vietnamese)**
@@ -35,7 +35,7 @@ Nhấp vào nút bên dưới để tự động thêm kho lưu trữ vào Assis
 5. Các App hiện có sẽ xuất hiện trong cửa hàng để bạn có thể cài đặt.
 
 > [!TIP]
-> Cách cấu hình và hành vi ở lần khởi động đầu tiên phụ thuộc vào từng App (ví dụ: **Gemini FastAPI** sẽ tạo các tệp cấu hình mặc định ở lần chạy đầu, trong khi **Wyoming Vietnamese** sẽ tải về các mô hình nhận diện và giọng đọc). Vui lòng tham khảo tài liệu chi tiết của từng App để biết hướng dẫn cụ thể.
+> Cách cấu hình và hành vi ở lần khởi động đầu tiên phụ thuộc vào từng App (ví dụ: **Gemini FastAPI** được cấu hình trong tab **Cấu hình** của App, trong khi **Wyoming Vietnamese** sẽ tải về các mô hình nhận diện và giọng đọc). Vui lòng tham khảo tài liệu chi tiết của từng App để biết hướng dẫn cụ thể.
 
 ## Bảo trì và Cập nhật
 

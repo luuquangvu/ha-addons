@@ -3,6 +3,11 @@
 > [!NOTE]
 > If you find this addon useful, please consider giving it a ⭐ on [GitHub](https://github.com/luuquangvu/ha-addons) to support my work and help others discover it. Thank you very much! ❤️
 
+## 1.0.29 - 2026-11-01
+
+- The add-on now runs as a non-root user for better security and automatically fixes permissions on the model and cache folders.
+- App giờ chạy bằng người dùng không phải root để bảo mật hơn, đồng thời tự động sửa quyền cho các thư mục mô hình và bộ nhớ đệm.
+
 ## 1.0.28 - 2026-10-30
 
 - Update version to 20261030-f7ec231

@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test and lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 26
+          cache: "npm"
+
+      - name: Install Python dependencies
+        run: uv sync --locked --all-groups
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: uv run python -m unittest discover -s tests
+
+      - name: Run Ruff check
+        run: uv run ruff check .
+
+      - name: Run Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Run Ty
+        run: uv run ty check
+
+      - name: Run Pyright
+        run: uv run pyright
+
+      - name: Run Interrogate
+        run: uv run interrogate
+
+      - name: Run Tally
+        run: uv run tally lint .
+
+      - name: Run Prettier
+        run: npx prettier --check .
