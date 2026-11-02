@@ -12,7 +12,7 @@ LABEL \
   io.hass.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.124"
+  io.hass.version="1.0.125"
 
 # Startup preparation runs as root, then hands off to the upstream entrypoint,
 # which drops to the unprivileged app user before launching the server.
