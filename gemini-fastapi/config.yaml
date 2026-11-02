@@ -21,6 +21,8 @@ map:
 environment:
   CONFIG_SERVER__HOST: 0.0.0.0
   CONFIG_SERVER__PORT: "8000"
+  CONFIG_STORAGE__PATH: /data/storage/lmdb
+  CONFIG_STORAGE__MEDIA_PATH: /data/storage/media
   GEMINI_COOKIE_PATH: /data/cache
 options:
   api_key: ""

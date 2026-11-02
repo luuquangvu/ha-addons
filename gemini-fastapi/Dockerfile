@@ -14,6 +14,10 @@ LABEL \
   io.hass.type="addon" \
   io.hass.version="1.0.124"
 
+# Startup preparation runs as root, then hands off to the upstream entrypoint,
+# which drops to the unprivileged app user before launching the server.
+ENV BASE_ENTRYPOINT=/usr/local/bin/docker-entrypoint.sh
+
 USER root
 
 WORKDIR /app
@@ -21,4 +25,6 @@ WORKDIR /app
 COPY --chmod=755 scripts/run.sh /app/run.sh
 COPY scripts/apply_options.py /app/apply_options.py
 
-CMD ["/app/run.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/app/run.sh"]
+
+CMD ["python", "/app/apply_options.py"]

@@ -27,7 +27,6 @@ class RunScriptTests(unittest.TestCase):
         self.marker = self.root / "data" / ".homeassistant-migrated"
         self.storage = self.root / "data" / "storage"
         self.app_dir = self.root / "app"
-        self.app_data = self.app_dir / "data"
         self.app_dir.mkdir(parents=True)
 
         self.env = os.environ.copy()
@@ -38,9 +37,13 @@ class RunScriptTests(unittest.TestCase):
                 "LEGACY_CONFIG_DIR": str(self.legacy_config),
                 "LEGACY_DATA_DIR": str(self.legacy_data),
                 "MIGRATION_MARKER": str(self.marker),
+                "DATA_ROOT": str(self.root / "data"),
                 "DATA_DIR": str(self.storage),
+                "CACHE_DIR": str(self.root / "data" / "cache"),
+                "APP_UID": str(os.getuid()),
+                "APP_GID": str(os.getgid()),
                 "APP_DIR": str(self.app_dir),
-                "APP_DATA_DIR": str(self.app_data),
+                "BASE_ENTRYPOINT": "",
                 "PYTHON": "/bin/true",
                 "RUN_SCRIPT": str(self.root / "apply_options.py"),
             },
@@ -49,7 +52,7 @@ class RunScriptTests(unittest.TestCase):
     def run_script(self) -> subprocess.CompletedProcess[str]:
         """Run the startup script with all paths redirected into the test directory."""
         return subprocess.run(
-            ["bash", str(SCRIPT)],
+            ["sh", str(SCRIPT)],
             env=self.env,
             text=True,
             capture_output=True,
@@ -78,8 +81,6 @@ class RunScriptTests(unittest.TestCase):
         assert not self.legacy_data.exists()
         assert (self.storage / "lmdb" / "data.mdb").read_text(encoding="utf-8") == "old data"
         assert self.marker.is_file()
-        assert self.app_data.is_symlink()
-        assert self.app_data.resolve() == self.storage.resolve()
 
     def test_second_start_is_idempotent(self) -> None:
         """A second start keeps the migrated storage and does not rerun the migration."""
@@ -100,7 +101,6 @@ class RunScriptTests(unittest.TestCase):
 
         assert result.returncode == 0, result.stderr
         assert not self.marker.exists()
-        assert self.app_data.is_symlink()
         assert "not available" in result.stderr
 
     def test_existing_storage_is_not_overwritten(self) -> None:
@@ -152,7 +152,6 @@ class RunScriptTests(unittest.TestCase):
         assert result.returncode == 0, result.stderr
         assert self.storage.is_dir()
         assert self.marker.is_file()
-        assert self.app_data.is_symlink()
 
 
 if __name__ == "__main__":

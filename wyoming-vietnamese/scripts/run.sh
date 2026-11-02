@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 CACHE_DIR="${CACHE_DIR:-/data/cache}"
 DOWNLOAD_DIR="${DOWNLOAD_DIR:-/data/models}"
-APP_UID="${APP_UID:-1000}"
-APP_GID="${APP_GID:-1000}"
+APP_UID="${APP_UID:-$(id -u app)}"
+APP_GID="${APP_GID:-$(id -g app)}"
 PRIVILEGE_MARKER="${PRIVILEGE_MARKER:-/data/.app-uid-${APP_UID}-${APP_GID}}"
 export APP_UID APP_GID
 
@@ -21,7 +21,8 @@ if
     || [ "$(stat -c '%u:%g' "${DOWNLOAD_DIR}")" != "${APP_UID}:${APP_GID}" ]
 then
   if chown -R "${APP_UID}:${APP_GID}" "${CACHE_DIR}" "${DOWNLOAD_DIR}"; then
-    : > "${PRIVILEGE_MARKER}"
+    printf '' > "${PRIVILEGE_MARKER}" \
+      || echo "[WARN] Could not write ${PRIVILEGE_MARKER}; retrying on the next start." >&2
   else
     echo "[WARN] Could not update ownership of ${CACHE_DIR} and ${DOWNLOAD_DIR}; retrying on the next start." >&2
   fi

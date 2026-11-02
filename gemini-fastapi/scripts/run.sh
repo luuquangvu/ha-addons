@@ -1,20 +1,34 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 HOMEASSISTANT_DIR="${HOMEASSISTANT_DIR:-/homeassistant}"
 LEGACY_DIR="${LEGACY_DIR:-${HOMEASSISTANT_DIR}/gemini-fastapi}"
 LEGACY_CONFIG_DIR="${LEGACY_CONFIG_DIR:-${LEGACY_DIR}/config}"
 LEGACY_DATA_DIR="${LEGACY_DATA_DIR:-${LEGACY_DIR}/data}"
 MIGRATION_MARKER="${MIGRATION_MARKER:-/data/.homeassistant-migrated}"
-DATA_DIR="${DATA_DIR:-/data/storage}"
+DATA_ROOT="${DATA_ROOT:-/data}"
+DATA_DIR="${DATA_DIR:-${DATA_ROOT}/storage}"
+CACHE_DIR="${CACHE_DIR:-${GEMINI_COOKIE_PATH:-${DATA_ROOT}/cache}}"
+OPTIONS_FILE="${OPTIONS_FILE:-${DATA_ROOT}/options.json}"
+APP_UID="${APP_UID:-$(id -u app)}"
+APP_GID="${APP_GID:-$(id -g app)}"
 APP_DIR="${APP_DIR:-/app}"
-APP_DATA_DIR="${APP_DATA_DIR:-${APP_DIR}/data}"
 PYTHON="${PYTHON:-python}"
 RUN_SCRIPT="${RUN_SCRIPT:-${APP_DIR}/apply_options.py}"
+BASE_ENTRYPOINT="${BASE_ENTRYPOINT:-}"
 
 echo "[INFO] Starting Gemini FastAPI App..."
 
-mkdir -p "${DATA_DIR}"
+mkdir -p "${DATA_ROOT}" "${DATA_DIR}" "${CACHE_DIR}"
+
+# The Supervisor creates /data and options.json as root; options.json is mode
+# 0600. Hand them to the runtime user before the base entrypoint drops root.
+if [ "$(id -u)" -eq 0 ]; then
+  chown "${APP_UID}:${APP_GID}" "${DATA_ROOT}"
+  if [ -e "${OPTIONS_FILE}" ]; then
+    chown "${APP_UID}:${APP_GID}" "${OPTIONS_FILE}"
+  fi
+fi
 
 # The homeassistant_config mount is used only to retire the old layout.
 # Conversation data is copied before the old config is removed, and an existing
@@ -47,35 +61,23 @@ if [ ! -f "${MIGRATION_MARKER}" ]; then
   fi
 fi
 
-link_dir() {
-  local source="$1"
-  local target="$2"
-
-  echo "[INFO] Linking ${target} to ${source}..."
-
-  if [ -L "${target}" ]; then
-    if [ "$(readlink "${target}")" = "${source}" ]; then
-      echo "[INFO] ${target} is already linked to ${source}."
-      return
+# Hand the persistent directories to the runtime user. The ownership check
+# avoids a recursive chown on every restart once the change is in place.
+if [ "$(id -u)" -eq 0 ]; then
+  for dir in "${DATA_DIR}" "${CACHE_DIR}"; do
+    if [ "$(stat -c '%u:%g' "${dir}")" != "${APP_UID}:${APP_GID}" ]; then
+      chown -R "${APP_UID}:${APP_GID}" "${dir}"
     fi
-    rm -f "${target}"
-  fi
-
-  if [ -d "${target}" ] && [ ! -L "${target}" ]; then
-    if [ -z "$(ls -A "${source}")" ]; then
-      echo "[INFO] Initializing ${source} with default files from ${target}..."
-      cp -a "${target}/." "${source}/"
-    fi
-    rm -rf "${target}"
-  elif [ -e "${target}" ]; then
-    rm -rf "${target}"
-  fi
-
-  ln -s "${source}" "${target}"
-}
-
-link_dir "${DATA_DIR}" "${APP_DATA_DIR}"
+  done
+fi
 
 echo "[INFO] Launching application..."
+if [ -n "${BASE_ENTRYPOINT}" ]; then
+  if [ ! -x "${BASE_ENTRYPOINT}" ]; then
+    echo "[ERROR] Required base entrypoint not found: ${BASE_ENTRYPOINT}" >&2
+    exit 1
+  fi
+  exec "${BASE_ENTRYPOINT}" "$@"
+fi
 cd "${APP_DIR}"
 exec "${PYTHON}" "${RUN_SCRIPT}"
