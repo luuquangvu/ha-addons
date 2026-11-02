@@ -1,4 +1,4 @@
-FROM ghcr.io/luuquangvu/gemini-fastapi:20261102-b194eb6
+FROM ghcr.io/luuquangvu/gemini-fastapi:20261102-bab0e35
 
 LABEL \
   org.opencontainers.image.title="Gemini FastAPI" \
@@ -12,7 +12,7 @@ LABEL \
   io.hass.description="OpenAI-compatible router that proxies Google Gemini for Home Assistant." \
   io.hass.arch="amd64|aarch64" \
   io.hass.type="addon" \
-  io.hass.version="1.0.125"
+  io.hass.version="1.0.126"
 
 # Startup preparation runs as root, then hands off to the upstream entrypoint,
 # which drops to the unprivileged app user before launching the server.
