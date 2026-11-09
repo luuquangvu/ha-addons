@@ -137,7 +137,7 @@ jobs:
 
       - name: Lint Home Assistant add-on
         if: steps.resolve.outputs.changed == 'true'
-        uses: frenck/action-addon-linter@b9cfd1bc62ba60d2c4fc96317b5f7ada5923f4a7
+        uses: frenck/action-addon-linter@d51677290aef26cdfc835271dd3c7343ce502809
         with:
           path: ${{ env.ADDON_DIR }}
 
